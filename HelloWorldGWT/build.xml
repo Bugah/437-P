@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- 
+	©2014 gustavo waku
+    created as an example of ant build script for MC437   
+-->
+<project name="HelloWorldGWT" default="build" basedir=".">
+  	<target name="build" depends="startdb" description="starts the database" />
+
+	<target name="startdb" description="Run HSQL database server">
+		<echo>***** iniciando o banco de dados</echo>
+		<java classname="org.hsqldb.Server" fork="yes" classpath="./hsqldb.jar" failonerror="true">
+	        <arg value="-database.0"/>
+	        <arg value="file:mydb"/>
+	        <arg value="-dbname.0"/>
+	        <arg value="mydb"/>
+	    </java>
+	</target>
+	
+	 <!-- hsqldb-server-shutdown, so tem efeito caso a task hsqldb-server-startup tenha sido executada previamente --> 
+	<target name="startmanager">
+		<echo></echo>		
+		<echo>***** ATENCAO: Na janela aberta, digite o comando: SHUTDOWN; e clique em 'Execute'.</echo>
+		
+		<java classname="org.hsqldb.util.DatabaseManager" classpath="./hsqldb.jar" fork="true">
+			<arg line="-url jdbc:hsqldb:hsql://localhost/mydb"/>
+			<arg line="-user sa"/>
+		</java>
+	</target>
+
+</project>
