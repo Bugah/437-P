@@ -1,14 +1,6 @@
 package br.unicamp.mc437.server;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-
 import br.unicamp.mc437.client.GreetingService;
-import br.unicamp.mc437.client.datatypes.Student;
-import br.unicamp.mc437.shared.FieldVerifier;
 
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 
@@ -23,7 +15,7 @@ import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 public class GreetingServiceImpl extends RemoteServiceServlet implements
 		GreetingService {
 
-	public String greetServer(Student input) throws IllegalArgumentException {
+	/*public String greetServer(Student input) throws IllegalArgumentException {
 		
 		
 		//Creating a database and deleting it.
@@ -35,20 +27,27 @@ public class GreetingServiceImpl extends RemoteServiceServlet implements
 		try {
 			Class.forName("org.hsqldb.jdbcDriver");
 			connection = DriverManager.getConnection("jdbc:hsqldb:hsql://localhost/mydb", "sa", ""); // can through sql exception
+			//Class.forName("com.mysql.jdbc.Driver").newInstance();
+			//connection = DriverManager.getConnection("jdbc:mysql://127.0.0.1:81/test","root",""); 
 			
 			//drops the table if exists, and create the schema
 			//put this on ant file when it starts the database...
-			connection.prepareStatement("drop table user if exists;").execute();
-			connection.prepareStatement("create table user (id integer, nome varchar(20) not null);").execute();
+			//connection.prepareStatement("drop table users if exists;").execute();
+
+			connection.prepareStatement("create table if not exists turma (id integer, nome varchar(20) not null);").execute();
+			connection.prepareStatement("create table if not exists users (id integer, nome varchar(20) not null, turma integer);").execute();
 			
-			PreparedStatement ps = connection.prepareStatement("insert into user (id, nome)" 
-					+ "values ( ?, ?);");
+			//connection.prepareStatement("CREATE TABLE IF NOT EXISTS `turma` (   `id` int(11) NOT NULL,   `name` varchar(255) NOT NULL,   PRIMARY KEY (`id`) ) ENGINE=MyISAM DEFAULT CHARSET=latin1;  CREATE TABLE IF NOT EXISTS `users` (   `id` int(11) NOT NULL,   `nome` varchar(255) NOT NULL,   `turma` int(11) NOT NULL,   PRIMARY KEY (`id`),   KEY `id` (`id`,`turma`) ) ENGINE=MyISAM DEFAULT CHARSET=latin1;");
+			//connection.prepareStatement("insert into turma (id, nome) values ('1', 'MC437');").execute();
+			
+		/*	PreparedStatement ps = connection.prepareStatement("insert into users (id, nome, turma)" 
+					+ "values ( ?, ?,1);");
 			ps.setInt(1, input.getId());
 			ps.setString(2, input.getName());
 			ps.execute();
 			
 			// query from the db
-			rs = connection.prepareStatement("select id, nome from user;").executeQuery();
+			rs = connection.prepareStatement("select id, nome from users;").executeQuery();
 			rs.next();
 			System.out.println(String.format("ID: %1d, Nome: %1s", rs.getInt(1), rs.getString(2)));
 			name_stored = "stored:" + rs.getString(2);
@@ -58,6 +57,7 @@ public class GreetingServiceImpl extends RemoteServiceServlet implements
 			e2.printStackTrace();
 		} catch (ClassNotFoundException e2) {
 			e2.printStackTrace();
+
 		}
 	
 		String serverInfo = getServletContext().getServerInfo();
@@ -70,7 +70,7 @@ public class GreetingServiceImpl extends RemoteServiceServlet implements
 		return "Congrats!! using student datatype!, " + name_stored + "! I stored your name and deleted it <br><br>I am running " + serverInfo
 				+ ".<br><br>It looks like you are using:<br>" + userAgent;
 		
-	}
+	}*/
 	
 	
 //	public String greetServer(String input) throws IllegalArgumentException {

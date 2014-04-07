@@ -10,15 +10,9 @@ h1 {
   text-align: center;
 }
 
-.searchField {
-	font-size: xx-small; 
-	color: gray;
-	font-weight: bold;
-	font-style: italic;
-}
 .sendButton {
   display: block;
-  font-size: 32pt;
+  font-size: 16pt;
 }
 
 /** Most GWT widgets already have a style name defined */
