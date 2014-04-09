@@ -117,19 +117,30 @@ public class HelloWorldGWT implements EntryPoint {
 			/**
 			 * Send the name from the searchField to the server and wait for a response.
 			 */
+			private String seeCategory() {
+				int i = searchOn.getSelectedIndex();
+				
+				switch(i){
+				case 0: return "Produto";
+				case 1: return "Marca";
+				default: return "Error";
+			}
+			}
 			private void sendNameToServer() {
 				// First, we validate the input.
 				errorLabel.setText("");
 				String textToServer = searchField.getText();
+				String searchCategory = seeCategory();
 				if (!FieldVerifier.isValidName(textToServer)) {
 					errorLabel.setText("Please enter at least four characters");
 					return;
 				}
-
+				
 				// Then, we send the input to the server.
 				sendButton.setEnabled(false);
 				textToServerLabel.setText(textToServer);
 				serverResponseLabel.setText("");
+				searchField.setText(searchCategory);
 				
 //this is the old call changing to the new one				
 //				greetingService.greetServer(textToServer,
