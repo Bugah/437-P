@@ -1,14 +1,4 @@
-
 CREATE TABLE IF NOT EXISTS administrador (
-  id_admin integer IDENTITY,
-  nome_adm varchar(200) NOT NULL,
-  email_adm varchar(200) NOT NULL,
-  senha_adm varchar(50) NOT NULL,
-  username_adm varchar(200) DEFAULT NULL,
-  PRIMARY KEY (id_admin)
-);
-
-cREATE TABLE IF NOT EXISTS administrador (
   id_admin integer  IDENTITY,
   nome_adm varchar(200) NOT NULL,
   email_adm varchar(200) NOT NULL,
