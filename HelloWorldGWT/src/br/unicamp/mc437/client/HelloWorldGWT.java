@@ -13,6 +13,7 @@ import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.DialogBox;
 import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.Label;
+import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
@@ -45,22 +46,27 @@ public class HelloWorldGWT implements EntryPoint {
 	 */
 	public void onModuleLoad() {
 		final Button sendButton = new Button("Send");
-		final TextBox nameField = new TextBox();
-		nameField.setText("GWT User");
+		final TextBox searchField = new TextBox();
+		searchField.setText("Digite sua busca aqui...");
+		
+		final ListBox searchOn	= new ListBox();
+		searchOn.addItem("Produto");
+		searchOn.addItem("Marca");
 		final Label errorLabel = new Label();
 
 		// We can add style names to widgets
 		sendButton.addStyleName("sendButton");
 
-		// Add the nameField and sendButton to the RootPanel
+		// Add the searchField and sendButton to the RootPanel
 		// Use RootPanel.get() to get the entire body element
-		RootPanel.get("nameFieldContainer").add(nameField);
+		RootPanel.get("searchFieldContainer").add(searchField);
+		RootPanel.get("searchOnContainer").add(searchOn);
 		RootPanel.get("sendButtonContainer").add(sendButton);
 		RootPanel.get("errorLabelContainer").add(errorLabel);
 
 		// Focus the cursor on the name field when the app loads
-		nameField.setFocus(true);
-		nameField.selectAll();
+		searchField.setFocus(true);
+		searchField.selectAll();
 
 		// Create the popup dialog box
 		final DialogBox dialogBox = new DialogBox();
@@ -90,7 +96,7 @@ public class HelloWorldGWT implements EntryPoint {
 			}
 		});
 
-		// Create a handler for the sendButton and nameField
+		// Create a handler for the sendButton and searchField
 		class MyHandler implements ClickHandler, KeyUpHandler {
 			/**
 			 * Fired when the user clicks on the sendButton.
@@ -100,7 +106,7 @@ public class HelloWorldGWT implements EntryPoint {
 			}
 
 			/**
-			 * Fired when the user types in the nameField.
+			 * Fired when the user types in the searchField.
 			 */
 			public void onKeyUp(KeyUpEvent event) {
 				if (event.getNativeKeyCode() == KeyCodes.KEY_ENTER) {
@@ -109,12 +115,12 @@ public class HelloWorldGWT implements EntryPoint {
 			}
 
 			/**
-			 * Send the name from the nameField to the server and wait for a response.
+			 * Send the name from the searchField to the server and wait for a response.
 			 */
 			private void sendNameToServer() {
 				// First, we validate the input.
 				errorLabel.setText("");
-				String textToServer = nameField.getText();
+				String textToServer = searchField.getText();
 				if (!FieldVerifier.isValidName(textToServer)) {
 					errorLabel.setText("Please enter at least four characters");
 					return;
@@ -177,6 +183,6 @@ public class HelloWorldGWT implements EntryPoint {
 		// Add a handler to send the name to the server
 		MyHandler handler = new MyHandler();
 		sendButton.addClickHandler(handler);
-		nameField.addKeyUpHandler(handler);
+		searchField.addKeyUpHandler(handler);
 	}
 }
