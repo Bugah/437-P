@@ -150,7 +150,7 @@ public class HelloWorldGWT implements EntryPoint {
 				String textToServer = searchField.getText();
 				
 				if (!FieldVerifier.isValidName(textToServer)) {
-					errorLabel.setText("Please enter at least four characters");
+					errorLabel.setText("Entre com pelo menos 4 caracteres");
 					return;
 				}
 				

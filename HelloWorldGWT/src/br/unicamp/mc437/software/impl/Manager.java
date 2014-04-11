@@ -29,7 +29,7 @@ class Manager implements IManager{
 		br.unicamp.mc437.correio_sistema.impl.IManager managerCorreio_Sistema =
 		br.unicamp.mc437.correio_sistema.impl.ComponentFactory.createInstance();
 		
-		br.unicamp.br.unicamp.mc437.moip.spec.prov.IManager managerMoip =
+		br.unicamp.mc437.moip.spec.prov.IManager managerMoip =
 		br.unicamp.mc437.moip.impl.ComponentFactory.createInstance();
 		
 		br.unicamp.mc437.moip_sistema.impl.IManager managerMoip_Sistema =
@@ -99,8 +99,8 @@ class Manager implements IManager{
 			managerProduto.getProvidedInterface("IProduto");
 			managerProduto_Sistema.setRequiredInterface("IProduto",produto_IProduto);
 		
-		br.unicamp.br.unicamp.mc437.moip.spec.prov.IMoip moip_IMoip = 
-			(br.unicamp.br.unicamp.mc437.moip.spec.prov.IMoip)
+		br.unicamp.mc437.moip.spec.prov.IMoip moip_IMoip = 
+			(br.unicamp.mc437.moip.spec.prov.IMoip)
 			managerMoip.getProvidedInterface("IMoip");
 			managerMoip_Sistema.setRequiredInterface("IMoip",moip_IMoip);
 		

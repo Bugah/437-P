@@ -1,6 +1,6 @@
 package br.unicamp.mc437.moip.impl;
 
-import br.unicamp.br.unicamp.mc437.moip.spec.prov.IManager;
+import br.unicamp.mc437.moip.spec.prov.IManager;
 
 public class ComponentFactory {
 

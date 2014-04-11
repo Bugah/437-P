@@ -2,7 +2,7 @@ package br.unicamp.mc437.moip.impl;
 
 import java.util.*;
 
-import br.unicamp.br.unicamp.mc437.moip.spec.prov.*;
+import br.unicamp.mc437.moip.spec.prov.*;
 
 class Manager implements IManager{
 
