@@ -10,6 +10,14 @@ h1 {
   text-align: center;
 }
 
+.searchField {
+	font-size: xx-small; 
+	color: gray;
+	font-weight: bold;
+	font-style: italic;
+}
+
+
 .sendButton {
   display: block;
   font-size: 16pt;
