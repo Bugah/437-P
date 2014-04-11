@@ -1,6 +1,9 @@
 package br.unicamp.mc437.client;
 
+import br.unicamp.mc437.client.datatypes.Produto;
 import br.unicamp.mc437.shared.FieldVerifier;
+
+import java.io.Serializable;
 
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
@@ -51,9 +54,16 @@ public class HelloWorldGWT implements EntryPoint {
 		
 		final ListBox searchOn	= new ListBox();
 		searchOn.addItem("Produto");
-		searchOn.addItem("Marca");
+		searchOn.addItem("Descrição");
 		final Label errorLabel = new Label();
-
+		
+		final ListBox rangePrecos = new ListBox();	// Item Indexes
+		rangePrecos.addItem("Todos");				//0
+		rangePrecos.addItem("Menor que R$10");		//1
+		rangePrecos.addItem("Entre R$10 e R$20");	//2
+		rangePrecos.addItem("Entre R$20 e R$40");	//3
+		rangePrecos.addItem("Entre R$40 e R$60");	//4
+		rangePrecos.addItem("Maior que R$60");		//5
 		// We can add style names to widgets
 		sendButton.addStyleName("sendButton");
 
@@ -61,6 +71,7 @@ public class HelloWorldGWT implements EntryPoint {
 		// Use RootPanel.get() to get the entire body element
 		RootPanel.get("searchFieldContainer").add(searchField);
 		RootPanel.get("searchOnContainer").add(searchOn);
+		RootPanel.get("rangePrecosContainer").add(rangePrecos);
 		RootPanel.get("sendButtonContainer").add(sendButton);
 		RootPanel.get("errorLabelContainer").add(errorLabel);
 
@@ -122,15 +133,22 @@ public class HelloWorldGWT implements EntryPoint {
 				
 				switch(i){
 				case 0: return "Produto";
-				case 1: return "Marca";
+				case 1: return "Descrição";
 				default: return "Error";
+				}
 			}
+			
+			private int seeRangePrecos() {
+				int i = rangePrecos.getSelectedIndex(); 
+				return i;
 			}
+			
+			
 			private void sendNameToServer() {
 				// First, we validate the input.
 				errorLabel.setText("");
 				String textToServer = searchField.getText();
-				String searchCategory = seeCategory();
+				
 				if (!FieldVerifier.isValidName(textToServer)) {
 					errorLabel.setText("Please enter at least four characters");
 					return;
@@ -138,9 +156,18 @@ public class HelloWorldGWT implements EntryPoint {
 				
 				// Then, we send the input to the server.
 				sendButton.setEnabled(false);
-				textToServerLabel.setText(textToServer);
-				serverResponseLabel.setText("");
-				searchField.setText(searchCategory);
+				
+				Produto p = new Produto();
+				p.setNome(textToServer);
+
+				int searchRangePreco = seeRangePrecos();
+				sendButton.setEnabled(true);
+				
+				
+				
+				// INSERIR INTERFACE DE BUSCA AQUI //
+				
+				
 				
 //this is the old call changing to the new one				
 //				greetingService.greetServer(textToServer,
