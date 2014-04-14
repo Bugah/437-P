@@ -1,6 +1,7 @@
 package br.unicamp.mc437.client.datatypes;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 
 public class Produto  implements Serializable{
 
@@ -14,6 +15,11 @@ public class Produto  implements Serializable{
 	private int estoque;
 	private double precoPromocional;
 	private Administrador admin;
+	private int deletado;
+	private ArrayList<SubCategoria> subCat;
+	
+
+	
 	public int getId() {
 		return id;
 	}
@@ -55,6 +61,18 @@ public class Produto  implements Serializable{
 	}
 	public void setAdmin(Administrador admin) {
 		this.admin = admin;
+	}
+	public int getDeletado() {
+		return deletado;
+	}
+	public void setDeletado(int deletado) {
+		this.deletado = deletado;
+	}
+	public ArrayList<SubCategoria> getSubCat() {
+		return subCat;
+	}
+	public void setSubCat(ArrayList<SubCategoria> subCat) {
+		this.subCat = subCat;
 	}
 	
 	
