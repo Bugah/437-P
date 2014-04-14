@@ -2,6 +2,7 @@ package br.unicamp.mc437.client;
 
 import com.google.gwt.user.client.rpc.RemoteService;
 import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
+import br.unicamp.mc437.client.datatypes.Produto;
 
 /**
  * The client-side stub for the RPC service.
@@ -10,5 +11,5 @@ import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
 public interface GreetingService extends RemoteService {
 //	String greetServer(String name) throws IllegalArgumentException;
 	
-	String greetServer(String p) throws IllegalArgumentException;
+	String greetServer(Produto p) throws IllegalArgumentException;
 }
