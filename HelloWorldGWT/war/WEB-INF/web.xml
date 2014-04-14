@@ -11,9 +11,20 @@
     <servlet-class>br.unicamp.mc437.server.GreetingServiceImpl</servlet-class>
   </servlet>
   
+
+  
   <servlet-mapping>
     <servlet-name>greetServlet</servlet-name>
     <url-pattern>/helloworldgwt/greet</url-pattern>
+  </servlet-mapping>
+
+      <servlet>
+    <servlet-name>inserirProdutoServlet</servlet-name>
+    <servlet-class>br.unicamp.mc437.server.InserirProdutoImpl</servlet-class>
+  </servlet>
+    <servlet-mapping>
+    <servlet-name>inserirProdutoServlet</servlet-name>
+    <url-pattern>/helloworldgwt/inserirProduto</url-pattern>
   </servlet-mapping>
   
   <!-- Default page to serve -->
