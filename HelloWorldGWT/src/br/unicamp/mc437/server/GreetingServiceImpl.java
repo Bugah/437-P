@@ -24,23 +24,49 @@ public class GreetingServiceImpl extends RemoteServiceServlet implements
 		//Creating a database and deleting it.
 		Connection connection = null;
 		ResultSet rs = null;
+		ResultSet rs2 = null;
+		String html = null;
 		
-		String name_stored = null;
+		html="<table>";
+		html=html+"<tr>";
+		html=html+"<td>ID</td>";
+		html=html+"<td>Nome</td>";
+		html=html+"<td>Preço</td>";
+		html=html+"<td>IMG</td>";
+	
+		html=html+"</tr>";
+		String nome=null;
 		// making a connection
 		try {
 			Class.forName("org.hsqldb.jdbcDriver");
 			connection = DriverManager.getConnection("jdbc:hsqldb:hsql://localhost/mydb", "sa", ""); 
-			
+			html=html+"<tr>";
 			/*PreparedStatement ps = connection.prepareStatement("select * from PRODUTOS where NOME = ?;");
 			ps.setString(1, p);
 			ps.execute();*/
 			
 			// query from the db
-			rs = connection.prepareStatement("select ID_PRODUTO, NOME from PRODUTOS;").executeQuery();
-			rs.next();
+			/*rs = connection.prepareStatement("select * from PRODUTOS where NAME='%?%';").executeQuery();
+			rs.setString(p,nome);
+			nome=null;
+			while(rs.next()){
 			System.out.println(String.format("ID: %1d, Nome: %1s", rs.getInt(1), rs.getString(2)));
-			name_stored = "stored:" + rs.getString(2);
+			//name_stored = "stored:" + rs.getString("ID");
+			html=html+"<td>"+ rs.getInt("ID_PRODUTO")+"</td>";
+			html=html+"<td>"+ rs.getString ("NOME")+"</td>";
+			
+			rs2 = connection.prepareStatement("select * from PRODUTOS_IMAGEM pi RIGHT JOIN IMAGEM i ON pi.id_imagem=i.id_imagem WHERE pi.id_produto='?';").executeQuery();
+			rs2.setString("id_produto",p);
+			html=html+"<table>";
+			while(rs2.next()){
+			html=html+"<tr><td><img src='"+ rs.getString ("caminho_imagem")+"' width='100'></td></tr>";
+			}
+			html=html+"</table>";
+			html=html+"</tr>";
+			}
 			rs.close();
+			html=html+"</table>";*/
+		
 			
 		} catch (SQLException e2) {
 			e2.printStackTrace();
@@ -56,8 +82,10 @@ public class GreetingServiceImpl extends RemoteServiceServlet implements
 		
 		userAgent = escapeHtml(userAgent);
 		
-		return "Produto encontrado: " + name_stored + ".<br><br>I am running " + serverInfo
-				+ ".<br><br>It looks like you are using:<br>" + userAgent;
+//		return "Produto encontrado: " + name_stored + ".<br><br>I am running " + serverInfo
+//				+ ".<br><br>It looks like you are using:<br>" + userAgent;
+		
+		return html;
 		
 	}
 	
