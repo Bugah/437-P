@@ -27,7 +27,9 @@ public class GreetingServiceImpl extends RemoteServiceServlet implements
 		ResultSet rs = null;
 		ResultSet rs2 = null;
 		String html = null;
-		
+		Produto[] resultados = new Produto[200];
+		String[][] imagens_resultados = new String[200][10];
+		/*
 		html="<table>";
 		html=html+"<tr>";
 		html=html+"<td>ID</td>";
@@ -36,7 +38,9 @@ public class GreetingServiceImpl extends RemoteServiceServlet implements
 		html=html+"<td>IMG</td>";
 	
 		html=html+"</tr>";
+		*/
 		String nome=null;
+		int counter = 0;
 		// making a connection
 		try {
 			Class.forName("org.hsqldb.jdbcDriver");
@@ -49,23 +53,36 @@ public class GreetingServiceImpl extends RemoteServiceServlet implements
 			*/
 			
 			// query from the db
-			rs = connection.prepareStatement("select ID_PRODUTO, NOME from PRODUTOS where NOME='"+p+"';").executeQuery();
+			rs = connection.prepareStatement("select ID_PRODUTO, NOME from PRODUTOS where NOME='"+p.getNome()+"';").executeQuery();
 			//rs.setString(p,nome);
 			nome=null;
+			
 			while(rs.next()){
 				//.out.println(String.format("ID: %1d, Nome: %1s", rs.getInt(1), rs.getString(2)));
 				//name_stored = "stored:" + rs.getString("ID");
-				html=html+"<td>"+ rs.getInt("ID_PRODUTO")+"</td>";
-				html=html+"<td>"+ rs.getString ("NOME")+"</td>";
+				//html=html+"<td>"+ rs.getInt("ID_PRODUTO")+"</td>";
+				//html=html+"<td>"+ rs.getString ("NOME")+"</td>";
+				resultados[counter] = new Produto();
+				resultados[counter].setId(rs.getInt("ID_PRODUTO"));
+				resultados[counter].setNome(rs.getString("NOME"));
+				resultados[counter].setPreco(rs.getDouble("PRECO"));
+				resultados[counter].setPrecoPromocional(rs.getDouble("PRECO_PROMOCIONAL"));
+				resultados[counter].setDescricao(rs.getString("DESCRICAO"));
 				
-				rs2 = connection.prepareStatement("select * from PRODUTOS_IMAGEM pi RIGHT JOIN IMAGEM i ON pi.id_imagem=i.id_imagem WHERE pi.id_produto='?';").executeQuery();
-				//rs2.setString("id_produto",p);
-				html=html+"<table>";
+				//resultados[counter].setAdmin(rs.getInt("ID_ADMIN"));
+				// ID ADMIN -> NOME ADMIN ? Verificar
+				
+				rs2 = connection.prepareStatement("SELECT * FROM imagens_produto pi RIGHT JOIN IMAGEM i ON (pi.id_imagem=i.id_imagem) WHERE pi.id_produto='"+Integer.toString(p.getId())+"';").executeQuery();
+				// FAVOR VERIFICAR A QUERY
+				
+				//html=html+"<table>";
+				int n = 0;
 				while(rs2.next()){
-					html=html+"<tr><td><img src='"+ rs.getString ("caminho_imagem")+"' width='100'></td></tr>";
+					imagens_resultados[counter][n++] = rs2.getString("NOME_ARQUIVO");
 				}
 				html=html+"</table>";
 				html=html+"</tr>";
+				counter = counter + 1;
 			}
 			rs.close();
 			html=html+"</table>";
@@ -87,8 +104,8 @@ public class GreetingServiceImpl extends RemoteServiceServlet implements
 		
 //		return "Produto encontrado: " + name_stored + ".<br><br>I am running " + serverInfo
 //				+ ".<br><br>It looks like you are using:<br>" + userAgent;
-		
-		return html;
+		return "Busca por: "+p.getNome()+" "+Integer.toString(counter)+" Produtos encontrados!!";
+		//return html;
 		
 	}
 	
