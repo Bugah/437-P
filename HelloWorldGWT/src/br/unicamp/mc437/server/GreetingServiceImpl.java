@@ -1,7 +1,7 @@
 package br.unicamp.mc437.server;
 
 import br.unicamp.mc437.client.GreetingService;
-
+import br.unicamp.mc437.client.datatypes.Produto;
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 
@@ -10,6 +10,7 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.io.Serializable;
 
 /**
  * The server-side implementation of the RPC service.
@@ -18,7 +19,7 @@ import java.sql.SQLException;
 public class GreetingServiceImpl extends RemoteServiceServlet implements
 		GreetingService {
 
-	public String greetServer(String p) throws IllegalArgumentException {
+	public String greetServer(Produto p) throws IllegalArgumentException {
 		
 		
 		//Creating a database and deleting it.
