@@ -80,12 +80,13 @@ public class GreetingServiceImpl extends RemoteServiceServlet implements
 				while(rs2.next()){
 					imagens_resultados[counter][n++] = rs2.getString("NOME_ARQUIVO");
 				}
-				html=html+"</table>";
-				html=html+"</tr>";
+				//html=html+"</table>";
+				//html=html+"</tr>";
 				counter = counter + 1;
 			}
 			rs.close();
-			html=html+"</table>";
+			rs2.close();
+			//html=html+"</table>";
 		
 			
 		} catch (SQLException e2) {

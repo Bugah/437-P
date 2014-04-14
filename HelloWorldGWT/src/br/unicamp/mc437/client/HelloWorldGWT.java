@@ -7,6 +7,7 @@ import java.io.Serializable;
 
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.KeyCodes;
@@ -19,6 +20,7 @@ import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.RootPanel;
+import com.google.gwt.user.client.ui.ScrollPanel;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
 
@@ -75,7 +77,12 @@ public class HelloWorldGWT implements EntryPoint {
 		RootPanel.get("rangePrecosContainer").add(rangePrecos);
 		RootPanel.get("sendButtonContainer").add(sendButton);
 		RootPanel.get("errorLabelContainer").add(errorLabel);
-
+		
+		ScrollPanel r = new ScrollPanel();
+		HTML h = new HTML();
+		h.setHTML("<a><img src=\"http://irenemerrow.blog.com/files/2014/01/i-have-no-idea-what-im-doing-dog.jpg\"</a>");
+		r.add(h);
+		RootPanel.get("resultsContainer").add(r);
 		// Focus the cursor on the name field when the app loads
 		searchField.setFocus(true);
 		searchField.selectAll();
@@ -181,7 +188,7 @@ public class HelloWorldGWT implements EntryPoint {
 					public void onSuccess(String result) {
 						dialogBox.setText("Remote Procedure Call");
 						serverResponseLabel.removeStyleName("serverResponseLabelError");
-						serverResponseLabel.setHTML(result);
+						serverResponseLabel.setHTML(result+"AAAAAAAAAAAAAAAAAAAAAAAAAA");
 						dialogBox.center();
 						closeButton.setFocus(true);
 					}
