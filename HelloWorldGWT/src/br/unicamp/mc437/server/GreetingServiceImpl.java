@@ -32,7 +32,7 @@ public class GreetingServiceImpl extends RemoteServiceServlet implements
 		html=html+"<tr>";
 		html=html+"<td>ID</td>";
 		html=html+"<td>Nome</td>";
-		html=html+"<td>Preço</td>";
+		html=html+"<td>Preï¿½o</td>";
 		html=html+"<td>IMG</td>";
 	
 		html=html+"</tr>";
@@ -43,8 +43,10 @@ public class GreetingServiceImpl extends RemoteServiceServlet implements
 			connection = DriverManager.getConnection("jdbc:hsqldb:hsql://localhost/mydb", "sa", ""); 
 			html=html+"<tr>";
 			/*PreparedStatement ps = connection.prepareStatement("select * from PRODUTOS where NOME = ?;");
-			ps.setString(1, p);
-			ps.execute();*/
+			ps.setString(1, p.getNome());
+			ps.execute();
+			ResultSet Results = ps.getResultSet();
+			*/
 			
 			// query from the db
 			rs = connection.prepareStatement("select ID_PRODUTO, NOME from PRODUTOS where NOME='"+p+"';").executeQuery();
