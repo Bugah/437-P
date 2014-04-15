@@ -3,6 +3,7 @@ package testesJUnit;
 import java.util.ArrayList;
 
 import org.junit.Test;
+import static org.junit.Assert.*;
 
 import br.unicamp.mc437.client.datatypes.Administrador;
 import br.unicamp.mc437.client.datatypes.Produto;
