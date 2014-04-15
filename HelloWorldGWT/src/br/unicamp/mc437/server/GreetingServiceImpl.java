@@ -72,7 +72,7 @@ public class GreetingServiceImpl extends RemoteServiceServlet implements
 				//resultados[counter].setAdmin(rs.getInt("ID_ADMIN"));
 				// ID ADMIN -> NOME ADMIN ? Verificar
 				
-				rs2 = connection.prepareStatement("SELECT * FROM IMAGENS_PRODUTO pi RIGHT JOIN IMAGEM i ON (pi.ID_IMAGENS_PRODUTO=i.ID_PRODUTO) WHERE pi.ID_PRODUTO='"+Integer.toString(p.getId())+"';").executeQuery();
+				rs2 = connection.prepareStatement("SELECT * FROM IMAGENS_PRODUTO pi RIGHT JOIN IMAGEM i ON (pi.ID_IMAGEM=i.ID_IMAGEM) WHERE pi.ID_PRODUTO='"+Integer.toString(p.getId())+"';").executeQuery();
 				// FAVOR VERIFICAR A QUERY
 				
 				//html=html+"<table>";
