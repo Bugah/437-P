@@ -53,8 +53,9 @@ public class GreetingServiceImpl extends RemoteServiceServlet implements
 			*/
 			
 			// query from the db
-			rs = connection.prepareStatement("select ID_PRODUTO, NOME from PRODUTOS where NOME='"+p.getNome()+"';").executeQuery();
+			rs = connection.prepareStatement("select * from produtos where nome='"+p.getNome()+"';").executeQuery();
 			//rs.setString(p,nome);
+			//WHERE NOME='"+p.getNome()+"'
 			nome=null;
 			
 			while(rs.next()){
@@ -91,9 +92,10 @@ public class GreetingServiceImpl extends RemoteServiceServlet implements
 			
 		} catch (SQLException e2) {
 			e2.printStackTrace();
+			System.out.println("ERROOOOOOOOOOOOORR");
 		} catch (ClassNotFoundException e2) {
 			e2.printStackTrace();
-
+			System.out.println("ERROOOOOOOOOOOOORR");
 		}
 	
 		String serverInfo = getServletContext().getServerInfo();

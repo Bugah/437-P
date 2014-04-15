@@ -188,7 +188,7 @@ public class HelloWorldGWT implements EntryPoint {
 					public void onSuccess(String result) {
 						dialogBox.setText("Remote Procedure Call");
 						serverResponseLabel.removeStyleName("serverResponseLabelError");
-						serverResponseLabel.setHTML(result+"AAAAAAAAAAAAAAAAAAAAAAAAAA");
+						serverResponseLabel.setHTML(result);
 						dialogBox.center();
 						closeButton.setFocus(true);
 					}
