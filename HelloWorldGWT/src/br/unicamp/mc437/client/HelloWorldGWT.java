@@ -253,4 +253,136 @@ public class HelloWorldGWT implements EntryPoint {
 		sendButton.addClickHandler(handler);
 		searchField.addKeyUpHandler(handler);
 	}
+	
+			// parte inserir produto
+		
+		final ListBox subCats	= new ListBox(true);
+		final TextBox productName = new TextBox();
+		RootPanel.get("productName").add(productName);
+		final TextBox productDescription = new TextBox();
+		RootPanel.get("productDescription").add(productDescription);
+		final TextBox productPrice = new TextBox();
+		RootPanel.get("productPrice").add(productPrice);
+		final TextBox productPicture = new TextBox();
+		RootPanel.get("productPicture").add(productPicture);
+		final TextBox productStorage = new TextBox();
+		RootPanel.get("productStorage").add(productStorage);
+		
+		
+		final Button sendProduct = new Button("Send");
+		sendProduct.addStyleName("sendButton");
+		RootPanel.get("productButton").add(sendProduct);
+		
+
+		subCatService.getSubCategorias( new AsyncCallback<ArrayList<HashMap<String, String>>>() {
+			public void onFailure(Throwable caught) {
+				dialogBox.setText("Remote Procedure Call - Failure");
+				serverResponseLabel.addStyleName("serverResponseLabelError");
+				serverResponseLabel.setHTML(SERVER_ERROR);
+				dialogBox.center();
+				closeButton.setFocus(true);
+			}
+
+
+			@Override
+			public void onSuccess(ArrayList<HashMap<String, String>> result) {
+				for(int i=0;i<result.size();i++){
+					HashMap<String, String> hashMap = result.get(i);
+					subCats.addItem(hashMap.get("name")+" ("+hashMap.get("catName")+")", hashMap.get("id"));
+				}
+				RootPanel.get("subCats").add(subCats);		
+			}
+		});
+		
+
+		
+		class HandlerCadastrarProduto implements ClickHandler, KeyUpHandler {
+			/**
+			 * Fired when the user clicks on the sendButton.
+			 */
+			public void onClick(ClickEvent event) {
+				inserirProduto();
+			}
+
+			/**
+			 * Fired when the user types in the searchField.
+			 */
+			public void onKeyUp(KeyUpEvent event) {
+				if (event.getNativeKeyCode() == KeyCodes.KEY_ENTER) {
+					inserirProduto();
+				}
+			}
+
+
+
+
+			
+			private void inserirProduto() {
+				// First, we validate the input.
+				errorLabel.setText("");
+				
+				String productNameStr = productName.getText();
+				sendButton.setEnabled(false);
+		
+				
+				Produto p= new Produto();
+				Administrador admin = new Administrador();
+				//modificar quando tivermos administradores
+				admin.setId(1);
+				p.setAdmin(admin);
+				p.setDeletado(0);
+				p.setDescricao(productDescription.getText());
+				p.setEstoque(Integer.valueOf(productStorage.getText()));
+				p.setId(0);
+				p.setNome(productNameStr);
+				p.setPreco(Double.valueOf(productPrice.getText()));
+				p.setPrecoPromocional(00.00);
+				ArrayList<SubCategoria> subCatsAL = new ArrayList<SubCategoria>();
+		for(int i=0;i<subCats.getItemCount();i++){
+			if(subCats.isItemSelected(i)){
+				SubCategoria subCatObj = new SubCategoria();
+				subCatObj.setId(Integer.valueOf(subCats.getValue(i)));
+				subCatsAL.add(subCatObj);
+			}
+		}
+			
+				p.setSubCat(subCatsAL);
+				
+
+			
+				sendButton.setEnabled(true);
+				
+				
+				
+				// INSERIR INTERFACE DE BUSCA AQUI //
+				
+				inserirProdutoService.inserirProdutoServer(p, new AsyncCallback<String>() {
+					public void onFailure(Throwable caught) {
+						// Show the RPC error message to the user
+						dialogBox.setText("Remote Procedure Call - Failure");
+						serverResponseLabel.addStyleName("serverResponseLabelError");
+						serverResponseLabel.setHTML(SERVER_ERROR);
+						dialogBox.center();
+						closeButton.setFocus(true);
+					}
+
+					public void onSuccess(String result) {
+						dialogBox.setText("Remote Procedure Call");
+						serverResponseLabel.removeStyleName("serverResponseLabelError");
+						serverResponseLabel.setHTML(result);
+						dialogBox.center();
+						closeButton.setFocus(true);
+					}
+				});
+			}
+			
+			
+			
+			
+		}
+		
+		HandlerCadastrarProduto handlerCadastrarProduto = new HandlerCadastrarProduto();
+		sendProduct.addClickHandler(handlerCadastrarProduto);
+
+	}
 }
