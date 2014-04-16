@@ -17,7 +17,7 @@ public class Produto  implements Serializable{
 	private Administrador admin;
 	private int deletado;
 	private ArrayList<SubCategoria> subCat;
-	private String url_imagem;
+	private String url_imagem_unica;
 	
 
 	
@@ -63,11 +63,11 @@ public class Produto  implements Serializable{
 	public void setAdmin(Administrador admin) {
 		this.admin = admin;
 	}
-	public void setUrlImagem(String url) {
-		this.url_imagem = url;
+	public void setUrlImagemUnica(String url) {
+		this.url_imagem_unica = url;
 	}
-	public String getUrlImagem() {
-		return url_imagem;
+	public String getUrlImagemUnica() {
+		return url_imagem_unica;
 	}
 	public int getDeletado() {
 		return deletado;

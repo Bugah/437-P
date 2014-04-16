@@ -71,21 +71,22 @@ public class GreetingServiceImpl extends RemoteServiceServlet implements
 				n.setDescricao(rs.getString("DESCRICAO"));
 				n.setPreco(rs.getDouble("PRECO"));
 				n.setPrecoPromocional(rs.getDouble("PRECO_PROMOCIONAL"));
+				n.setUrlImagemUnica(rs.getString("URL_IMAGEM_UNICA"));
 				
 				resultados.add(n);
 				//resultados[counter].setAdmin(rs.getInt("ID_ADMIN"));
 				// ID ADMIN -> NOME ADMIN ? Verificar
 				
-				rs2 = connection.prepareStatement("SELECT * FROM IMAGENS_PRODUTO pi RIGHT JOIN IMAGEM i ON (pi.ID_IMAGEM=i.ID_IMAGEM) WHERE pi.ID_PRODUTO='"+Integer.toString(n.getId())+"';").executeQuery();
+				/*rs2 = connection.prepareStatement("SELECT * FROM IMAGENS_PRODUTO pi RIGHT JOIN IMAGEM i ON (pi.ID_IMAGEM=i.ID_IMAGEM) WHERE pi.ID_PRODUTO='"+Integer.toString(n.getId())+"';").executeQuery();
 				// FAVOR VERIFICAR A QUERY
 				
 				//html=html+"<table>";
 				while(rs2.next()){
-					n.setUrlImagem(rs2.getString("NOME_ARQUIVO"));
+					n.setUrlImagemUnica(rs2.getString("NOME_ARQUIVO"));
 					break;
 					//imagens_resultados.put(n.getId(), rs2.getString("NOME_ARQUIVO"));
 					//System.out.println(Integer.toString(n.getId())+":"+imagens_resultados.get(n.getId()));
-				}
+				} */
 				//html=html+"</table>";
 				//html=html+"</tr>";
 				counter = counter + 1;

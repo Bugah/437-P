@@ -141,3 +141,36 @@ INSERT INTO PRODUTOS_SUBCATEGORIAS VALUES(3,1,3)
 COMMIT
 ALTER TABLE produtos ADD url_imagem_unica VARCHAR(200) 
 COMMIT
+UPDATE produtos SET url_imagem_unica = 'http://images.tcdn.com.br/img/img_prod/106996/2498_1_20120801140348.jpg' WHERE id_produto = 1
+COMMIT
+UPDATE produtos SET url_imagem_unica = 'http://i.mlcdn.com.br/1500x1500/hipercalorico-nutri-mass-7000-1-5kg-baunilhaintegralmedica-p-ganhar-massa-muscular-203511300.jpg' WHERE id_produto = 2
+COMMIT
+UPDATE produtos SET url_imagem_unica = 'http://www.evolutionsuplementos.com/ecommerce_site/arquivos9758/arquivos/1375385429_1.jpg' WHERE id_produto = 3
+COMMIT
+UPDATE produtos SET url_imagem_unica = 'http://lg.madrugaosuplementos.com.br/media/catalog/product/cache/2/small_image/9df78eab33525d08d6e5fb8d27136e95/m/e/meganitro22dark_1.jpg' WHERE id_produto = 4
+COMMIT
+UPDATE produtos SET url_imagem_unica = 'http://www.miamiaqui.com.br/prdfotos/super-charge-suplemento-alimentar-frutas-_1031.jpg' WHERE id_produto = 5
+COMMIT
+UPDATE produtos SET url_imagem_unica = 'http://hypescience.com/wp-content/uploads/2012/11/26.jpg' WHERE id_produto = 6
+COMMIT
+UPDATE produtos SET url_imagem_unica = 'http://hypescience.com/wp-content/uploads/2012/11/411.jpg' WHERE id_produto = 7
+COMMIT
+UPDATE produtos SET url_imagem_unica = 'http://www.tocadacotia.com/wp-content/gallery/gelo-seco/gelo-1.jpg' WHERE id_produto = 8
+COMMIT
+UPDATE produtos SET url_imagem_unica = 'http://colunistas.ig.com.br/bebidinhas/files/2008/08/agua.jpg' WHERE id_produto = 9
+COMMIT
+UPDATE produtos SET url_imagem_unica = 'http://turbeaucurbeau.files.wordpress.com/2010/12/popeyes-tattoo.jpg' WHERE id_produto = 10
+COMMIT
+UPDATE produtos SET url_imagem_unica = 'http://upload.wikimedia.org/wikipedia/commons/8/87/CocaColaBottle_background_free.jpg' WHERE id_produto = 11
+COMMIT
+UPDATE produtos SET url_imagem_unica = 'http://www.drogariaclassic.com.br/media/catalog/product/cache/1/image/700x700/9df78eab33525d08d6e5fb8d27136e95/m/u/muscle_milk_light.jpg' WHERE id_produto = 12
+COMMIT
+UPDATE produtos SET url_imagem_unica = 'http://lg.madrugaosuplementos.com.br/media/catalog/product/cache/2/small_image/9df78eab33525d08d6e5fb8d27136e95/m/e/meganitro22dark_1.jpg' WHERE id_produto = 13
+COMMIT
+UPDATE produtos SET url_imagem_unica = 'http://www.corpussuplementos.com/ecommerce_site/arquivos7249/arquivos/1354645530_1.jpg' WHERE id_produto = 14
+COMMIT
+UPDATE produtos SET url_imagem_unica = 'http://www.emporionarede.com.br/produtos/978_22172.jpg' WHERE id_produto = 15
+COMMIT
+UPDATE produtos SET url_imagem_unica = 'http://2.bp.blogspot.com/-gFrGa4C9xsY/UJEmqtyWUQI/AAAAAAAAAag/StaR4WemMtY/s1600/NADA.jpg' WHERE id_produto = 16
+COMMIT
+UPDATE produtos SET url_imagem_unica = 'http://midia.folhavitoria.com.br/img/lib/2013/02/guia_boa_forma_suplemento__dd71802dc3.jpg' WHERE id_produto = 17
