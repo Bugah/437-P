@@ -171,10 +171,14 @@ public class HelloWorldGWT implements EntryPoint {
 			private void sendNameToServer() {
 				// First, we validate the input.
 				errorLabel.setText("");
-				String textToServer = searchField.getText();
+				String textToServer = searchField.getText().trim();
 				r.clear();
 				if (!FieldVerifier.isValidName(textToServer)) {
 					errorLabel.setText("Entre com pelo menos 4 caracteres");
+					return;
+				}
+				if ( FieldVerifier.containsSpecial(textToServer) ){
+					errorLabel.setText("Procure sem caracteres especiais");
 					return;
 				}
 				
@@ -389,6 +393,7 @@ public class HelloWorldGWT implements EntryPoint {
 				p.setNome(productNameStr);
 				p.setPreco(Double.valueOf(productPrice.getText()));
 				p.setPrecoPromocional(00.00);
+				p.setUrlImagemUnica(productPicture.getText());
 				ArrayList<SubCategoria> subCatsAL = new ArrayList<SubCategoria>();
 		for(int i=0;i<subCats.getItemCount();i++){
 			if(subCats.isItemSelected(i)){

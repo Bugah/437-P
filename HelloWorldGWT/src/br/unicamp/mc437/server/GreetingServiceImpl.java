@@ -176,7 +176,7 @@ public class GreetingServiceImpl extends RemoteServiceServlet implements
 	
 	
 
-	/**
+	/**s
 	 * Escape an html string. Escaping data received from the client helps to
 	 * prevent cross-site script vulnerabilities.
 	 * 

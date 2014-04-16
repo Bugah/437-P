@@ -39,7 +39,7 @@ public class InserirProdutoImpl extends RemoteServiceServlet implements
 		//	PreparedStatement ps = connection.prepareStatement("insert into user (id, nome)" 
 			//		+ "values ( ?, ?);");
 			
-			PreparedStatement ps = connection.prepareStatement("INSERT INTO PRODUTOS VALUES(?,?,?,?,?,?,?,?)");
+			PreparedStatement ps = connection.prepareStatement("INSERT INTO PRODUTOS VALUES(?,?,?,?,?,?,?,?,?)");
 			ps.setNull(1, 0);
 			ps.setString(2, p.getNome());
 			ps.setString(3, p.getDescricao());
@@ -47,7 +47,8 @@ public class InserirProdutoImpl extends RemoteServiceServlet implements
 			ps.setInt(5,p.getEstoque());
 			ps.setDouble(6, p.getPrecoPromocional());
 			ps.setInt(7, p.getAdmin().getId());
-			ps.setInt(8,p.getDeletado());			
+			ps.setInt(8,p.getDeletado());
+			ps.setString(9, p.getUrlImagemUnica());
 			ps.execute();
 			
 			//Agora vamos encher a tabela Produtos_subCategorias

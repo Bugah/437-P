@@ -43,4 +43,12 @@ public class FieldVerifier {
 		}
 		return name.length() > 3;
 	}
+	public static boolean containsSpecial(String name){
+		int i;
+		for( i = 0; i < name.length(); i++){
+			if((!Character.isLetterOrDigit(name.charAt(i)) && ( name.charAt(i) != ' '))) return true ;
+			
+		}
+		return false;
+	}
 }
