@@ -14,5 +14,5 @@ import br.unicamp.mc437.client.datatypes.Produto;
 public interface GreetingService extends RemoteService {
 //	String greetServer(String name) throws IllegalArgumentException;
 	
-	ArrayList<Produto> greetServer(Produto p, String [][] imagens_resultado) throws IllegalArgumentException;
+	ArrayList<Produto> greetServer(Produto p, String where, String [][] imagens_resultado) throws IllegalArgumentException;
 }

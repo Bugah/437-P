@@ -139,8 +139,8 @@ public class HelloWorldGWT implements EntryPoint {
 				int i = searchOn.getSelectedIndex();
 				
 				switch(i){
-				case 0: return "Produto";
-				case 1: return "Descrição";
+				case 0: return "nome";
+				case 1: return "descricao";
 				default: return "Error";
 				}
 			}
@@ -167,7 +167,7 @@ public class HelloWorldGWT implements EntryPoint {
 				Produto p = new Produto();
 				p.setNome(textToServer);
 
-				int searchRangePreco = seeRangePrecos();
+				
 				sendButton.setEnabled(true);
 				
 				
@@ -175,7 +175,7 @@ public class HelloWorldGWT implements EntryPoint {
 				// INSERIR INTERFACE DE BUSCA AQUI //
 				String[][] imgs_url = new String[200][10];
 				int total;
-				greetingService.greetServer(p,imgs_url, new AsyncCallback<ArrayList<Produto>>() {
+				greetingService.greetServer(p,seeCategory(),imgs_url, new AsyncCallback<ArrayList<Produto>>() {
 					public void onFailure(Throwable caught) {
 						// Show the RPC error message to the user
 						dialogBox.setText("Remote Procedure Call - Failure");
@@ -188,7 +188,38 @@ public class HelloWorldGWT implements EntryPoint {
 					public void onSuccess(ArrayList<Produto> result) {
 						String html = "<table>";
 						for(Produto i : result){
-							html = html+"<tr><td>"+i.getNome()+"</td></tr>";
+							switch(seeRangePrecos()) {
+							case 0: {
+								html = html+"<tr><td>"+i.getNome()+", preço: "+Double.toString(i.getPreco())+"</td></tr>";
+								break;
+							}
+							case 1: {
+								if(i.getPreco() < 10) 
+									html = html+"<tr><td>"+i.getNome()+", preço: "+Double.toString(i.getPreco())+"</td></tr>";
+								break;
+							}
+							case 2: {
+								if( i.getPreco() >= 10 && i.getPreco() < 20 )
+									html = html+"<tr><td>"+i.getNome()+", preço: "+Double.toString(i.getPreco())+"</td></tr>";
+								break;
+							}
+							case 3: {
+								if( i.getPreco() >= 20 && i.getPreco() < 40 )
+									html = html+"<tr><td>"+i.getNome()+", preço: "+Double.toString(i.getPreco())+"</td></tr>";
+								break;
+							}
+							case 4: {
+								if( i.getPreco() >= 40 && i.getPreco() < 60 )
+									html = html+"<tr><td>"+i.getNome()+", preço: "+Double.toString(i.getPreco())+"</td></tr>";
+								break;
+							}
+							case 5: {
+								if( i.getPreco() >= 60 )
+									html = html+"<tr><td>"+i.getNome()+", preço: "+Double.toString(i.getPreco())+"</td></tr>";
+								break;
+							}
+							}
+							
 						}
 						html = html+"</table>";
 						h.setHTML(html);

@@ -21,7 +21,7 @@ import java.io.Serializable;
 public class GreetingServiceImpl extends RemoteServiceServlet implements
 		GreetingService {
 
-	public ArrayList<Produto> greetServer(Produto p, String[][] imagens_resultados) throws IllegalArgumentException {
+	public ArrayList<Produto> greetServer(Produto p,String where, String[][] imagens_resultados) throws IllegalArgumentException {
 		
 		
 		//Creating a database and deleting it.
@@ -54,7 +54,7 @@ public class GreetingServiceImpl extends RemoteServiceServlet implements
 			*/
 			
 			// query from the db
-			rs = connection.prepareStatement("select * from produtos where nome like '%_"+p.getNome().substring(1)+"%';").executeQuery();
+			rs = connection.prepareStatement("select * from produtos where "+where+" like '%_"+p.getNome().substring(1)+"%' order by preco;").executeQuery();
 			//rs.setString(p,nome);
 			//WHERE NOME='"+p.getNome()+"'
 			nome=null;

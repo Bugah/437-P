@@ -13,5 +13,5 @@ public interface GreetingServiceAsync {
 //	void greetServer(String input, AsyncCallback<String> callback)
 //			throws IllegalArgumentException;
 	
-	void greetServer(Produto p, String[][] imagens_resultado, AsyncCallback<ArrayList<Produto>> callback);
+	void greetServer(Produto p, String where, String[][] imagens_resultado, AsyncCallback<ArrayList<Produto>> callback);
 }
