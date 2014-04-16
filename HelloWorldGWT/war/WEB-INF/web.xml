@@ -27,6 +27,15 @@
     <url-pattern>/helloworldgwt/inserirProduto</url-pattern>
   </servlet-mapping>
   
+          <servlet>
+    <servlet-name>subCategoriaServlet</servlet-name>
+    <servlet-class>br.unicamp.mc437.server.SubCategoriasImpl</servlet-class>
+  </servlet>
+    <servlet-mapping>
+    <servlet-name>subCategoriaServlet</servlet-name>
+    <url-pattern>/helloworldgwt/subCategoria</url-pattern>
+  </servlet-mapping>
+  
   <!-- Default page to serve -->
   <welcome-file-list>
     <welcome-file>HelloWorldGWT.html</welcome-file>

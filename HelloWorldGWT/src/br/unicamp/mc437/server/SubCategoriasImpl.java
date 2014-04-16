@@ -2,16 +2,12 @@ package br.unicamp.mc437.server;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
-import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Iterator;
+import java.util.HashMap;
 
-import br.unicamp.mc437.client.GreetingService;
-import br.unicamp.mc437.client.InserirProdutoService;
-import br.unicamp.mc437.client.datatypes.Produto;
-import br.unicamp.mc437.client.datatypes.SubCategoria;
+import br.unicamp.mc437.client.SubCategoriaService;
 
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 
@@ -19,75 +15,10 @@ import com.google.gwt.user.server.rpc.RemoteServiceServlet;
  * The server-side implementation of the RPC service.
  */
 @SuppressWarnings("serial")
-public class InserirProdutoImpl extends RemoteServiceServlet implements
-		InserirProdutoService {
-	
+public class SubCategoriasImpl extends RemoteServiceServlet implements
+		SubCategoriaService {
 
-	
-	public String inserirProdutoServer(Produto p) throws IllegalArgumentException {
-		
-
-		//Creating a database and deleting it.
-		Connection connection = null;
-		ResultSet rs = null;
-		String html = null;
-
-		// making a connection
-		try {
-			Class.forName("org.hsqldb.jdbcDriver");
-			connection = DriverManager.getConnection("jdbc:hsqldb:hsql://localhost/mydb", "sa", ""); 
-		//	PreparedStatement ps = connection.prepareStatement("insert into user (id, nome)" 
-			//		+ "values ( ?, ?);");
-			
-			PreparedStatement ps = connection.prepareStatement("INSERT INTO PRODUTOS VALUES(?,?,?,?,?,?,?,?)");
-			ps.setNull(1, 0);
-			ps.setString(2, p.getNome());
-			ps.setString(3, p.getDescricao());
-			ps.setDouble(4, p.getPreco());
-			ps.setInt(5,p.getEstoque());
-			ps.setDouble(6, p.getPrecoPromocional());
-			ps.setInt(7, p.getAdmin().getId());
-			ps.setInt(8,p.getDeletado());			
-			ps.execute();
-			
-			//Agora vamos encher a tabela Produtos_subCategorias
-			
-			//recuperacao do id do produto, seja o id do ultimo
-			//produto entrado no banco de dado.
-			rs = connection.prepareStatement("select ID_PRODUTO from produtos order by id_produto DESC LIMIT 1;").executeQuery();
-			rs.next();
-			int idProd = rs.getInt(1);
-			
-			
-			ArrayList<SubCategoria> subCats = p.getSubCat();
-			for(int i=0;i<subCats.size();i++){
-				ps = connection.prepareStatement("INSERT INTO PRODUTOS_SUBCATEGORIAS VALUES(?,?,?)");
-				ps.setNull(1, 0);
-				ps.setInt(2, subCats.get(i).getId());
-				ps.setInt(3,idProd);
-				ps.execute();
-			}
-		} catch (SQLException e2) {
-			e2.printStackTrace();
-		} catch (ClassNotFoundException e2) {
-			e2.printStackTrace();
-
-		}
-	
-		String serverInfo = getServletContext().getServerInfo();
-		String userAgent = getThreadLocalRequest().getHeader("User-Agent");
-
-		// Escape data from the client to avoid cross-site script vulnerabilities.
-		
-		userAgent = escapeHtml(userAgent);
-		
-//		return "Produto encontrado: " + name_stored + ".<br><br>I am running " + serverInfo
-//				+ ".<br><br>It looks like you are using:<br>" + userAgent;
-		
-		return html;
-		
-	}
-	
+	public SubCategoriasImpl(){}
 	
 //	public String greetServer(String input) throws IllegalArgumentException {
 //		// Verify that the input is valid. 
@@ -160,4 +91,42 @@ public class InserirProdutoImpl extends RemoteServiceServlet implements
 		return html.replaceAll("&", "&amp;").replaceAll("<", "&lt;")
 				.replaceAll(">", "&gt;");
 	}
+
+@Override
+public ArrayList<HashMap<String,String>> getSubCategorias() throws IllegalArgumentException {
+	Connection connection = null;
+	ResultSet rs = null;
+	String html = null;
+	ArrayList<HashMap<String,String>> arrayList = new ArrayList<HashMap<String,String>>();
+	// making a connection
+	try {
+		Class.forName("org.hsqldb.jdbcDriver");
+		connection = DriverManager.getConnection("jdbc:hsqldb:hsql://localhost/mydb", "sa", ""); 
+	//	PreparedStatement ps = connection.prepareStatement("insert into user (id, nome)" 
+		//		+ "values ( ?, ?);");
+		
+
+		//Agora vamos encher a tabela Produtos_subCategorias
+		
+		//recuperacao do id do produto, seja o id do ultimo
+		//produto entrado no banco de dado.
+		rs = connection.prepareStatement("SELECT SUB_CATEGORIAs.ID_SUB_CATEGORIA as id, SUB_CATEGORIAs.SUBCATEGORIA as nome, CATEGORIAS.ID_CATEGORIA as idCat, CATEGORIAS.CATEGORIA as nomeCat FROM SUB_CATEGORIAs, CATEGORIAS_SUBCATEGORIAS, CATEGORIAS WHERE CATEGORIAS_SUBCATEGORIAS.ID_SUB_CATEGORIA = SUB_CATEGORIAs.ID_SUB_CATEGORIA AND CATEGORIAS_SUBCATEGORIAS.ID_CATEGORIA = CATEGORIAS.ID_CATEGORIA AND SUB_CATEGORIAS.DELETADO=0 ORDER BY nomeCat, nome, id;").executeQuery();
+		while(rs.next()){
+			//html+=rs.getString(1)+ " "+rs.getString(2)+" "+rs.getString(3)+" "+rs.getString(4)+"\n";
+			HashMap<String, String> hashMap = new HashMap<String, String>();
+			hashMap.put("id", rs.getString(1));
+			hashMap.put("name", rs.getString(2));
+			hashMap.put("catName",rs.getString(4));
+			arrayList.add(hashMap);
+		}
+		
+	
+	} catch (SQLException e2) {
+		e2.printStackTrace();
+	} catch (ClassNotFoundException e2) {
+		e2.printStackTrace();
+
+	}
+	return arrayList;
+}
 }
