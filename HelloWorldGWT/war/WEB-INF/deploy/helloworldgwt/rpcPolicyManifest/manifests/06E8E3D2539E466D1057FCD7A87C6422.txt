@@ -1,0 +1,2 @@
+serviceClass: br.unicamp.mc437.client.InserirProdutoService
+path: B5B5FB69B1D51ECAF67ADE4DDF2BDC17.gwt.rpc

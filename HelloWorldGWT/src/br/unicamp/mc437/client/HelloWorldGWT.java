@@ -206,37 +206,37 @@ public class HelloWorldGWT implements EntryPoint {
 							switch(seeRangePrecos()) {
 							case 0: {
 								//html = html+"<tr><td><img src =\""+imgs_url.get(i.getId())+"\" width=\"64\" height=\"64\"></td><td>"+i.getNome()+", preço: "+Double.toString(i.getPreco())+"</td></tr>";
-								html = html+"<tr><td><img src =\""+i.getDescricao()+"\" width=\"64\" height=\"64\"></td><td>"+i.getNome()+", preço: "+Double.toString(i.getPreco())+"</td></tr>";
+								html = html+"<tr><td><img src =\""+i.getUrlImagem()+"\" width=\"64\" height=\"64\"></td><td>"+i.getNome()+", preço: "+Double.toString(i.getPreco())+"</td></tr>";
 								break;
 							}
 							case 1: {
 								if(i.getPreco() < 10) 
 								//	html = html+"<tr><td><img src =\""+imgs_url.get(i.getId())+"\" width=\"64\" height=\"64\"></td><td>"+i.getNome()+", preço: "+Double.toString(i.getPreco())+"</td></tr>";
-								html = html+"<tr><td><img src =\""+i.getDescricao()+"\" width=\"64\" height=\"64\"></td><td>"+i.getNome()+", preço: "+Double.toString(i.getPreco())+"</td></tr>";
+								html = html+"<tr><td><img src =\""+i.getUrlImagem()+"\" width=\"64\" height=\"64\"></td><td>"+i.getNome()+", preço: "+Double.toString(i.getPreco())+"</td></tr>";
 								break;
 							}
 							case 2: {
 								if( i.getPreco() >= 10 && i.getPreco() < 20 )
 								//	html = html+"<tr><td><img src =\""+imgs_url.get(i.getId())+"\" width=\"64\" height=\"64\"></td><td>"+i.getNome()+", preço: "+Double.toString(i.getPreco())+"</td></tr>";
-									html = html+"<tr><td><img src =\""+i.getDescricao()+"\" width=\"64\" height=\"64\"></td><td>"+i.getNome()+", preço: "+Double.toString(i.getPreco())+"</td></tr>";
+									html = html+"<tr><td><img src =\""+i.getUrlImagem()+"\" width=\"64\" height=\"64\"></td><td>"+i.getNome()+", preço: "+Double.toString(i.getPreco())+"</td></tr>";
 								break;
 							}
 							case 3: {
 								if( i.getPreco() >= 20 && i.getPreco() < 40 )
 								//	html = html+"<tr><td><img src =\""+imgs_url.get(i.getId())+"\" width=\"64\" height=\"64\"></td><td>"+i.getNome()+", preço: "+Double.toString(i.getPreco())+"</td></tr>";
-									html = html+"<tr><td><img src =\""+i.getDescricao()+"\" width=\"64\" height=\"64\"></td><td>"+i.getNome()+", preço: "+Double.toString(i.getPreco())+"</td></tr>";
+									html = html+"<tr><td><img src =\""+i.getUrlImagem()+"\" width=\"64\" height=\"64\"></td><td>"+i.getNome()+", preço: "+Double.toString(i.getPreco())+"</td></tr>";
 								break;
 							}
 							case 4: {
 								if( i.getPreco() >= 40 && i.getPreco() < 60 )
 								//	html = html+"<tr><td><img src =\""+imgs_url.get(i.getId())+"\" width=\"64\" height=\"64\"></td><td>"+i.getNome()+", preço: "+Double.toString(i.getPreco())+"</td></tr>";
-									html = html+"<tr><td><img src =\""+i.getDescricao()+"\" width=\"64\" height=\"64\"></td><td>"+i.getNome()+", preço: "+Double.toString(i.getPreco())+"</td></tr>";
+									html = html+"<tr><td><img src =\""+i.getUrlImagem()+"\" width=\"64\" height=\"64\"></td><td>"+i.getNome()+", preço: "+Double.toString(i.getPreco())+"</td></tr>";
 								break;
 							}
 							case 5: {
 								if( i.getPreco() >= 60 )
 									//html = html+"<tr><td><img src =\""+imgs_url.get(i.getId())+"\" width=\"64\" height=\"64\"></td><td>"+i.getNome()+", preço: "+Double.toString(i.getPreco())+"</td></tr>";
-									html = html+"<tr><td><img src =\""+i.getDescricao()+"\" width=\"64\" height=\"64\"></td><td>"+i.getNome()+", preço: "+Double.toString(i.getPreco())+"</td></tr>";
+									html = html+"<tr><td><img src =\""+i.getUrlImagem()+"\" width=\"64\" height=\"64\"></td><td>"+i.getNome()+", preço: "+Double.toString(i.getPreco())+"</td></tr>";
 								break;
 							}
 							}

@@ -68,6 +68,7 @@ public class GreetingServiceImpl extends RemoteServiceServlet implements
 				Produto n = new Produto();
 				n.setId(rs.getInt("ID_PRODUTO"));
 				n.setNome(rs.getString("NOME"));
+				n.setDescricao(rs.getString("DESCRICAO"));
 				n.setPreco(rs.getDouble("PRECO"));
 				n.setPrecoPromocional(rs.getDouble("PRECO_PROMOCIONAL"));
 				
@@ -80,7 +81,8 @@ public class GreetingServiceImpl extends RemoteServiceServlet implements
 				
 				//html=html+"<table>";
 				while(rs2.next()){
-					n.setDescricao(rs2.getString("NOME_ARQUIVO"));
+					n.setUrlImagem(rs2.getString("NOME_ARQUIVO"));
+					break;
 					//imagens_resultados.put(n.getId(), rs2.getString("NOME_ARQUIVO"));
 					//System.out.println(Integer.toString(n.getId())+":"+imagens_resultados.get(n.getId()));
 				}
