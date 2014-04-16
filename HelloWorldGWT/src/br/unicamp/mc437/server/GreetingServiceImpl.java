@@ -2,6 +2,7 @@ package br.unicamp.mc437.server;
 
 import br.unicamp.mc437.client.GreetingService;
 import br.unicamp.mc437.client.datatypes.Produto;
+
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 
@@ -10,6 +11,7 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.io.Serializable;
 
 /**
@@ -19,7 +21,7 @@ import java.io.Serializable;
 public class GreetingServiceImpl extends RemoteServiceServlet implements
 		GreetingService {
 
-	public String greetServer(Produto p) throws IllegalArgumentException {
+	public ArrayList<Produto> greetServer(Produto p, String[][] imagens_resultados) throws IllegalArgumentException {
 		
 		
 		//Creating a database and deleting it.
@@ -27,8 +29,7 @@ public class GreetingServiceImpl extends RemoteServiceServlet implements
 		ResultSet rs = null;
 		ResultSet rs2 = null;
 		String html = null;
-		Produto[] resultados = new Produto[200];
-		String[][] imagens_resultados = new String[200][10];
+		ArrayList<Produto> resultados = new ArrayList<Produto>();
 		/*
 		html="<table>";
 		html=html+"<tr>";
@@ -63,13 +64,13 @@ public class GreetingServiceImpl extends RemoteServiceServlet implements
 				//name_stored = "stored:" + rs.getString("ID");
 				//html=html+"<td>"+ rs.getInt("ID_PRODUTO")+"</td>";
 				//html=html+"<td>"+ rs.getString ("NOME")+"</td>";
-				resultados[counter] = new Produto();
-				resultados[counter].setId(rs.getInt("ID_PRODUTO"));
-				resultados[counter].setNome(rs.getString("NOME"));
-				resultados[counter].setPreco(rs.getDouble("PRECO"));
-				resultados[counter].setPrecoPromocional(rs.getDouble("PRECO_PROMOCIONAL"));
-				resultados[counter].setDescricao(rs.getString("DESCRICAO"));
-				
+				Produto n = new Produto();
+				n.setId(rs.getInt("ID_PRODUTO"));
+				n.setNome(rs.getString("NOME"));
+				n.setPreco(rs.getDouble("PRECO"));
+				n.setPrecoPromocional(rs.getDouble("PRECO_PROMOCIONAL"));
+				n.setDescricao(rs.getString("DESCRICAO"));
+				resultados.add(n);
 				//resultados[counter].setAdmin(rs.getInt("ID_ADMIN"));
 				// ID ADMIN -> NOME ADMIN ? Verificar
 				
@@ -77,9 +78,9 @@ public class GreetingServiceImpl extends RemoteServiceServlet implements
 				// FAVOR VERIFICAR A QUERY
 				
 				//html=html+"<table>";
-				int n = 0;
+				int k = 0;
 				while(rs2.next()){
-					imagens_resultados[counter][n++] = rs2.getString("NOME_ARQUIVO");
+					imagens_resultados[counter][k++] = rs2.getString("NOME_ARQUIVO");
 				}
 				//html=html+"</table>";
 				//html=html+"</tr>";
@@ -107,7 +108,7 @@ public class GreetingServiceImpl extends RemoteServiceServlet implements
 		
 //		return "Produto encontrado: " + name_stored + ".<br><br>I am running " + serverInfo
 //				+ ".<br><br>It looks like you are using:<br>" + userAgent;
-		return "Busca por: "+p.getNome()+" "+Integer.toString(counter)+" Produtos encontrados!!";
+		return resultados;
 		//return html;
 		
 	}
@@ -184,4 +185,6 @@ public class GreetingServiceImpl extends RemoteServiceServlet implements
 		return html.replaceAll("&", "&amp;").replaceAll("<", "&lt;")
 				.replaceAll(">", "&gt;");
 	}
+
+
 }

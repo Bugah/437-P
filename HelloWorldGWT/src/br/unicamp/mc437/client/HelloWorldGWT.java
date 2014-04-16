@@ -4,6 +4,7 @@ import br.unicamp.mc437.client.datatypes.Produto;
 import br.unicamp.mc437.shared.FieldVerifier;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
@@ -78,10 +79,8 @@ public class HelloWorldGWT implements EntryPoint {
 		RootPanel.get("sendButtonContainer").add(sendButton);
 		RootPanel.get("errorLabelContainer").add(errorLabel);
 		
-		ScrollPanel r = new ScrollPanel();
-		HTML h = new HTML();
-		h.setHTML("<a><img src=\"http://irenemerrow.blog.com/files/2014/01/i-have-no-idea-what-im-doing-dog.jpg\"</a>");
-		r.add(h);
+		final ScrollPanel r = new ScrollPanel();
+		final HTML h = new HTML();
 		RootPanel.get("resultsContainer").add(r);
 		// Focus the cursor on the name field when the app loads
 		searchField.setFocus(true);
@@ -156,7 +155,7 @@ public class HelloWorldGWT implements EntryPoint {
 				// First, we validate the input.
 				errorLabel.setText("");
 				String textToServer = searchField.getText();
-				
+				r.clear();
 				if (!FieldVerifier.isValidName(textToServer)) {
 					errorLabel.setText("Entre com pelo menos 4 caracteres");
 					return;
@@ -174,8 +173,9 @@ public class HelloWorldGWT implements EntryPoint {
 				
 				
 				// INSERIR INTERFACE DE BUSCA AQUI //
-				
-				greetingService.greetServer(p, new AsyncCallback<String>() {
+				String[][] imgs_url = new String[200][10];
+				int total;
+				greetingService.greetServer(p,imgs_url, new AsyncCallback<ArrayList<Produto>>() {
 					public void onFailure(Throwable caught) {
 						// Show the RPC error message to the user
 						dialogBox.setText("Remote Procedure Call - Failure");
@@ -185,11 +185,14 @@ public class HelloWorldGWT implements EntryPoint {
 						closeButton.setFocus(true);
 					}
 
-					public void onSuccess(String result) {
-						dialogBox.setText("Remote Procedure Call");
-						serverResponseLabel.removeStyleName("serverResponseLabelError");
-						serverResponseLabel.setHTML(result);
-						dialogBox.center();
+					public void onSuccess(ArrayList<Produto> result) {
+						String html = "<table>";
+						for(Produto i : result){
+							html = html+"<tr><td>"+i.getNome()+"</td></tr>";
+						}
+						html = html+"</table>";
+						h.setHTML(html);
+						r.add(h);
 						closeButton.setFocus(true);
 					}
 				});

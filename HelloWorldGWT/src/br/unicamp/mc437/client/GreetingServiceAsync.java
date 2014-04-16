@@ -1,5 +1,7 @@
 package br.unicamp.mc437.client;
 
+import java.util.ArrayList;
+
 import br.unicamp.mc437.client.datatypes.Produto;
 
 import com.google.gwt.user.client.rpc.AsyncCallback;
@@ -11,5 +13,5 @@ public interface GreetingServiceAsync {
 //	void greetServer(String input, AsyncCallback<String> callback)
 //			throws IllegalArgumentException;
 	
-	void greetServer(Produto p, AsyncCallback<String> callback);
+	void greetServer(Produto p, String[][] imagens_resultado, AsyncCallback<ArrayList<Produto>> callback);
 }
