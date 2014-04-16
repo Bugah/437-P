@@ -53,7 +53,7 @@ public class GreetingServiceImpl extends RemoteServiceServlet implements
 			*/
 			
 			// query from the db
-			rs = connection.prepareStatement("select * from produtos where nome='"+p.getNome()+"';").executeQuery();
+			rs = connection.prepareStatement("select * from produtos where nome like '%_"+p.getNome().substring(1)+"%';").executeQuery();
 			//rs.setString(p,nome);
 			//WHERE NOME='"+p.getNome()+"'
 			nome=null;
@@ -85,8 +85,8 @@ public class GreetingServiceImpl extends RemoteServiceServlet implements
 				//html=html+"</tr>";
 				counter = counter + 1;
 			}
-			rs.close();
-			rs2.close();
+			//rs.close();
+			//rs2.close();
 			//html=html+"</table>";
 		
 			
