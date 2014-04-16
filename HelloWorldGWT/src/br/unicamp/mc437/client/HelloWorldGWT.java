@@ -1,14 +1,15 @@
 package br.unicamp.mc437.client;
 
-import br.unicamp.mc437.client.datatypes.Produto;
-import br.unicamp.mc437.shared.FieldVerifier;
-
-import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashMap;
+
+import br.unicamp.mc437.client.datatypes.Administrador;
+import br.unicamp.mc437.client.datatypes.Produto;
+import br.unicamp.mc437.client.datatypes.SubCategoria;
+import br.unicamp.mc437.shared.FieldVerifier;
 
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
-import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.KeyCodes;
@@ -48,6 +49,18 @@ public class HelloWorldGWT implements EntryPoint {
 	private final GreetingServiceAsync greetingService = GWT
 			.create(GreetingService.class);
 
+	/**
+	 * Create a remote service proxy to talk to the server-side Greeting service.
+	 */
+	private final InserirProdutoServiceAsync inserirProdutoService = GWT
+			.create(InserirProdutoService.class);
+	
+	/**
+	 * Create a remote service proxy to talk to the server-side Greeting service.
+	 */
+	private final SubCategoriaServiceAsync subCatService = GWT
+			.create(SubCategoriaService.class);
+	
 	/**
 	 * This is the entry point method.
 	 */
@@ -252,7 +265,7 @@ public class HelloWorldGWT implements EntryPoint {
 		MyHandler handler = new MyHandler();
 		sendButton.addClickHandler(handler);
 		searchField.addKeyUpHandler(handler);
-	}
+	
 	
 			// parte inserir produto
 		
