@@ -2,6 +2,7 @@ package br.unicamp.mc437.client;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
 
 import br.unicamp.mc437.client.datatypes.Administrador;
 import br.unicamp.mc437.client.datatypes.Produto;
@@ -74,6 +75,8 @@ public class HelloWorldGWT implements EntryPoint {
 		searchOn.addItem("Descrição");
 		final Label errorLabel = new Label();
 		
+		final Map<Integer, String> imgs_url = new HashMap<Integer, String>();
+		
 		final ListBox rangePrecos = new ListBox();	// Item Indexes
 		rangePrecos.addItem("Todos");				//0
 		rangePrecos.addItem("Menor que R$10");		//1
@@ -117,7 +120,8 @@ public class HelloWorldGWT implements EntryPoint {
 		dialogVPanel.setHorizontalAlignment(VerticalPanel.ALIGN_RIGHT);
 		dialogVPanel.add(closeButton);
 		dialogBox.setWidget(dialogVPanel);
-
+		
+		 
 		// Add a handler to close the DialogBox
 		closeButton.addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent event) {
@@ -186,9 +190,8 @@ public class HelloWorldGWT implements EntryPoint {
 				
 				
 				// INSERIR INTERFACE DE BUSCA AQUI //
-				String[][] imgs_url = new String[200][10];
-				int total;
-				greetingService.greetServer(p,seeCategory(),imgs_url, new AsyncCallback<ArrayList<Produto>>() {
+				//int total;
+				greetingService.greetServer(p,seeCategory(), imgs_url, new AsyncCallback<ArrayList<Produto>>() {
 					public void onFailure(Throwable caught) {
 						// Show the RPC error message to the user
 						dialogBox.setText("Remote Procedure Call - Failure");
@@ -197,38 +200,43 @@ public class HelloWorldGWT implements EntryPoint {
 						dialogBox.center();
 						closeButton.setFocus(true);
 					}
-
 					public void onSuccess(ArrayList<Produto> result) {
-						String html = "<table>";
+						String html = "<table>";					
 						for(Produto i : result){
 							switch(seeRangePrecos()) {
 							case 0: {
-								html = html+"<tr><td>"+i.getNome()+", preço: "+Double.toString(i.getPreco())+"</td></tr>";
+								//html = html+"<tr><td><img src =\""+imgs_url.get(i.getId())+"\" width=\"64\" height=\"64\"></td><td>"+i.getNome()+", preço: "+Double.toString(i.getPreco())+"</td></tr>";
+								html = html+"<tr><td><img src =\""+i.getDescricao()+"\" width=\"64\" height=\"64\"></td><td>"+i.getNome()+", preço: "+Double.toString(i.getPreco())+"</td></tr>";
 								break;
 							}
 							case 1: {
 								if(i.getPreco() < 10) 
-									html = html+"<tr><td>"+i.getNome()+", preço: "+Double.toString(i.getPreco())+"</td></tr>";
+								//	html = html+"<tr><td><img src =\""+imgs_url.get(i.getId())+"\" width=\"64\" height=\"64\"></td><td>"+i.getNome()+", preço: "+Double.toString(i.getPreco())+"</td></tr>";
+								html = html+"<tr><td><img src =\""+i.getDescricao()+"\" width=\"64\" height=\"64\"></td><td>"+i.getNome()+", preço: "+Double.toString(i.getPreco())+"</td></tr>";
 								break;
 							}
 							case 2: {
 								if( i.getPreco() >= 10 && i.getPreco() < 20 )
-									html = html+"<tr><td>"+i.getNome()+", preço: "+Double.toString(i.getPreco())+"</td></tr>";
+								//	html = html+"<tr><td><img src =\""+imgs_url.get(i.getId())+"\" width=\"64\" height=\"64\"></td><td>"+i.getNome()+", preço: "+Double.toString(i.getPreco())+"</td></tr>";
+									html = html+"<tr><td><img src =\""+i.getDescricao()+"\" width=\"64\" height=\"64\"></td><td>"+i.getNome()+", preço: "+Double.toString(i.getPreco())+"</td></tr>";
 								break;
 							}
 							case 3: {
 								if( i.getPreco() >= 20 && i.getPreco() < 40 )
-									html = html+"<tr><td>"+i.getNome()+", preço: "+Double.toString(i.getPreco())+"</td></tr>";
+								//	html = html+"<tr><td><img src =\""+imgs_url.get(i.getId())+"\" width=\"64\" height=\"64\"></td><td>"+i.getNome()+", preço: "+Double.toString(i.getPreco())+"</td></tr>";
+									html = html+"<tr><td><img src =\""+i.getDescricao()+"\" width=\"64\" height=\"64\"></td><td>"+i.getNome()+", preço: "+Double.toString(i.getPreco())+"</td></tr>";
 								break;
 							}
 							case 4: {
 								if( i.getPreco() >= 40 && i.getPreco() < 60 )
-									html = html+"<tr><td>"+i.getNome()+", preço: "+Double.toString(i.getPreco())+"</td></tr>";
+								//	html = html+"<tr><td><img src =\""+imgs_url.get(i.getId())+"\" width=\"64\" height=\"64\"></td><td>"+i.getNome()+", preço: "+Double.toString(i.getPreco())+"</td></tr>";
+									html = html+"<tr><td><img src =\""+i.getDescricao()+"\" width=\"64\" height=\"64\"></td><td>"+i.getNome()+", preço: "+Double.toString(i.getPreco())+"</td></tr>";
 								break;
 							}
 							case 5: {
 								if( i.getPreco() >= 60 )
-									html = html+"<tr><td>"+i.getNome()+", preço: "+Double.toString(i.getPreco())+"</td></tr>";
+									//html = html+"<tr><td><img src =\""+imgs_url.get(i.getId())+"\" width=\"64\" height=\"64\"></td><td>"+i.getNome()+", preço: "+Double.toString(i.getPreco())+"</td></tr>";
+									html = html+"<tr><td><img src =\""+i.getDescricao()+"\" width=\"64\" height=\"64\"></td><td>"+i.getNome()+", preço: "+Double.toString(i.getPreco())+"</td></tr>";
 								break;
 							}
 							}

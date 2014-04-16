@@ -67,8 +67,8 @@ CREATE TABLE IF NOT EXISTS compras_produtos (
 CREATE TABLE IF NOT EXISTS imagem (
   id_imagem integer IDENTITY,
   nome_arquivo varchar(200) NOT NULL,
-  titulo date DEFAULT NULL,
-  descricao integer DEFAULT NULL,
+  titulo varchar(255) DEFAULT NULL,
+  descricao varchar(255) DEFAULT NULL,
   deletado integer DEFAULT 0 NOT NULL
 ) ;
 

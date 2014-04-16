@@ -1,0 +1,2 @@
+serviceClass: br.unicamp.mc437.client.SubCategoriaService
+path: 06F98852D3467DBCCBBDFB7383D821F8.gwt.rpc

@@ -12,6 +12,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Map;
 import java.io.Serializable;
 
 /**
@@ -21,7 +22,7 @@ import java.io.Serializable;
 public class GreetingServiceImpl extends RemoteServiceServlet implements
 		GreetingService {
 
-	public ArrayList<Produto> greetServer(Produto p,String where, String[][] imagens_resultados) throws IllegalArgumentException {
+	public ArrayList<Produto> greetServer(Produto p,String where, Map<Integer, String> imagens_resultados) throws IllegalArgumentException {
 		
 		
 		//Creating a database and deleting it.
@@ -69,18 +70,19 @@ public class GreetingServiceImpl extends RemoteServiceServlet implements
 				n.setNome(rs.getString("NOME"));
 				n.setPreco(rs.getDouble("PRECO"));
 				n.setPrecoPromocional(rs.getDouble("PRECO_PROMOCIONAL"));
-				n.setDescricao(rs.getString("DESCRICAO"));
+				
 				resultados.add(n);
 				//resultados[counter].setAdmin(rs.getInt("ID_ADMIN"));
 				// ID ADMIN -> NOME ADMIN ? Verificar
 				
-				rs2 = connection.prepareStatement("SELECT * FROM IMAGENS_PRODUTO pi RIGHT JOIN IMAGEM i ON (pi.ID_IMAGEM=i.ID_IMAGEM) WHERE pi.ID_PRODUTO='"+Integer.toString(p.getId())+"';").executeQuery();
+				rs2 = connection.prepareStatement("SELECT * FROM IMAGENS_PRODUTO pi RIGHT JOIN IMAGEM i ON (pi.ID_IMAGEM=i.ID_IMAGEM) WHERE pi.ID_PRODUTO='"+Integer.toString(n.getId())+"';").executeQuery();
 				// FAVOR VERIFICAR A QUERY
 				
 				//html=html+"<table>";
-				int k = 0;
 				while(rs2.next()){
-					imagens_resultados[counter][k++] = rs2.getString("NOME_ARQUIVO");
+					n.setDescricao(rs2.getString("NOME_ARQUIVO"));
+					//imagens_resultados.put(n.getId(), rs2.getString("NOME_ARQUIVO"));
+					//System.out.println(Integer.toString(n.getId())+":"+imagens_resultados.get(n.getId()));
 				}
 				//html=html+"</table>";
 				//html=html+"</tr>";

@@ -1,0 +1,2 @@
+serviceClass: br.unicamp.mc437.client.GreetingService
+path: 02AEE0D4E01FD8971D02476D862DB9D3.gwt.rpc
