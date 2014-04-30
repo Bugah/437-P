@@ -8,7 +8,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Iterator;
 
-import br.unicamp.mc437.client.GreetingService;
+import br.unicamp.mc437.client.BuscarProdutoService;
 import br.unicamp.mc437.client.InserirProdutoService;
 import br.unicamp.mc437.client.datatypes.Produto;
 import br.unicamp.mc437.client.datatypes.SubCategoria;

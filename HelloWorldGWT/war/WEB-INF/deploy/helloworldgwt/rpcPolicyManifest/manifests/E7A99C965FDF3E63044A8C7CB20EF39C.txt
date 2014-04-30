@@ -1,0 +1,2 @@
+serviceClass: br.unicamp.mc437.client.BuscarProdutoService
+path: A3F9AFD1CB366C94C975AEDE7EE44647.gwt.rpc

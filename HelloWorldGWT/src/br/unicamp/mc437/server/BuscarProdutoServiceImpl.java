@@ -1,6 +1,6 @@
 package br.unicamp.mc437.server;
 
-import br.unicamp.mc437.client.GreetingService;
+import br.unicamp.mc437.client.BuscarProdutoService;
 import br.unicamp.mc437.client.datatypes.Produto;
 
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
@@ -19,8 +19,8 @@ import java.io.Serializable;
  * The server-side implementation of the RPC service.
  */
 @SuppressWarnings("serial")
-public class GreetingServiceImpl extends RemoteServiceServlet implements
-		GreetingService {
+public class BuscarProdutoServiceImpl extends RemoteServiceServlet implements
+		BuscarProdutoService {
 
 	public ArrayList<Produto> greetServer(Produto p,String where, Map<Integer, String> imagens_resultados) throws IllegalArgumentException {
 		

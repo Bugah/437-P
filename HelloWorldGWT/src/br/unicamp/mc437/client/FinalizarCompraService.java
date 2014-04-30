@@ -11,9 +11,8 @@ import br.unicamp.mc437.client.datatypes.Produto;
 /**
  * The client-side stub for the RPC service.
  */
-@RemoteServiceRelativePath("greet")
-public interface GreetingService extends RemoteService {
-//	String greetServer(String name) throws IllegalArgumentException;
+@RemoteServiceRelativePath("finalizarCompra")
+public interface FinalizarCompraService extends RemoteService {
 	
-	ArrayList<Produto> greetServer(Produto p, String where, Map<Integer, String> imagens_resultado) throws IllegalArgumentException;
+	Boolean finalizarCompra() throws IllegalArgumentException;
 }
