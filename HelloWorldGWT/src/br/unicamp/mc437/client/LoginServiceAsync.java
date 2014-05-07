@@ -10,6 +10,6 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
  */
 public interface LoginServiceAsync {
 	
-	void loginAdmin(AsyncCallback<Administrador> callback);
-	void loginClient(AsyncCallback<Cliente> callback);
+	void loginAdmin(String noem, String senha, AsyncCallback<Administrador> callback);
+	void loginCliente(AsyncCallback<Cliente> callback);
 }

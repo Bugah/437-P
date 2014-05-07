@@ -11,7 +11,6 @@ import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
  */
 @RemoteServiceRelativePath("subCategoria")
 public interface SubCategoriaService extends RemoteService {
-//	String greetServer(String name) throws IllegalArgumentException;
 	
 	ArrayList<HashMap<String, String>> getSubCategorias() throws IllegalArgumentException;
 }

@@ -59,6 +59,24 @@ public class NutriNet implements EntryPoint {
 			.create(SubCategoriaService.class);
 	
 	/**
+	 * Create a remote service proxy to talk to the server-side Greeting service.
+	 */
+	private final LoginServiceAsync loginService = GWT
+			.create(LoginService.class);
+	
+	/**
+	 * Create a remote service proxy to talk to the server-side Greeting service.
+	 */
+	private final AdicionarAoCarrinhoServiceAsync aacService = GWT
+			.create(AdicionarAoCarrinhoService.class);
+	
+	/**
+	 * Create a remote service proxy to talk to the server-side Greeting service.
+	 */
+	private final FinalizarCompraServiceAsync finalizarCompraService = GWT
+			.create(FinalizarCompraService.class);
+	
+	/**
 	 * This is the entry point method.
 	 */
 	public void onModuleLoad() {
@@ -248,55 +266,6 @@ public class NutriNet implements EntryPoint {
 						closeButton.setFocus(true);
 					}
 				});
-				
-				
-				
-//this is the old call changing to the new one				
-//				greetingService.greetServer(textToServer,
-//						new AsyncCallback<String>() {
-//							public void onFailure(Throwable caught) {
-//								// Show the RPC error message to the user
-//								dialogBox
-//										.setText("Remote Procedure Call - Failure");
-//								serverResponseLabel
-//										.addStyleName("serverResponseLabelError");
-//								serverResponseLabel.setHTML(SERVER_ERROR);
-//								dialogBox.center();
-//								closeButton.setFocus(true);
-//							}
-//
-//							public void onSuccess(String result) {
-//								dialogBox.setText("Remote Procedure Call");
-//								serverResponseLabel
-//										.removeStyleName("serverResponseLabelError");
-//								serverResponseLabel.setHTML(result);
-//								dialogBox.center();
-//								closeButton.setFocus(true);
-//							}
-//						});
-				/* creating a student and sending it to the network */
-	/*			Student student = new Student();
-				student.setId(1);
-				student.setName(textToServer);
-				greetingService.greetServer(student, 
-						new AsyncCallback<String>() {
-					public void onFailure(Throwable caught) {
-						// Show the RPC error message to the user
-						dialogBox.setText("Remote Procedure Call - Failure");
-						serverResponseLabel.addStyleName("serverResponseLabelError");
-						serverResponseLabel.setHTML(SERVER_ERROR);
-						dialogBox.center();
-						closeButton.setFocus(true);
-					}
-
-					public void onSuccess(String result) {
-						dialogBox.setText("Remote Procedure Call");
-						serverResponseLabel.removeStyleName("serverResponseLabelError");
-						serverResponseLabel.setHTML(result);
-						dialogBox.center();
-						closeButton.setFocus(true);
-					}
-						});*/
 			}
 		}
 
@@ -306,7 +275,7 @@ public class NutriNet implements EntryPoint {
 		searchField.addKeyUpHandler(handler);
 	
 	
-			// parte inserir produto
+		// parte inserir produto
 		
 		final ListBox subCats	= new ListBox(true);
 		final TextBox productName = new TextBox();

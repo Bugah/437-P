@@ -36,8 +36,6 @@ public class InserirProdutoImpl extends RemoteServiceServlet implements
 		try {
 			Class.forName("org.hsqldb.jdbcDriver");
 			connection = DriverManager.getConnection("jdbc:hsqldb:hsql://localhost/mydb", "sa", ""); 
-		//	PreparedStatement ps = connection.prepareStatement("insert into user (id, nome)" 
-			//		+ "values ( ?, ?);");
 			
 			PreparedStatement ps = connection.prepareStatement("INSERT INTO PRODUTOS VALUES(?,?,?,?,?,?,?,?,?)");
 			ps.setNull(1, 0);
@@ -78,73 +76,12 @@ public class InserirProdutoImpl extends RemoteServiceServlet implements
 		String serverInfo = getServletContext().getServerInfo();
 		String userAgent = getThreadLocalRequest().getHeader("User-Agent");
 
-		// Escape data from the client to avoid cross-site script vulnerabilities.
-		
+		// Escape data from the client to avoid cross-site script vulnerabilities		
 		userAgent = escapeHtml(userAgent);
-		
-//		return "Produto encontrado: " + name_stored + ".<br><br>I am running " + serverInfo
-//				+ ".<br><br>It looks like you are using:<br>" + userAgent;
-		
+				
 		return html;
 		
 	}
-	
-	
-//	public String greetServer(String input) throws IllegalArgumentException {
-//		// Verify that the input is valid. 
-//		if (!FieldVerifier.isValidName(input)) {
-//			// If the input is not valid, throw an IllegalArgumentException back to
-//			// the client.
-//			throw new IllegalArgumentException(
-//					"Name must be at least 4 characters long");
-//		}
-//		
-//		//Creating a database and deleting it.
-//		Connection connection = null;
-//		ResultSet rs = null;
-//		
-//		String name_stored = input;
-//		// making a connection
-//		try {
-//			Class.forName("org.hsqldb.jdbcDriver");
-//			connection = DriverManager.getConnection("jdbc:hsqldb:hsql://localhost/mydb", "sa", ""); // can through sql exception
-//			
-//			//drops the table if exists, and create the schema
-//			//put this on ant file when it starts the database...
-//			connection.prepareStatement("drop table user if exists;").execute();
-//			connection.prepareStatement("create table user (id integer, nome varchar(20) not null);").execute();
-//			
-//			PreparedStatement ps = connection.prepareStatement("insert into user (id, nome)" 
-//					+ "values ( ?, ?);");
-//			ps.setInt(1, 1);
-//			ps.setString(2, name_stored);
-//			ps.execute();
-//			
-//			// query from the db
-//			rs = connection.prepareStatement("select id, nome from user;").executeQuery();
-//			rs.next();
-//			System.out.println(String.format("ID: %1d, Nome: %1s", rs.getInt(1), rs.getString(2)));
-//			name_stored = rs.getString(2);
-//			rs.close();
-//			
-//		} catch (SQLException e2) {
-//			e2.printStackTrace();
-//		} catch (ClassNotFoundException e2) {
-//			e2.printStackTrace();
-//		}
-//	
-//		String serverInfo = getServletContext().getServerInfo();
-//		String userAgent = getThreadLocalRequest().getHeader("User-Agent");
-//
-//		// Escape data from the client to avoid cross-site script vulnerabilities.
-//		input = escapeHtml(input);
-//		userAgent = escapeHtml(userAgent);
-//		
-//		return "Congrats!!, " + name_stored + "! I stored your name and deleted it <br><br>I am running " + serverInfo
-//				+ ".<br><br>It looks like you are using:<br>" + userAgent;
-//		
-//	}
-	
 	
 
 	/**

@@ -12,6 +12,6 @@ import br.unicamp.mc437.client.datatypes.Cliente;
 @RemoteServiceRelativePath("login")
 public interface LoginService extends RemoteService {
 	
-	Administrador loginAdmin() throws IllegalArgumentException;
-	Cliente loginClient() throws IllegalArgumentException;
+	Administrador loginAdmin(String nome, String senha) throws IllegalArgumentException;
+	Cliente loginCliente() throws IllegalArgumentException;
 }
