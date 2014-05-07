@@ -1,0 +1,2 @@
+serviceClass: br.unicamp.mc437.client.Usuario
+path: CB3C49D73CF8B15DD9AB57BDDF112FAA.gwt.rpc

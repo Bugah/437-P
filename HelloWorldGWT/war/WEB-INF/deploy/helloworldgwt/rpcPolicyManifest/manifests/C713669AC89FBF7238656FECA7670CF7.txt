@@ -1,0 +1,2 @@
+serviceClass: br.unicamp.mc437.client.CarrinhoCompras
+path: ECE41B13D9CCF4F07AC150086736280A.gwt.rpc
