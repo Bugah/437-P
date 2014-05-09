@@ -63,6 +63,12 @@ public class HelloWorldGWT implements EntryPoint {
 			.create(SubCategoriaService.class);
 	
 	/**
+	 * Create a remote service proxy to talk to the server-side Greeting service.
+	 */
+	private final LoginServiceAsync loginService = GWT
+			.create(LoginService.class);
+	
+	/**
 	 * This is the entry point method.
 	 */
 	public void onModuleLoad() {

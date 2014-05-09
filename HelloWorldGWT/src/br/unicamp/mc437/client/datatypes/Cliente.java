@@ -17,6 +17,7 @@ public class Cliente  implements Serializable {
 	private String cidade;
 	private String estado;
 	private String telefone;
+	private String username;
 	public int getId() {
 		return id;
 	}
@@ -70,6 +71,12 @@ public class Cliente  implements Serializable {
 	}
 	public void setTelefone(String telefone) {
 		this.telefone = telefone;
+	}
+	public String getUsername() {
+		return username;
+	}
+	public void setUsername(String username) {
+		this.username = username;
 	}
 
 }
