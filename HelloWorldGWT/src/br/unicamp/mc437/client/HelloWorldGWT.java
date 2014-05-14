@@ -72,7 +72,7 @@ public class HelloWorldGWT implements EntryPoint {
 	 * This is the entry point method.
 	 */
 	public void onModuleLoad() {
-		final Button sendButton = new Button("Send");
+		final Button sendButton = new Button("Buscar");
 		final TextBox searchField = new TextBox();
 		searchField.setText("Digite sua busca aqui...");
 		
@@ -259,54 +259,6 @@ public class HelloWorldGWT implements EntryPoint {
 					}
 				});
 				
-				
-				
-//this is the old call changing to the new one				
-//				greetingService.greetServer(textToServer,
-//						new AsyncCallback<String>() {
-//							public void onFailure(Throwable caught) {
-//								// Show the RPC error message to the user
-//								dialogBox
-//										.setText("Remote Procedure Call - Failure");
-//								serverResponseLabel
-//										.addStyleName("serverResponseLabelError");
-//								serverResponseLabel.setHTML(SERVER_ERROR);
-//								dialogBox.center();
-//								closeButton.setFocus(true);
-//							}
-//
-//							public void onSuccess(String result) {
-//								dialogBox.setText("Remote Procedure Call");
-//								serverResponseLabel
-//										.removeStyleName("serverResponseLabelError");
-//								serverResponseLabel.setHTML(result);
-//								dialogBox.center();
-//								closeButton.setFocus(true);
-//							}
-//						});
-				/* creating a student and sending it to the network */
-	/*			Student student = new Student();
-				student.setId(1);
-				student.setName(textToServer);
-				greetingService.greetServer(student, 
-						new AsyncCallback<String>() {
-					public void onFailure(Throwable caught) {
-						// Show the RPC error message to the user
-						dialogBox.setText("Remote Procedure Call - Failure");
-						serverResponseLabel.addStyleName("serverResponseLabelError");
-						serverResponseLabel.setHTML(SERVER_ERROR);
-						dialogBox.center();
-						closeButton.setFocus(true);
-					}
-
-					public void onSuccess(String result) {
-						dialogBox.setText("Remote Procedure Call");
-						serverResponseLabel.removeStyleName("serverResponseLabelError");
-						serverResponseLabel.setHTML(result);
-						dialogBox.center();
-						closeButton.setFocus(true);
-					}
-						});*/
 			}
 		}
 
@@ -316,7 +268,7 @@ public class HelloWorldGWT implements EntryPoint {
 		searchField.addKeyUpHandler(handler);
 	
 	
-			// parte inserir produto
+		// parte inserir produto
 		
 		final ListBox subCats	= new ListBox(true);
 		final TextBox productName = new TextBox();
@@ -331,7 +283,7 @@ public class HelloWorldGWT implements EntryPoint {
 		RootPanel.get("productStorage").add(productStorage);
 		
 		
-		final Button sendProduct = new Button("Send");
+		final Button sendProduct = new Button("Cadastrar");
 		sendProduct.addStyleName("sendButton");
 		RootPanel.get("productButton").add(sendProduct);
 		
@@ -417,8 +369,7 @@ public class HelloWorldGWT implements EntryPoint {
 				
 				
 				
-				// INSERIR INTERFACE DE BUSCA AQUI //
-				
+				// INSERIR INTERFACE DE BUSCA AQUI //				
 				inserirProdutoService.inserirProdutoServer(p, new AsyncCallback<String>() {
 					public void onFailure(Throwable caught) {
 						// Show the RPC error message to the user
@@ -446,6 +397,66 @@ public class HelloWorldGWT implements EntryPoint {
 		
 		HandlerCadastrarProduto handlerCadastrarProduto = new HandlerCadastrarProduto();
 		sendProduct.addClickHandler(handlerCadastrarProduto);
+		
+		
+		//parte login
+		final TextBox loginUsername = new TextBox();
+		RootPanel.get("loginUsername").add(loginUsername);
+		loginUsername.setText("Nome de usuário");
+		final TextBox loginSenha = new TextBox();
+		RootPanel.get("loginSenha").add(loginSenha);
+		loginSenha.setText("Senha");
+		
+		final Button loginButton = new Button("Entrar");
+		loginButton.addStyleName("loginButton");
+		RootPanel.get("loginButton").add(loginButton);
 
+		class HandlerLogin implements ClickHandler, KeyUpHandler {
+			/**
+			 * Fired when the user clicks on the loginButton.
+			 */
+			public void onClick(ClickEvent event) {
+				login();
+			}
+
+			/**
+			 * Fired when the user types in the loginSenha.
+			 */
+			public void onKeyUp(KeyUpEvent event) {
+				if (event.getNativeKeyCode() == KeyCodes.KEY_ENTER) {
+					login();
+				}
+			}
+			
+			private void login() {
+				// First, we validate the input.
+				errorLabel.setText("");
+				
+				String productNameStr = productName.getText();
+				loginButton.setEnabled(true);				
+				
+				// INSERIR INTERFACE DE BUSCA AQUI //				
+				loginService.loginCliente(loginUsername.getText(),loginSenha.getText(),new AsyncCallback<Boolean>() {
+					public void onFailure(Throwable caught) {
+						// Show the RPC error message to the user
+						dialogBox.setText("Remote Procedure Call - Failure");
+						serverResponseLabel.addStyleName("serverResponseLabelError");
+						serverResponseLabel.setHTML(SERVER_ERROR);
+						dialogBox.center();
+						closeButton.setFocus(true);
+					}
+
+					public void onSuccess(Boolean ok) {
+						dialogBox.setText("Remote Procedure Call");
+						serverResponseLabel.removeStyleName("serverResponseLabelError");
+						serverResponseLabel.setHTML("Você está logado no sistema!");
+						dialogBox.center();
+						closeButton.setFocus(true);
+					}
+				});
+			}
+		}
+		HandlerLogin handlerLogin = new HandlerLogin();
+		loginButton.addClickHandler(handlerLogin);
 	}
 }

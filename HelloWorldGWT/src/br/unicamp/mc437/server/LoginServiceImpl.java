@@ -1,42 +1,120 @@
 package br.unicamp.mc437.server;
 
-import br.unicamp.mc437.client.LoginService;
-import br.unicamp.mc437.client.datatypes.Administrador;
-import br.unicamp.mc437.client.datatypes.Cliente;
-import br.unicamp.mc437.client.datatypes.Produto;
-
-import com.google.gwt.user.server.rpc.RemoteServiceServlet;
-import com.google.gwt.user.client.rpc.AsyncCallback;
-
 import java.sql.Connection;
 import java.sql.DriverManager;
-import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.Map;
-import java.io.Serializable;
 
-/**
- * The server-side implementation of the RPC service.
- */
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+
+import br.unicamp.mc437.client.LoginService;
+import br.unicamp.mc437.client.datatypes.Cliente;
+import br.unicamp.mc437.client.datatypes.Administrador;
+
+import com.google.gwt.user.server.rpc.RemoteServiceServlet;
+import com.sun.xml.internal.bind.v2.TODO;
+
 @SuppressWarnings("serial")
-public class LoginServiceImpl extends RemoteServiceServlet implements
-		LoginService {
+public class LoginServiceImpl  extends RemoteServiceServlet implements LoginService{
+	
+	private static final long serialVersionUID = 4456105400553118785L;
+	
+	private Cliente loggedclient = null;
+	private Administrador loggedadmin = null;
 
-	public Administrador loginAdmin(String nome, String senha) throws IllegalArgumentException {
+	@Override
+	public boolean fazerCadastro(String nome, String username, int cpf,
+			String senha) {
+		//Implementar
+		return false;
+	}
+
+	@Override
+	public boolean loginCliente(String username, String senha) {
+		
+		Cliente client = checkPasswordClient(username, senha);
+		
+		if(client != null){
+			HttpServletRequest httpServletRequest = getThreadLocalRequest();
+		    HttpSession session = httpServletRequest.getSession(true);
+		    session.setAttribute("user", client);
+		    
+		    loggedadmin=null;
+		    loggedclient=client;
+		    return true;
+		}
+		else{
+			
+			loggedclient=null;
+			return false;
+		}
+	}
+	
+	@Override
+	public boolean loginAdministrador(String username, String senha) {
+		
+		Administrador admin = checkPasswordAdmin(username, senha);
+		
+		if(admin != null){
+			HttpServletRequest httpServletRequest = getThreadLocalRequest();
+		    HttpSession session = httpServletRequest.getSession(true);
+		    session.setAttribute("user", admin);
+		    
+		    loggedadmin=admin;
+		    loggedclient=null;
+		    return true;
+		}
+		else{
+			
+			loggedadmin=null;
+			return false;		
+		}
+		
+	}
+
+
+	@Override
+	public boolean logoff() {
+		
+		HttpServletRequest httpServletRequest = getThreadLocalRequest();
+	    HttpSession session = httpServletRequest.getSession(true);
+	    session.removeAttribute("user");
+		
+	    loggedadmin=null;
+	    loggedclient=null;
+		return true;
+	}
+	
+	@Override
+	public Cliente getUserOn(){
+		//HttpServletRequest httpServletRequest = getThreadLocalRequest();
+	    //HttpSession session = httpServletRequest.getSession(true);
+	    
+	    //return (Cliente) session.getAttribute("user");
+		return loggedclient;
+	}
+	
+	@Override
+	public Administrador getAdminOn(){
+		//HttpServletRequest httpServletRequest = getThreadLocalRequest();
+	    //HttpSession session = httpServletRequest.getSession(true);
+	    
+	    //return (Cliente) session.getAttribute("user");
+		return loggedadmin;
+	}
+	
+	private Administrador checkPasswordAdmin(String nome, String senha) throws IllegalArgumentException {
 		
 		Connection connection = null;
 		ResultSet rs = null;
-		String html = null;
 		int counter = 0;
 		Administrador adm = new Administrador();
 		
 		// making a connection
 		try {
 			Class.forName("org.hsqldb.jdbcDriver");
-			connection = DriverManager.getConnection("jdbc:hsqldb:hsql://localhost/mydb", "sa", ""); 
-			html=html+"<tr>";
+			connection = DriverManager.getConnection("jdbc:hsqldb:hsql://localhost/mydb", "sa", "");
 			
 			// query from the db
 			rs = connection.prepareStatement("select * from ADMINISTRADOR where NOME_ADM='"+nome+"' AND SENHA_ADM='"+senha+"';").executeQuery();
@@ -57,12 +135,6 @@ public class LoginServiceImpl extends RemoteServiceServlet implements
 			e2.printStackTrace();
 			System.out.println("ERROOOOOOOOOOOOORR");
 		}
-	
-		String serverInfo = getServletContext().getServerInfo();
-		String userAgent = getThreadLocalRequest().getHeader("User-Agent");
-
-		// Escape data from the client to avoid cross-site script vulnerabilities.		
-		userAgent = escapeHtml(userAgent);
 		
 		if(counter == 1)
 			return adm;
@@ -70,19 +142,17 @@ public class LoginServiceImpl extends RemoteServiceServlet implements
 			return null;
 	}
 	
-public Cliente loginCliente(String nome, String senha) throws IllegalArgumentException {
+	public Cliente checkPasswordClient(String nome, String senha) throws IllegalArgumentException {
 		
 		Connection connection = null;
 		ResultSet rs = null;
-		String html = null;
 		int counter = 0;
 		Cliente cli = new Cliente();
 		
 		// making a connection
 		try {
 			Class.forName("org.hsqldb.jdbcDriver");
-			connection = DriverManager.getConnection("jdbc:hsqldb:hsql://localhost/mydb", "sa", ""); 
-			html=html+"<tr>";
+			connection = DriverManager.getConnection("jdbc:hsqldb:hsql://localhost/mydb", "sa", "");
 			
 			// query from the db
 			rs = connection.prepareStatement("select * from CLIENTES where USERNAME='"+nome+"' AND SENHA='"+senha+"';").executeQuery();
@@ -109,32 +179,11 @@ public Cliente loginCliente(String nome, String senha) throws IllegalArgumentExc
 			e2.printStackTrace();
 			System.out.println("ERROOOOOOOOOOOOORR");
 		}
-	
-		String serverInfo = getServletContext().getServerInfo();
-		String userAgent = getThreadLocalRequest().getHeader("User-Agent");
 
-		// Escape data from the client to avoid cross-site script vulnerabilities.		
-		userAgent = escapeHtml(userAgent);
-		
 		if(counter == 1)
 			return cli;
 		else
 			return null;
-	}
-	
-	/**s
-	 * Escape an html string. Escaping data received from the client helps to
-	 * prevent cross-site script vulnerabilities.
-	 * 
-	 * @param html the html string to escape
-	 * @return the escaped string
-	 */
-	private String escapeHtml(String html) {
-		if (html == null) {
-			return null;
-		}
-		return html.replaceAll("&", "&amp;").replaceAll("<", "&lt;")
-				.replaceAll(">", "&gt;");
 	}
 
 

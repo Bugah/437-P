@@ -1,0 +1,2 @@
+serviceClass: br.unicamp.mc437.client.LoginService
+path: C24A0EB2FA4A62FF81EA1E51BDC2E5FF.gwt.rpc

@@ -1,17 +1,22 @@
 package br.unicamp.mc437.client;
 
+import br.unicamp.mc437.client.datatypes.Cliente;
+import br.unicamp.mc437.client.datatypes.Administrador;
+
 import com.google.gwt.user.client.rpc.RemoteService;
 import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
 
-import br.unicamp.mc437.client.datatypes.Administrador;
-import br.unicamp.mc437.client.datatypes.Cliente;
-
-/**
- * The client-side stub for the RPC service.
- */
-@RemoteServiceRelativePath("login")
-public interface LoginService extends RemoteService {
+@RemoteServiceRelativePath("usuario")
+public interface LoginService extends RemoteService{
 	
-	Administrador loginAdmin(String nome, String senha) throws IllegalArgumentException;
-	Cliente loginCliente(String nome, String senha) throws IllegalArgumentException;
+	boolean fazerCadastro(String nome, String username, int cpf, String senha);
+	
+	boolean loginCliente(String username, String senha);
+	boolean loginAdministrador(String username, String senha);
+	
+	boolean logoff();
+
+	Cliente getUserOn();
+	Administrador getAdminOn();
+
 }
