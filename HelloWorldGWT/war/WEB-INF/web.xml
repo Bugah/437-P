@@ -18,6 +18,15 @@
     <url-pattern>/helloworldgwt/greet</url-pattern>
   </servlet-mapping>
 
+  <servlet>
+    <servlet-name>carrinhoCompras</servlet-name>
+    <servlet-class>br.unicamp.mc437.server.CarrinhoComprasImpl</servlet-class>
+  </servlet>
+  
+  <servlet-mapping>
+    <servlet-name>carrinhoCompras</servlet-name>
+    <url-pattern>/helloworldgwt/carrinhoCompras</url-pattern>
+  </servlet-mapping>
       <servlet>
     <servlet-name>inserirProdutoServlet</servlet-name>
     <servlet-class>br.unicamp.mc437.server.InserirProdutoImpl</servlet-class>

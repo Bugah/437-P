@@ -2,30 +2,38 @@ package br.unicamp.mc437.client;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import br.unicamp.mc437.client.datatypes.Administrador;
+import br.unicamp.mc437.client.datatypes.CarrinhoComprasElemento;
 import br.unicamp.mc437.client.datatypes.Produto;
 import br.unicamp.mc437.client.datatypes.SubCategoria;
 import br.unicamp.mc437.shared.FieldVerifier;
 
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.dom.client.Document;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.KeyCodes;
 import com.google.gwt.event.dom.client.KeyUpEvent;
 import com.google.gwt.event.dom.client.KeyUpHandler;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.DialogBox;
+import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.HTML;
+import com.google.gwt.user.client.ui.HTMLTable.Cell;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.ScrollPanel;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
+import com.google.gwt.dom.client.Element;
+import com.ibm.icu.impl.Assert;
 
 /**
  * @author ©2014 gustavo waku - MC437 example
@@ -68,10 +76,24 @@ public class HelloWorldGWT implements EntryPoint {
 	private final LoginServiceAsync loginService = GWT
 			.create(LoginService.class);
 	
+	private final CarrinhoComprasAsync carrinhoCompras = GWT
+			.create(CarrinhoCompras.class);
+	
+	/** Quantidade default de Produtos no carrinho*/
+	private Integer quant = 0;
+	
+	private List<Produto> slotProd = null;
+	
 	/**
 	 * This is the entry point method.
 	 */
 	public void onModuleLoad() {
+		
+		/*Area Carrinho de Compras*/
+		setQuantCarShop();
+		mountShopCarStatus();
+		/*Area Carrinho de compras*/
+		
 		final Button sendButton = new Button("Buscar");
 		final TextBox searchField = new TextBox();
 		searchField.setText("Digite sua busca aqui...");
@@ -211,50 +233,83 @@ public class HelloWorldGWT implements EntryPoint {
 						closeButton.setFocus(true);
 					}
 					public void onSuccess(ArrayList<Produto> result) {
-						String html = "<table>";					
-						for(Produto i : result){
+
+						
+						FlexTable table = new FlexTable();
+						
+						int count = 0;
+
+						slotProd = result;
+						
+						for(Integer i=0; i<result.size(); i++){
+							Button btn = new Button("add Carrinho");
+							btn.getElement().setId(i.toString());
+							btn.addClickHandler(new ClickHandler(){
+								@Override
+								public void onClick(ClickEvent event) {
+									putInCarShop(slotProd.get(Integer.parseInt(event.getRelativeElement().getId())));
+								}
+								
+							});
+							
 							switch(seeRangePrecos()) {
 							case 0: {
-								//html = html+"<tr><td><img src =\""+imgs_url.get(i.getId())+"\" width=\"64\" height=\"64\"></td><td>"+i.getNome()+", preço: "+Double.toString(i.getPreco())+"</td></tr>";
-								html = html+"<tr><td><img src =\""+i.getUrlImagemUnica()+"\" width=\"64\" height=\"64\"></td><td>"+i.getNome()+", preço: "+Double.toString(i.getPreco())+"</td></tr>";
+								table.setHTML(count, 0, "<img src =\""+result.get(i).getUrlImagemUnica()+"\" width=\"64\" height=\"64\">");
+								table.setText(count, 1, result.get(i).getNome()+", preço: "+Double.toString(result.get(i).getPreco()));
+								table.setWidget(count, 2, btn);
+								count++;
 								break;
 							}
 							case 1: {
-								if(i.getPreco() < 10) 
-								//	html = html+"<tr><td><img src =\""+imgs_url.get(i.getId())+"\" width=\"64\" height=\"64\"></td><td>"+i.getNome()+", preço: "+Double.toString(i.getPreco())+"</td></tr>";
-								html = html+"<tr><td><img src =\""+i.getUrlImagemUnica()+"\" width=\"64\" height=\"64\"></td><td>"+i.getNome()+", preço: "+Double.toString(i.getPreco())+"</td></tr>";
+								if(result.get(i).getPreco() < 10){
+									table.setHTML(count, 0, "<img src =\""+result.get(i).getUrlImagemUnica()+"\" width=\"64\" height=\"64\">");
+									table.setText(count, 1, result.get(i).getNome()+", preço: "+Double.toString(result.get(i).getPreco()));
+									table.setWidget(count, 2, btn);
+									count++;
+								}
 								break;
 							}
 							case 2: {
-								if( i.getPreco() >= 10 && i.getPreco() < 20 )
-								//	html = html+"<tr><td><img src =\""+imgs_url.get(i.getId())+"\" width=\"64\" height=\"64\"></td><td>"+i.getNome()+", preço: "+Double.toString(i.getPreco())+"</td></tr>";
-									html = html+"<tr><td><img src =\""+i.getUrlImagemUnica()+"\" width=\"64\" height=\"64\"></td><td>"+i.getNome()+", preço: "+Double.toString(i.getPreco())+"</td></tr>";
+								if( result.get(i).getPreco() >= 10 && result.get(i).getPreco() < 20 ){
+									table.setHTML(count, 0, "<img src =\""+result.get(i).getUrlImagemUnica()+"\" width=\"64\" height=\"64\">");
+									table.setText(count, 1, result.get(i).getNome()+", preço: "+Double.toString(result.get(i).getPreco()));
+									table.setWidget(count, 2, btn);
+									count++;
+								}
 								break;
 							}
 							case 3: {
-								if( i.getPreco() >= 20 && i.getPreco() < 40 )
-								//	html = html+"<tr><td><img src =\""+imgs_url.get(i.getId())+"\" width=\"64\" height=\"64\"></td><td>"+i.getNome()+", preço: "+Double.toString(i.getPreco())+"</td></tr>";
-									html = html+"<tr><td><img src =\""+i.getUrlImagemUnica()+"\" width=\"64\" height=\"64\"></td><td>"+i.getNome()+", preço: "+Double.toString(i.getPreco())+"</td></tr>";
+								if( result.get(i).getPreco() >= 20 && result.get(i).getPreco() < 40 ){
+									table.setHTML(count, 0, "<img src =\""+result.get(i).getUrlImagemUnica()+"\" width=\"64\" height=\"64\">");
+									table.setText(count, 1, result.get(i).getNome()+", preço: "+Double.toString(result.get(i).getPreco()));
+									table.setWidget(count, 2, btn);
+									count++;
+								}
 								break;
 							}
 							case 4: {
-								if( i.getPreco() >= 40 && i.getPreco() < 60 )
-								//	html = html+"<tr><td><img src =\""+imgs_url.get(i.getId())+"\" width=\"64\" height=\"64\"></td><td>"+i.getNome()+", preço: "+Double.toString(i.getPreco())+"</td></tr>";
-									html = html+"<tr><td><img src =\""+i.getUrlImagemUnica()+"\" width=\"64\" height=\"64\"></td><td>"+i.getNome()+", preço: "+Double.toString(i.getPreco())+"</td></tr>";
+								if( result.get(i).getPreco() >= 40 && result.get(i).getPreco() < 60 ){
+									table.setHTML(count, 0, "<img src =\""+result.get(i).getUrlImagemUnica()+"\" width=\"64\" height=\"64\">");
+									table.setText(count, 1, result.get(i).getNome()+", preço: "+Double.toString(result.get(i).getPreco()));
+									table.setWidget(count, 2, btn);
+									count++;
+								}
 								break;
 							}
 							case 5: {
-								if( i.getPreco() >= 60 )
-									//html = html+"<tr><td><img src =\""+imgs_url.get(i.getId())+"\" width=\"64\" height=\"64\"></td><td>"+i.getNome()+", preço: "+Double.toString(i.getPreco())+"</td></tr>";
-									html = html+"<tr><td><img src =\""+i.getUrlImagemUnica()+"\" width=\"64\" height=\"64\"></td><td>"+i.getNome()+", preço: "+Double.toString(i.getPreco())+"</td></tr>";
+								if( result.get(i).getPreco() >= 60 ){
+									table.setHTML(count, 0, "<img src =\""+result.get(i).getUrlImagemUnica()+"\" width=\"64\" height=\"64\">");
+									table.setText(count, 1, result.get(i).getNome()+", preço: "+Double.toString(result.get(i).getPreco()));
+									table.setWidget(count, 2, btn);
+									count++;
+								}
 								break;
 							}
 							}
 							
 						}
-						html = html+"</table>";
-						h.setHTML(html);
-						r.add(h);
+
+						r.add(table);
 						closeButton.setFocus(true);
 					}
 				});
@@ -458,5 +513,157 @@ public class HelloWorldGWT implements EntryPoint {
 		}
 		HandlerLogin handlerLogin = new HandlerLogin();
 		loginButton.addClickHandler(handlerLogin);
+	}
+	
+	/**
+	 * Metodo para montar o status do carrinho ao topo direito da pagina
+	 * */
+	private void mountShopCarStatus() {
+		RootPanel car = RootPanel.get("shopCar");
+		car.clear();
+		
+		final Button carBtn = new Button("Ver");
+		carBtn.addClickHandler(new ClickHandler() {
+			public void onClick(ClickEvent event) {
+				mountShopCarContainer();
+			}
+		});
+		
+		car.add(new HTML("Carrinho de Compras("+quant.toString()+")"));
+		car.add(carBtn);
+				
+	}
+	
+	/**
+	 * Metodo para exibir os produtos no carrinho
+	 * */
+	private void mountShopCarContainer() {		
+		carrinhoCompras.obterCarrinho(new AsyncCallback<List<CarrinhoComprasElemento>>(){
+
+			@Override
+			public void onFailure(Throwable caught) {
+				System.out.println("Erro ao obter carrinho de compras");
+			}
+
+			@Override
+			public void onSuccess(List<CarrinhoComprasElemento> result) {
+				RootPanel car = RootPanel.get("shopCar");
+				car.clear();
+				
+				quant = result.size();
+				
+				final Button carBtn = new Button("X");
+				carBtn.addClickHandler(new ClickHandler() {
+					public void onClick(ClickEvent event) {
+						mountShopCarStatus();
+					}
+				});
+				car.add(carBtn);
+				
+				buildCarShopTable(car,result);
+				
+				final Button carBtn2 = new Button("Concluir Compra");
+				carBtn2.addClickHandler(new ClickHandler() {
+					public void onClick(ClickEvent event) {
+						Window.alert("Concluir Comprar!!!");
+					}
+				});
+				car.add(carBtn2);
+				
+			}
+		});
+	}
+	
+	/**
+	 * Atualiza as quantidades
+	 * */
+	private void setQuantCarShop(){
+		carrinhoCompras.obterCarrinho(new AsyncCallback<List<CarrinhoComprasElemento>>(){
+
+			@Override
+			public void onFailure(Throwable caught) {
+				System.out.println("Erro ao obter numero de elementos carrinho compras");
+			}
+
+			@Override
+			public void onSuccess(List<CarrinhoComprasElemento> result){ 
+				quant = result.size();
+			}
+			
+		});
+	}
+	
+	/**
+	 * Adiciona produto no carrinho
+	 * */
+	private void putInCarShop(Produto produto){
+		
+		carrinhoCompras.adicionarProduto(produto, new AsyncCallback<Boolean>(){
+
+			@Override
+			public void onFailure(Throwable caught) {
+				System.out.println("Erro inserir carrinho");
+			}
+
+			@Override
+			public void onSuccess(Boolean result) {
+				setQuantCarShop();
+				mountShopCarStatus();
+			}
+			
+		});
+		
+	}
+	
+	/**
+	 * monta a tabela com a lista de produtos no carrinho
+	 * */
+	private void buildCarShopTable(RootPanel rp, final List<CarrinhoComprasElemento> list){
+		
+		final FlexTable table = new FlexTable();
+		int count = 1;
+		
+		table.setText(0,0,"Quantidade");
+		table.setText(0,1,"Produto");
+		
+		for(Integer i=0; i< list.size(); i++){
+			final Produto prod = list.get(i).getProduto();
+			Button btn = new Button("Del");
+			
+			btn.getElement().setId(i.toString());
+			btn.addClickHandler(new ClickHandler(){
+
+				@Override
+				public void onClick(ClickEvent event) {
+					carrinhoCompras.removerProduto((list.get(Integer.parseInt
+							(event.getRelativeElement().getId())).getProduto()),new AsyncCallback<Boolean>() {
+								
+								@Override
+								public void onSuccess(Boolean result) {
+									
+								}
+								
+								@Override
+								public void onFailure(Throwable caught) {
+									System.out.println("Erro ao remover produto");
+								}
+							});
+					
+					int row = table.getCellForEvent(event).getRowIndex();
+					table.removeRow(row);
+				}
+				
+			});
+			
+			table.setText(count,0,list.get(i).getQuantidade().toString());
+			table.setHTML(count, 1, "<img src =\""+prod.getUrlImagemUnica()+"\" width=\"64\" height=\"64\">");
+			table.setText(count, 2, prod.getNome()+", preço: "+Double.toString(prod.getPreco()));
+			table.setWidget(count, 3, btn);
+			
+			count++;
+		}
+		
+		rp.add(table);
+		
 	}
 }
