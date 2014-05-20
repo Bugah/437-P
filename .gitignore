@@ -214,6 +214,6 @@ pip-log.txt
 
 
 HelloWorldGWT/war/WEB-INF/deploy/
-*.js
+HelloWorldGWT/war/helloworldgwt/helloworldgwt.devmode.js
 HelloWorldGWT/gwt-unitCache/
-manifest.txt
+HelloWorldGWT/war/WEB-INF/deploy/helloworldgwt/rpcPolicyManifest/manifest.txt
