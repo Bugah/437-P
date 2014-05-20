@@ -211,3 +211,9 @@ pip-log.txt
 
 #Mr Developer
 .mr.developer.cfg
+
+
+HelloWorldGWT/war/WEB-INF/deploy/
+*.js
+HelloWorldGWT/gwt-unitCache/
+manifest.txt
