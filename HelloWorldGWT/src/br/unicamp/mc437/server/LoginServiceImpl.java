@@ -60,6 +60,8 @@ public class LoginServiceImpl  extends RemoteServiceServlet implements LoginServ
 			HttpServletRequest httpServletRequest = getThreadLocalRequest();
 		    HttpSession session = httpServletRequest.getSession(true);
 		    session.setAttribute("user", admin);
+		    session.setAttribute("adm", true);
+		    
 		    
 		    loggedadmin=admin;
 		    loggedclient=null;

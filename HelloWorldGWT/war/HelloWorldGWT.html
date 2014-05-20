@@ -5,95 +5,196 @@
 <!-- with a "Quirks Mode" doctype is not supported. -->
 
 <html>
-  <head>
-    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+<head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
 
-    <!--                                                               -->
-    <!-- Consider inlining CSS to reduce the number of requested files -->
-    <!--                                                               -->
-    <link type="text/css" rel="stylesheet" href="HelloWorldGWT.css">
+<!--                                                               -->
+<!-- Consider inlining CSS to reduce the number of requested files -->
+<!--                                                               -->
+<link type="text/css" rel="stylesheet" href="HelloWorldGWT.css">
 
-    <!--                                           -->
-    <!-- Any title is fine                         -->
-    <!--                                           -->
-    <title>NutriNet</title>
-    
-    <!--                                           -->
-    <!-- This script loads your compiled module.   -->
-    <!-- If you add any GWT meta tags, they must   -->
-    <!-- be added before this line.                -->
-    <!--                                           -->
-    <script type="text/javascript" language="javascript" src="helloworldgwt/helloworldgwt.nocache.js"></script>
-  </head>
+<!--                                           -->
+<!-- Any title is fine                         -->
+<!--                                           -->
+<title>NutriNet</title>
 
-  <!--                                           -->
-  <!-- The body can have arbitrary html, or      -->
-  <!-- you can leave the body empty if you want  -->
-  <!-- to create a completely dynamic UI.        -->
-  <!--                                           -->
-  <body>
+<!--                                           -->
+<!-- This script loads your compiled module.   -->
+<!-- If you add any GWT meta tags, they must   -->
+<!-- be added before this line.                -->
+<!--                                           -->
+<script type="text/javascript" language="javascript"
+	src="helloworldgwt/helloworldgwt.nocache.js"></script>
+<link href="css/style.css" rel="stylesheet" type="text/css" media="all" />
+<link
+	href='http://fonts.googleapis.com/css?family=Londrina+Solid|Coda+Caption:800|Open+Sans'
+	rel='stylesheet' type='text/css'>
+<link rel="stylesheet" href="css/responsiveslides.css">
+<script
+	src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+<script src="js/responsiveslides.min.js"></script>
+</head>
 
-    <!-- OPTIONAL: include this if you want history support -->
-    <iframe src="javascript:''" id="__gwt_historyFrame" tabIndex='-1' style="position:absolute;width:0;height:0;border:0"></iframe>
-    
-    <!-- RECOMMENDED if your web app will not function without JavaScript enabled -->
-    <noscript>
-      <div style="width: 22em; position: absolute; left: 50%; margin-left: -11em; color: red; background-color: white; border: 1px solid red; padding: 4px; font-family: sans-serif">
-        Your web browser must have JavaScript enabled
-        in order for this application to display correctly.
-      </div>
-    </noscript>
+<!--                                           -->
+<!-- The body can have arbitrary html, or      -->
+<!-- you can leave the body empty if you want  -->
+<!-- to create a completely dynamic UI.        -->
+<!--                                           -->
+<body>
 
-    <h1>Página Inicial</h1>
-    <div id="shopCar" align="right"></div>
+	<!-- OPTIONAL: include this if you want history support -->
+	<iframe src="javascript:''" id="__gwt_historyFrame" tabIndex='-1'
+		style="position: absolute; width: 0; height: 0; border: 0"></iframe>
 
-    <table align="center">   
-    
-    <tr>
-        <td colspan="4" style="font-weight:bold;">Login</td>        
-      </tr>
-      <tr>
-        <td id="loginUsername"></td>
-        <td id="loginSenha"></td>
-        <td id="loginButton"></td>
-      </tr>
-     
-      <tr>
-        <td colspan="4" style="font-weight:bold;">Busca</td>        
-      </tr>
-      <tr>
-        <td id="searchFieldContainer"></td>
-        <td id="searchOnContainer"></td>
-        <td>Preço:</td>
-        <td id="rangePrecosContainer"></td>
-        <td id="sendButtonContainer"></td>
-      </tr>
-      <tr>
-        <td colspan="2" style="color:red;" id="errorLabelContainer"></td>
-      </tr>
-      <tr>
-      <td id="resultsContainer" colspan="4"></td>
-      </tr>
-      <tr><td colspan="4" style="font-weight:bold;">Cadastrar Produto</td>
-      </tr>
-      <tr>
-      <td>Nome</td>
-      <td>Descrição</td>
-      <td>Preço</td>
 
-      <td>Marca (Categoria)</td>
-      <td>Imagem</td>
-      <td>Estoque</td>
-            <td></td>
-      </tr><tr>
-      <td id="productName"></td>
-      <td id="productDescription"></td>
-      <td id="productPrice"></td>
-      <td id="subCats"></td>
-      <td id="productPicture"></td>
-      <td id="productStorage"></td>
-      <td id="productButton"></td>
-      </tr>
-    </table>
-  </body>
+	<!-- RECOMMENDED if your web app will not function without JavaScript enabled -->
+	<noscript>
+		<div
+			style="width: 22em; position: absolute; left: 50%; margin-left: -11em; color: red; background-color: white; border: 1px solid red; padding: 4px; font-family: sans-serif">
+			Your web browser must have JavaScript enabled in order for this
+			application to display correctly.</div>
+	</noscript>
+
+	<div class="wrap">
+		<!----start-Header---->
+		<div class="header">
+			<div class="search-bar"
+				style="background-color: transparent; width: 620px;">
+				<b>Login</b> Usuário: <span id="loginUsername"></span> Senha: <span
+					id="loginSenha"></span> <span id="loginButton"></span>
+
+
+
+				<!--  	<div style="clear: both;"></div>
+				<form>
+					<input type="text"><input type="submit" value="Search" />
+				</form>-->
+			</div>
+
+			<div class="clear"></div>
+			<div class="header-top-nav">
+				<!--	<ul>
+					<li><a href="#">Register</a></li>
+					<li><a href="#">Login</a></li>
+					<li><a href="#">Develivery</a></li>
+					<li><a href="#">Checkout</a></li>
+					<li><a href="#">My account</a></li>
+					<li><a href="#"><span>shopingcart&nbsp;&nbsp;: </span></a> <lable>
+						&nbsp;noitems</lable></li>
+				</ul>-->
+			</div>
+			<div class="clear"></div>
+		</div>
+	</div>
+	<div class="clear"></div>
+	<div class="top-header">
+		<div class="wrap">
+			<!----start-logo---->
+			<div class="logo">
+				<img src="images/logo.png" title="logo" />
+			</div>
+			<!----end-logo---->
+			<!----start-top-nav---->
+			<div class="top-nav">
+				<ul>
+					<li>Busca: <span id="searchFieldContainer"></span> <span
+						id="searchOnContainer"></span> <span>Faixa de preço:</span> <span
+						id="rangePrecosContainer"></span>
+					</li>
+					<li><span id="sendButtonContainer"></span></li>
+					<li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</li>
+					<li id="lk_home"></li>
+					<li id="lk_carrinho"></li>
+
+
+
+				</ul>
+			</div>
+			<div class="clear"></div>
+		</div>
+	</div>
+	<!----End-top-nav---->
+	<!----End-Header---->
+
+	<div class="clear"></div>
+	<div class="wrap">
+		<div class="content">
+			<!-- CONTEUDO CIMA -->
+
+		</div>
+	</div>
+	<div class="content-grids">
+
+		<!-- CONTEUDO CENTRAL PRODUTOS -->
+
+
+		<div id="resultsContainer"></div>
+		<div style="margin-left: 30px;" id="btnComprar"></div>
+		<div id="errorLabelContainer"></div>
+
+		<div id="exibiAddProduto" style="display: none;">
+			<h2>Cadastrar Produto</h2>
+			<table>
+				<tr>
+					<td>Nome</td>
+					<td id="productName"></td>
+				</tr>
+				<tr>
+					<td>Descrição</td>
+					<td id="productDescription"></td>
+				</tr>
+				<tr>
+					<td>Preço</td>
+					<td id="productPrice"></td>
+				</tr>
+				<tr>
+					<td>Marca (Categoria)</td>
+					<td id="subCats"></td>
+
+				</tr>
+				<tr>
+					<td>Imagem</td>
+					<td id="productPicture"></td>
+				</tr>
+				<tr>
+					<td>Estoque</td>
+					<td id="productStorage"></td>
+				</tr>
+				<tr>
+					<td></td>
+					<td><td id="productButton"></td>
+
+
+				</tr>
+
+			</table>
+		</div>
+
+	</div>
+	<div class="content-sidebar">
+		<span id="lk_addProduto"></span>
+		<div id="shopCar" align="right"
+			style="margin-right: 15px;margin-top:15px;"></div>
+		<h4>Categories</h4>
+		<ul>
+		<div id="listaCategorias"></div>
+		</ul>
+	</div>
+
+	</div>
+	<div class="clear"></div>
+	</div>
+	<div class="footer">
+
+
+		<div class="clear"></div>
+		<div class="wrap">
+			<div class="copy-right">
+				<p>
+					NutriNet| Design By <a href="http://w3layouts.com/">W3Layouts</a>
+				</p>
+			</div>
+		</div>
+	</div>
+</body>
 </html>
