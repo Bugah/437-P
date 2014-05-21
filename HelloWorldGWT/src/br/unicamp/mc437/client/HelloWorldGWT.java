@@ -14,6 +14,7 @@ import br.unicamp.mc437.shared.FieldVerifier;
 
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.dom.client.DivElement;
 import com.google.gwt.dom.client.Style.Display;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
@@ -26,10 +27,13 @@ import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.DialogBox;
 import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.HTML;
+import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.ListBox;
+import com.google.gwt.user.client.ui.Panel;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.ScrollPanel;
+import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Hyperlink;
@@ -91,20 +95,17 @@ public class HelloWorldGWT implements EntryPoint {
 	private final FinalizarCompraServiceAsync finalizarCompraService = GWT
 			.create(FinalizarCompraService.class);
 
-	private List<Produto> slotProd = null;
+	//private List<Produto> slotProd = null;
 
 	/**
 	 * This is the entry point method.
 	 */
 
-	private Integer quant = 0;
-
 	public void onModuleLoad() {
 		/* Area Carrinho de Compras */
-		setQuantCarShop();
-		mountShopCarStatus();
+		initCarShop();
 		/* Area Carrinho de compras */
-
+		
 		// navegacao
 		String urlBase;
 		String getPageAtual;
@@ -255,8 +256,8 @@ public class HelloWorldGWT implements EntryPoint {
 											// putInCarShop(slotProd.get(Integer.parseInt(event
 											// .getRelativeElement().getId())));
 											putInCarShop(result);
-											setQuantCarShop();
-											mountShopCarStatus();
+											// TODO
+											//mountShopCarStatus();
 										}
 
 									});
@@ -1152,36 +1153,57 @@ public class HelloWorldGWT implements EntryPoint {
 	}
 
 	/**
-	 * Metodo para montar o status do carrinho ao topo direito da pagina
+	 * Metodo para iniciar a List<Map> do carrinho.
 	 * */
-	private void mountShopCarStatus() {
+	private void initCarShop(){
+		carrinhoCompras.initCarShop(new AsyncCallback<Void>() {
 
-		carrinhoCompras
-				.obterCarrinho(new AsyncCallback<List<CarrinhoComprasElemento>>() {
+			@Override
+			public void onFailure(Throwable caught) {
+				System.out.println("Erro ao iniciar o Carrinho de compras");
+				
+			}
 
-					@Override
-					public void onFailure(Throwable caught) {
-						System.out.println("Erro ao obter carrinho de compras");
-					}
-
+			@Override
+			public void onSuccess(Void result) {
+				carrinhoCompras.obterCarrinho(new AsyncCallback<List<CarrinhoComprasElemento>>() {
+					
 					@Override
 					public void onSuccess(List<CarrinhoComprasElemento> result) {
-						RootPanel car = RootPanel.get("shopCar");
-						car.clear();
-						quant = result.size();
-
-						final Button carBtn = new Button("Ver carrinho");
-						carBtn.addClickHandler(new ClickHandler() {
-							public void onClick(ClickEvent event) {
-								mountShopCarContainer();
-							}
-						});
-
-						car.add(new HTML("Carrinho de Compras("
-								+ quant.toString() + ")"));
-						car.add(carBtn);
+						mountShopCarStatus(result.size());
+						
+					}
+					
+					@Override
+					public void onFailure(Throwable caught) {
+						System.out.println("Erro ao obter o carrinho de compras");
+						
 					}
 				});
+				
+			}
+			
+		});
+	}
+	
+	/**
+	 * Metodo para montar o status do carrinho ao topo direito da pagina
+	 * */
+	private void mountShopCarStatus(Integer quant) {
+		RootPanel car = RootPanel.get("shopCar");
+		final Button carBtn = new Button("Ver carrinho");
+		
+		carBtn.addClickHandler(new ClickHandler() {
+			public void onClick(ClickEvent event) {
+				mountShopCarContainer();
+			}
+		});
+		
+		car.clear();
+		car.add(new HTML("Carrinho de Compras("
+				+ quant.toString() + ")"));
+		car.add(carBtn);
+
 
 	}
 
@@ -1191,62 +1213,32 @@ public class HelloWorldGWT implements EntryPoint {
 	 * Metodo para exibir os produtos no carrinho
 	 * */
 	private void mountShopCarContainer() {
-		carrinhoCompras
-				.obterCarrinho(new AsyncCallback<List<CarrinhoComprasElemento>>() {
-
-					@Override
-					public void onFailure(Throwable caught) {
-						System.out.println("Erro ao obter carrinho de compras");
-					}
-
-					@Override
-					public void onSuccess(List<CarrinhoComprasElemento> result) {
-						RootPanel car = RootPanel.get("shopCar");
-						car.clear();
-
-						quant = result.size();
-
-						final Button carBtn = new Button("Fechar Carrinho");
-						carBtn.addClickHandler(new ClickHandler() {
-							public void onClick(ClickEvent event) {
-								mountShopCarStatus();
-							}
-						});
-						car.add(carBtn);
-
-						buildCarShopTable(car, result);
-
-						final Button carBtn2 = new Button("Concluir Compra");
-						carBtn2.addClickHandler(new ClickHandler() {
-							public void onClick(ClickEvent event) {
-								Window.alert("Concluir Comprar!!!");
-							}
-						});
-						car.add(carBtn2);
-
+		carrinhoCompras.obterCarrinho(new AsyncCallback<List<CarrinhoComprasElemento>>() {
+			
+			@Override
+			public void onSuccess(final List<CarrinhoComprasElemento> result) {
+				RootPanel car = RootPanel.get("shopCar");
+				final Button carBtn = new Button("Fechar Carrinho");
+				
+				carBtn.addClickHandler(new ClickHandler() {
+					public void onClick(ClickEvent event) {
+						initCarShop();
 					}
 				});
-	}
-
-	/**
-	 * Atualiza as quantidades
-	 * */
-	private void setQuantCarShop() {
-
-		carrinhoCompras
-				.obterCarrinho(new AsyncCallback<List<CarrinhoComprasElemento>>() {
-
-					@Override
-					public void onFailure(Throwable caught) {
-						System.out.println("Erro ao obter carrinho de compras");
-					}
-
-					@Override
-					public void onSuccess(List<CarrinhoComprasElemento> result) {
-
-						quant = result.size();
-					}
-				});
+				
+				car.clear();
+				car.add(carBtn);
+				
+				buildCarShopTable(car, result);
+				
+			}
+			
+			@Override
+			public void onFailure(Throwable caught) {
+				System.out.println("Erro ao contruir carrinho container");
+				
+			}
+		});
 	}
 
 	/**
@@ -1254,7 +1246,7 @@ public class HelloWorldGWT implements EntryPoint {
 	 * */
 	private void putInCarShop(Produto produto) {
 
-		carrinhoCompras.adicionarProduto(produto, new AsyncCallback<Boolean>() {
+		carrinhoCompras.adicionarProduto(produto, new AsyncCallback<Integer>() {
 
 			@Override
 			public void onFailure(Throwable caught) {
@@ -1262,9 +1254,8 @@ public class HelloWorldGWT implements EntryPoint {
 			}
 
 			@Override
-			public void onSuccess(Boolean result) {
-				setQuantCarShop();
-				mountShopCarStatus();
+			public void onSuccess(Integer result) {
+				mountShopCarStatus(result);
 			}
 
 		});
@@ -1297,10 +1288,10 @@ public class HelloWorldGWT implements EntryPoint {
 				public void onClick(ClickEvent event) {
 					carrinhoCompras.removerProduto((list.get(Integer
 							.parseInt(event.getRelativeElement().getId()))
-							.getProduto()), new AsyncCallback<Boolean>() {
+							.getProduto()), new AsyncCallback<Integer>() {
 
 						@Override
-						public void onSuccess(Boolean result) {
+						public void onSuccess(Integer result) {
 
 						}
 
@@ -1328,7 +1319,6 @@ public class HelloWorldGWT implements EntryPoint {
 
 			count++;
 		}
-
 		rp.add(table);
 
 	}

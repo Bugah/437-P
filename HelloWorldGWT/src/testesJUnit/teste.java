@@ -46,12 +46,12 @@ public class teste {
 		FinalizarCompraImpl fci = new FinalizarCompraImpl();
 		fci.simularCompra();
 		
-	machin = fci.getAtualCarrinho();
+	//machin = fci.getAtualCarrinho();
 	
-	for(int i=0;i<machin.size();i++){
-		System.out.println(machin.get(i).get("idProd"));
+	//for(int i=0;i<machin.size();i++){
+	//	System.out.println(machin.get(i).get("idProd"));
 		
-	}
+	//}
 	
 		
 		
