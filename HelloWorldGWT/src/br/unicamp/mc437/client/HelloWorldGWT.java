@@ -14,6 +14,8 @@ import br.unicamp.mc437.shared.FieldVerifier;
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Style.Display;
+import com.google.gwt.dom.client.Style.Position;
+import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.KeyCodes;
@@ -22,6 +24,7 @@ import com.google.gwt.event.dom.client.KeyUpHandler;
 import com.google.gwt.event.logical.shared.ValueChangeEvent;
 import com.google.gwt.event.logical.shared.ValueChangeHandler;
 import com.google.gwt.i18n.client.NumberFormat;
+import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Anchor;
@@ -90,26 +93,24 @@ public class HelloWorldGWT implements EntryPoint {
 	private Integer quant = 0;
 
 	private double totalPrice;
+	NumberFormat format = NumberFormat.getFormat("R$ 0.00");
 	
 	public void simulFrete(int length, double totalWF, HTMLPanel h, RadioButton radio){
 		double lengthD = (double) length;
 		double priceFrete = lengthD/15;
 		
-		NumberFormat format = NumberFormat.getFormat("0.00");
+		
 		
 		if(radio.getValue()){
 			priceFrete = priceFrete * 2;
 		}
-		h.getElementById("FCfrete").setInnerHTML(format.format(priceFrete));
-		h.getElementById("FCtotalPrice").setInnerHTML(format.format(priceFrete+totalWF));	
+		h.getElementById("FCfrete").setInnerHTML(format.format(priceFrete).replaceAll("\\.", "\\,"));
+		h.getElementById("FCtotalPrice").setInnerHTML(format.format(priceFrete+totalWF).replaceAll("\\.", "\\,"));	
 		totalPrice = priceFrete+totalWF;
 	}
 	
 	public void onModuleLoad() {
-		/* Area Carrinho de Compras */
-		setQuantCarShop();
-		mountShopCarStatus();
-		/* Area Carrinho de compras */
+		initCarShop();
 
 		// navegacao
 		String urlBase;
@@ -261,8 +262,7 @@ public class HelloWorldGWT implements EntryPoint {
 											// putInCarShop(slotProd.get(Integer.parseInt(event
 											// .getRelativeElement().getId())));
 											putInCarShop(result);
-											setQuantCarShop();
-											mountShopCarStatus();
+											
 										}
 
 									});
@@ -900,21 +900,23 @@ public class HelloWorldGWT implements EntryPoint {
 						.getElementById("exibiFinalizarCompras").getStyle()
 						.setDisplay(Display.BLOCK);
 				
-				finalizarCompraService.simularCompra(new AsyncCallback<Void>() {
-					public void onFailure(Throwable caught) {
-					}
+			//	finalizarCompraService.simularCompra(new AsyncCallback<Void>() {
 
-					@Override
-					public void onSuccess(Void result) {
+
+				//	@Override
+				//	public void onSuccess(Void result) {
 						
 						
 						/**/
 						
-						
-						finalizarCompraService.getAtualCarrinho(new AsyncCallback<ArrayList<HashMap<String,String>>>() {
-							
+				com.google.gwt.user.client.DOM
+				.getElementById("FCpayTreatement").getStyle()
+				.setDisplay(Display.BLOCK);
+				
+					//	finalizarCompraService.getAtualCarrinho(new AsyncCallback<ArrayList<HashMap<String,String>>>() {
+						carrinhoCompras.obterCarrinho(new AsyncCallback<List<CarrinhoComprasElemento>>() {
 							@Override
-							public void onSuccess(ArrayList<HashMap<String, String>> result) {
+							public void onSuccess(List<CarrinhoComprasElemento> result) {
 							
 							//	final ScrollPanel r = new ScrollPanel();
 								final HTMLPanel h;// = new HTML();
@@ -922,8 +924,8 @@ public class HelloWorldGWT implements EntryPoint {
 							final double totalWF;
 								String html = "<table><tr><td>Nome</td><td>Pre&ccedil;o unitario</td><td>Quantidade</td><td>Pre&ccedil;o total</td></tr>";
 							for(int i=0;i<result.size();i++){
-								html += "<tr><td>"+result.get(i).get("name")+"</td><td>"+result.get(i).get("unitPrice")+"</td><td>"+result.get(i).get("quantity")+"</td><td>"+result.get(i).get("totalPrice")+"</td></tr>";
-								totalWithoutFrete += Double.parseDouble(result.get(i).get("totalPrice"));
+								html += "<tr><td>"+result.get(i).getProduto().getNome()+"</td><td>"+result.get(i).getProduto().getPreco()+"</td><td>"+result.get(i).getQuantidade()+"</td><td>"+result.get(i).getProduto().getPreco()*result.get(i).getQuantidade()+"</td></tr>";
+								totalWithoutFrete += result.get(i).getProduto().getPreco()*((double) result.get(i).getQuantidade());
 							}
 								totalWF=totalWithoutFrete;
 								html +="<tr><td></td><td></td><td>Total sem frete: </td><td>"+Double.toString(totalWithoutFrete)+"</td></tr>";
@@ -1029,11 +1031,15 @@ public class HelloWorldGWT implements EntryPoint {
 									
 									com.google.gwt.user.client.DOM
 									.getElementById("FCcartao").getStyle()
+									.setDisplay(Display.BLOCK);
+									
+									com.google.gwt.user.client.DOM
+									.getElementById("FCboleto").getStyle()
 									.setDisplay(Display.NONE);
 									
 									RootPanel.get("FCccartao").add(cartao);
 									RootPanel.get("FCcboleto").add(boleto);
-									
+									cartao.setValue(true);
 									
 									
 									final ListBox parcel = new ListBox(false);
@@ -1045,11 +1051,14 @@ public class HelloWorldGWT implements EntryPoint {
 								 final RadioButton visa = new RadioButton("group3", "Visa");
 								 final RadioButton masterCard = new RadioButton("group3", "MasterCard");
 								 visa.setValue(true);
-								 TextBox nameCard = new TextBox();
-								 TextBox numCard = new TextBox();
-								 TextBox segCard = new TextBox();
+								 final TextBox nameCard = new TextBox();
+								 final TextBox numCard = new TextBox();
+								 final TextBox segCard = new TextBox();
 								 ListBox monthCard = new ListBox(false);
 								 ListBox yearCard = new ListBox(false);
+								 
+								 Button pagar = new Button(
+											"Pagar");
 								 
 								 monthCard.addItem("1");
 								 monthCard.addItem("2");
@@ -1083,6 +1092,7 @@ public class HelloWorldGWT implements EntryPoint {
 								 RootPanel.get("FCcartaoSeguranca").add(segCard);
 								 RootPanel.get("FCcartaoData").add(monthCard);
 								 RootPanel.get("FCcartaoData").add(yearCard);
+								 RootPanel.get("FCpagar").add(pagar);
 									cartao.addClickHandler(new ClickHandler() {
 										
 										@Override
@@ -1090,7 +1100,10 @@ public class HelloWorldGWT implements EntryPoint {
 											com.google.gwt.user.client.DOM
 											.getElementById("FCcartao").getStyle()
 											.setDisplay(Display.BLOCK);
-											
+									
+											com.google.gwt.user.client.DOM
+											.getElementById("FCboleto").getStyle()
+											.setDisplay(Display.NONE);
 										}
 									});
 									
@@ -1101,6 +1114,224 @@ public class HelloWorldGWT implements EntryPoint {
 											com.google.gwt.user.client.DOM
 											.getElementById("FCcartao").getStyle()
 											.setDisplay(Display.NONE);
+											com.google.gwt.user.client.DOM
+											.getElementById("FCboleto").getStyle()
+											.setDisplay(Display.BLOCK);
+										}
+									});
+									
+									pagar.addClickHandler(new ClickHandler() {
+										
+										@Override
+										public void onClick(ClickEvent event) {
+											// TODO Auto-generated method stub
+											if(cartao.getValue() &&( city.getText().length()== 0 || 
+													cep.getText().length() == 0 || 
+													adress.getText().length()==0 ||
+													state.getText().length()==0 ||
+													nameCard.getText().length() ==0 ||
+													numCard.getText().length() == 0 ||
+													segCard.getText().length() == 0
+													)){
+												
+												Window.alert("O formulario não foi bem preenchido");
+											} else {
+											if(cartao.getValue()){
+											if(Window.confirm("Pagamento de "+format.format(totalPrice).replaceAll("\\.", "\\,")+" com parcelamento "
+													+ "de "+parcel.getValue(parcel.getSelectedIndex())+"x"
+															+ " "+format.format(totalPrice/Double.parseDouble(parcel.getValue(parcel.getSelectedIndex()))).replaceAll("\\.", "\\,")
+															+". Voce confirma ?" )){
+												RootPanel.get("FCpayMsg").clear();
+												com.google.gwt.user.client.DOM
+												.getElementById("FCpayTreatement").getStyle()
+												.setDisplay(Display.BLOCK);
+												com.google.gwt.user.client.DOM
+												.getElementById("FCpayMsg").getStyle()
+												.setDisplay(Display.BLOCK);
+												
+												com.google.gwt.user.client.DOM
+												.getElementById("FCpayTreatement").getStyle()
+												.setZIndex(1);
+												com.google.gwt.user.client.DOM
+												.getElementById("FCpayTreatement").getStyle()
+												.setBottom(0, Unit.PX);
+												com.google.gwt.user.client.DOM
+												.getElementById("FCpayTreatement").getStyle()
+												.setTop(0, Unit.PX);
+												com.google.gwt.user.client.DOM
+												.getElementById("FCpayTreatement").getStyle()
+												.setLeft(0, Unit.PX);
+												com.google.gwt.user.client.DOM
+												.getElementById("FCpayTreatement").getStyle()
+												.setRight(0, Unit.PX);
+												com.google.gwt.user.client.DOM
+												.getElementById("FCpayTreatement").getStyle()
+												.setBackgroundColor("#000000");
+												com.google.gwt.user.client.DOM
+												.getElementById("FCpayTreatement").getStyle()
+												.setOpacity(0.50);
+												com.google.gwt.user.client.DOM
+												.getElementById("FCpayTreatement").getStyle()
+												.setPosition(Position.FIXED);
+												com.google.gwt.user.client.DOM
+												.getElementById("FCpayTreatement").getStyle()
+												.setMargin(0.0, Unit.PX);
+												com.google.gwt.user.client.DOM
+												.getElementById("FCpayTreatement").getStyle()
+												.setWidth(100.0, Unit.PCT);
+												com.google.gwt.user.client.DOM
+												.getElementById("FCpayTreatement").getStyle()
+												.setHeight(100.0, Unit.PCT);
+											
+												
+												com.google.gwt.user.client.DOM
+												.getElementById("FCpayMsg").getStyle()
+												.setColor("#FFFFFF");
+												
+												com.google.gwt.user.client.DOM
+												.getElementById("FCpayMsg").getStyle()
+												.setZIndex(2);
+												com.google.gwt.user.client.DOM
+												.getElementById("FCpayMsg").getStyle()
+												.setBackgroundColor("#000000");
+//#94CB42
+												com.google.gwt.user.client.DOM
+												.getElementById("FCpayMsg").getStyle()
+												.setOpacity(1.00);
+
+												com.google.gwt.user.client.DOM
+												.getElementById("FCpayMsg").getStyle()
+												.setMarginLeft(37, Unit.PCT);
+												
+												com.google.gwt.user.client.DOM
+												.getElementById("FCpayMsg").getStyle()
+												.setMarginRight(37, Unit.PCT);
+												
+												com.google.gwt.user.client.DOM
+												.getElementById("FCpayMsg").getStyle()
+												.setPadding(10, Unit.PX);
+												
+												
+												com.google.gwt.user.client.DOM
+												.getElementById("FCpayMsg").getStyle()
+												.setPosition(Position.FIXED);												
+												
+												RootPanel.get("FCpayMsg").add(new HTMLPanel("Aguardando o pagamento"));
+											Timer t = new Timer() {
+												
+												@Override
+												public void run() {
+													Button buttonOk = new Button("ok");
+													
+													
+													if(Integer.parseInt(segCard.getText())%5==0){
+														com.google.gwt.user.client.DOM
+														.getElementById("FCpayMsg").getStyle()
+														.setColor("#FF0000");
+														RootPanel.get("FCpayMsg").clear();
+														RootPanel.get("FCpayMsg").add(new HTMLPanel("O pagamento NAO foi efetuado. <br/>")); 												
+														RootPanel.get("FCpayMsg").add(buttonOk);
+														buttonOk.addClickHandler(new ClickHandler() {
+															
+															@Override
+															public void onClick(ClickEvent event) {
+																// TODO Auto-generated method stub
+																com.google.gwt.user.client.DOM
+																.getElementById("FCpayMsg").getStyle()
+																.setDisplay(Display.NONE);
+																com.google.gwt.user.client.DOM
+																.getElementById("FCpayTreatement").getStyle()
+																.setDisplay(Display.NONE);
+															}
+														});
+													
+													} else {
+														
+														com.google.gwt.user.client.DOM
+														.getElementById("FCpayMsg").getStyle()
+														.setColor("#94CB42");
+														RootPanel.get("FCpayMsg").clear();
+														RootPanel.get("FCpayMsg").add(new HTMLPanel("O pagamento foi efetuado com sucesso. <br/> Obrigado para ter escolhido NutriNet. <br />")); 												
+														RootPanel.get("FCpayMsg").add(buttonOk);
+														buttonOk.addClickHandler(new ClickHandler() {
+															
+															@Override
+															public void onClick(ClickEvent event) {
+																// TODO Auto-generated method stub
+																com.google.gwt.user.client.DOM
+																.getElementById("FCpayMsg").getStyle()
+																.setDisplay(Display.NONE);
+																com.google.gwt.user.client.DOM
+																.getElementById("FCpayTreatement").getStyle()
+																.setDisplay(Display.NONE);
+																carrinhoCompras.esvaziarCarrinho(new AsyncCallback<Boolean>() {
+
+																	@Override
+																	public void onFailure(
+																			Throwable caught) {
+																		// TODO Auto-generated method stub
+																		
+																	}
+
+																	@Override
+																	public void onSuccess(
+																			Boolean result) {
+																		// TODO Auto-generated method stub
+																		
+																	}
+																});
+																Window.Location.replace(com.google.gwt.user.client.Window.Location.createUrlBuilder()
+																		.removeParameter("page").removeParameter("categoria_nome")
+																		.removeParameter("id_categoria").removeParameter("id_produto").buildString());
+															}
+														});
+													
+													}	
+													
+													
+													
+											
+													
+													
+												}
+											};
+											
+											t.schedule(5000);
+												
+											}	
+											} else {
+												
+												
+												if(Window.confirm("Pagamento de "+format.format(totalPrice).replaceAll("\\.", "\\,")+" com boleto, voce tem 3 dias para paga-lo. Voce confrima ?")){
+												Window.open("boleto/boleto.png", "_blank", null);
+
+
+												Window.Location.replace(com.google.gwt.user.client.Window.Location.createUrlBuilder()
+														.removeParameter("page").removeParameter("categoria_nome")
+														.removeParameter("id_categoria").removeParameter("id_produto").buildString());
+												
+												carrinhoCompras.esvaziarCarrinho(new AsyncCallback<Boolean>() {
+
+													@Override
+													public void onFailure(
+															Throwable caught) {
+														// TODO Auto-generated method stub
+														
+													}
+
+													@Override
+													public void onSuccess(
+															Boolean result) {
+														// TODO Auto-generated method stub
+														
+													}
+												});
+												
+												}
+												
+												}
+											
+											}
 											
 										}
 									});
@@ -1128,8 +1359,8 @@ public class HelloWorldGWT implements EntryPoint {
 						
 						
 						/**/
-					}
-				});
+				//	}
+			//	});
 			
 				subCatService
 						.getSubCategorias(new AsyncCallback<ArrayList<HashMap<String, String>>>() {
@@ -1308,36 +1539,57 @@ public class HelloWorldGWT implements EntryPoint {
 	}
 
 	/**
-	 * Metodo para montar o status do carrinho ao topo direito da pagina
+	 * Metodo para iniciar a List<Map> do carrinho.
 	 * */
-	private void mountShopCarStatus() {
+	private void initCarShop(){
+		carrinhoCompras.initCarShop(new AsyncCallback<Void>() {
 
-		carrinhoCompras
-				.obterCarrinho(new AsyncCallback<List<CarrinhoComprasElemento>>() {
+			@Override
+			public void onFailure(Throwable caught) {
+				System.out.println("Erro ao iniciar o Carrinho de compras");
+				
+			}
 
-					@Override
-					public void onFailure(Throwable caught) {
-						System.out.println("Erro ao obter carrinho de compras");
-					}
-
+			@Override
+			public void onSuccess(Void result) {
+				carrinhoCompras.obterCarrinho(new AsyncCallback<List<CarrinhoComprasElemento>>() {
+					
 					@Override
 					public void onSuccess(List<CarrinhoComprasElemento> result) {
-						RootPanel car = RootPanel.get("shopCar");
-						car.clear();
-						quant = result.size();
-
-						final Button carBtn = new Button("Ver carrinho");
-						carBtn.addClickHandler(new ClickHandler() {
-							public void onClick(ClickEvent event) {
-								mountShopCarContainer();
-							}
-						});
-
-						car.add(new HTML("Carrinho de Compras("
-								+ quant.toString() + ")"));
-						car.add(carBtn);
+						mountShopCarStatus(result.size());
+						
+					}
+					
+					@Override
+					public void onFailure(Throwable caught) {
+						System.out.println("Erro ao obter o carrinho de compras");
+						
 					}
 				});
+				
+			}
+			
+		});
+	}
+	
+	/**
+	 * Metodo para montar o status do carrinho ao topo direito da pagina
+	 * */
+	private void mountShopCarStatus(Integer quant) {
+		RootPanel car = RootPanel.get("shopCar");
+		final Button carBtn = new Button("Ver carrinho");
+		
+		carBtn.addClickHandler(new ClickHandler() {
+			public void onClick(ClickEvent event) {
+				mountShopCarContainer();
+			}
+		});
+		
+		car.clear();
+		car.add(new HTML("Carrinho de Compras("
+				+ quant.toString() + ")"));
+		car.add(carBtn);
+
 
 	}
 
@@ -1347,62 +1599,32 @@ public class HelloWorldGWT implements EntryPoint {
 	 * Metodo para exibir os produtos no carrinho
 	 * */
 	private void mountShopCarContainer() {
-		carrinhoCompras
-				.obterCarrinho(new AsyncCallback<List<CarrinhoComprasElemento>>() {
-
-					@Override
-					public void onFailure(Throwable caught) {
-						System.out.println("Erro ao obter carrinho de compras");
-					}
-
-					@Override
-					public void onSuccess(List<CarrinhoComprasElemento> result) {
-						RootPanel car = RootPanel.get("shopCar");
-						car.clear();
-
-						quant = result.size();
-
-						final Button carBtn = new Button("Fechar Carrinho");
-						carBtn.addClickHandler(new ClickHandler() {
-							public void onClick(ClickEvent event) {
-								mountShopCarStatus();
-							}
-						});
-						car.add(carBtn);
-
-						buildCarShopTable(car, result);
-
-						final Button carBtn2 = new Button("Concluir Compra");
-						carBtn2.addClickHandler(new ClickHandler() {
-							public void onClick(ClickEvent event) {
-								Window.alert("Concluir Comprar!!!");
-							}
-						});
-						car.add(carBtn2);
-
+		carrinhoCompras.obterCarrinho(new AsyncCallback<List<CarrinhoComprasElemento>>() {
+			
+			@Override
+			public void onSuccess(final List<CarrinhoComprasElemento> result) {
+				RootPanel car = RootPanel.get("shopCar");
+				final Button carBtn = new Button("Fechar Carrinho");
+				
+				carBtn.addClickHandler(new ClickHandler() {
+					public void onClick(ClickEvent event) {
+						initCarShop();
 					}
 				});
-	}
-
-	/**
-	 * Atualiza as quantidades
-	 * */
-	private void setQuantCarShop() {
-
-		carrinhoCompras
-				.obterCarrinho(new AsyncCallback<List<CarrinhoComprasElemento>>() {
-
-					@Override
-					public void onFailure(Throwable caught) {
-						System.out.println("Erro ao obter carrinho de compras");
-					}
-
-					@Override
-					public void onSuccess(List<CarrinhoComprasElemento> result) {
-
-						quant = result.size();
-					}
-				});
+				
+				car.clear();
+				car.add(carBtn);
+				
+				buildCarShopTable(car, result);
+				
+			}
+			
+			@Override
+			public void onFailure(Throwable caught) {
+				System.out.println("Erro ao contruir carrinho container");
+				
+			}
+		});
 	}
 
 	/**
@@ -1410,7 +1632,7 @@ public class HelloWorldGWT implements EntryPoint {
 	 * */
 	private void putInCarShop(Produto produto) {
 
-		carrinhoCompras.adicionarProduto(produto, new AsyncCallback<Boolean>() {
+		carrinhoCompras.adicionarProduto(produto, new AsyncCallback<Integer>() {
 
 			@Override
 			public void onFailure(Throwable caught) {
@@ -1418,9 +1640,8 @@ public class HelloWorldGWT implements EntryPoint {
 			}
 
 			@Override
-			public void onSuccess(Boolean result) {
-				setQuantCarShop();
-				mountShopCarStatus();
+			public void onSuccess(Integer result) {
+				mountShopCarStatus(result);
 			}
 
 		});
@@ -1453,10 +1674,10 @@ public class HelloWorldGWT implements EntryPoint {
 				public void onClick(ClickEvent event) {
 					carrinhoCompras.removerProduto((list.get(Integer
 							.parseInt(event.getRelativeElement().getId()))
-							.getProduto()), new AsyncCallback<Boolean>() {
+							.getProduto()), new AsyncCallback<Integer>() {
 
 						@Override
-						public void onSuccess(Boolean result) {
+						public void onSuccess(Integer result) {
 
 						}
 
@@ -1478,14 +1699,14 @@ public class HelloWorldGWT implements EntryPoint {
 			table.setText(
 					count,
 					2,
-					prod.getNome() + ", preÃ§o: "
+					prod.getNome() + ", preço: "
 							+ Double.toString(prod.getPreco()));
 			table.setWidget(count, 3, btn);
 
 			count++;
 		}
-
 		rp.add(table);
+
 
 	}
 

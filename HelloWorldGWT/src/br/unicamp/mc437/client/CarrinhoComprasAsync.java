@@ -9,12 +9,14 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 
 public interface CarrinhoComprasAsync {
 
-	void adicionarProduto(Produto produto, AsyncCallback<Boolean> callback);
+	void adicionarProduto(Produto produto, AsyncCallback<Integer> callback);
 
-	void removerProduto(Produto produto, AsyncCallback<Boolean> callback);
+	void removerProduto(Produto produto, AsyncCallback<Integer> callback);
 
 	void obterCarrinho(AsyncCallback<List<CarrinhoComprasElemento>> callback);
 
 	void esvaziarCarrinho(AsyncCallback<Boolean> callback);
+
+	void initCarShop(AsyncCallback<Void> callback);
 
 }

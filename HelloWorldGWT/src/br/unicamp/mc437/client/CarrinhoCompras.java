@@ -11,9 +11,10 @@ import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
 @RemoteServiceRelativePath("carrinhoCompras")
 public interface CarrinhoCompras extends RemoteService{
 	
-	boolean adicionarProduto(Produto produto);
+	Integer adicionarProduto(Produto produto);
 	List<CarrinhoComprasElemento> obterCarrinho();
 	boolean esvaziarCarrinho();
-	boolean removerProduto(Produto produto);
+	Integer removerProduto(Produto produto);
+	void initCarShop();
 
 }

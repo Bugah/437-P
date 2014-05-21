@@ -2,6 +2,7 @@ package br.unicamp.mc437.server;
 
 import java.util.ArrayList;
 import java.util.Enumeration;
+import java.util.HashMap;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -19,43 +20,66 @@ public class CarrinhoComprasImpl extends RemoteServiceServlet implements Carrinh
 	private static final long serialVersionUID = 4456105400553118785L;
 	
 	@Override
-	public boolean adicionarProduto(Produto produto){
+	public void initCarShop(){
 		HttpServletRequest httpServletRequest = getThreadLocalRequest();
         HttpSession session = httpServletRequest.getSession();
         
-        Object obj = session.getAttribute(produto.getNome());
-		if(obj == null)
-			storeProd(produto);
-		else
-			icrementProd(produto);
-		
-		return true;
+        List<CarrinhoComprasElemento> list = new  ArrayList<CarrinhoComprasElemento>();
+        
+        Object obj = session.getAttribute("carShop");
+        if(obj == null){
+        	session.setAttribute("carShop", list);
+        }
 	}
 	
 	@Override
-	public boolean removerProduto(Produto produto){
-		return deleteProd(produto);
+	public Integer adicionarProduto(Produto produto){
+		HttpServletRequest httpServletRequest = getThreadLocalRequest();
+	     HttpSession session = httpServletRequest.getSession(true);
+	     
+	     @SuppressWarnings("unchecked")
+	     List<CarrinhoComprasElemento> car =  (ArrayList<CarrinhoComprasElemento>)session.getAttribute("carShop");
+	     
+	     Integer i = findProdId(car, produto);
+	     
+	     if(i == -1){
+	    	 CarrinhoComprasElemento elem = new CarrinhoComprasElemento();
+	    	 elem.setProduto(produto);
+	    	 elem.setQuantidade(1);
+	    	 car.add(elem);
+	     }
+	     else{
+	    	 car.get(i).setQuantidade(car.get(i).getQuantidade() + 1);
+	     }
+	     
+	     session.setAttribute("carShop", car);
+	     
+	     return  car.size();
+	}
+	
+	@Override
+	public Integer removerProduto(Produto produto){
+		HttpServletRequest httpServletRequest = getThreadLocalRequest();
+        HttpSession session = httpServletRequest.getSession();
+        
+        @SuppressWarnings("unchecked")
+		List<CarrinhoComprasElemento> car = (ArrayList<CarrinhoComprasElemento>) session.getAttribute("carShop");
+        
+        car.remove(car.get(findProdId(car, produto)));
+        
+        session.setAttribute("carShop", car);
+        
+        return car.size();
 	}
 	
 	@Override
 	public List<CarrinhoComprasElemento> obterCarrinho(){
 		
-		List<CarrinhoComprasElemento> carrinho = new ArrayList<>();
-		
 		HttpServletRequest httpServletRequest = getThreadLocalRequest();
         HttpSession session = httpServletRequest.getSession();
         
-        Enumeration<String> list =  session.getAttributeNames();
-        
-        while(list.hasMoreElements()){
-        	String element = list.nextElement();
-        	if(!element.contains("-Quantidade")){
-        		CarrinhoComprasElemento carrinhoElement = new CarrinhoComprasElemento();
-        		carrinhoElement.setProduto(getProd(element));
-        		carrinhoElement.setQuantidade(getQuant(element));
-        		carrinho.add(carrinhoElement);
-        	}
-        }
+        @SuppressWarnings("unchecked")
+        List<CarrinhoComprasElemento> carrinho =  (ArrayList<CarrinhoComprasElemento>) session.getAttribute("carShop");
         
 		return carrinho;
 	}
@@ -65,52 +89,45 @@ public class CarrinhoComprasImpl extends RemoteServiceServlet implements Carrinh
 		HttpServletRequest httpServletRequest = getThreadLocalRequest();
         HttpSession session = httpServletRequest.getSession();
         
-        Enumeration<String> list =  session.getAttributeNames();
+        session.removeAttribute("carShop");
         
-        while(list.hasMoreElements()){
-        	session.removeAttribute(list.nextElement());
-        }
+        initCarShop();
         
 		return true;
 	}
-
 	
-	private void storeProd(Produto product){
-		
-		 HttpServletRequest httpServletRequest = getThreadLocalRequest();
-	     HttpSession session = httpServletRequest.getSession(true);
-	     session.setAttribute(product.getNome(), product);
-	     session.setAttribute(product.getNome()+"-Quantidade", 1);
-	}
-	
-	private void icrementProd(Produto product){
-		HttpServletRequest httpServletRequest = getThreadLocalRequest();
-	    HttpSession session = httpServletRequest.getSession(true);
-	    Integer quant = (Integer) session.getAttribute(product.getNome()+"-Quantidade");
-	    
-	    session.setAttribute(product.getNome()+"-Quantidade", quant+1);
-	}
-	
-	private boolean deleteProd(Produto product){
+	private Produto getProd(Produto product){
 		HttpServletRequest httpServletRequest = getThreadLocalRequest();
         HttpSession session = httpServletRequest.getSession();
-        session.removeAttribute(product.getNome());
-        session.removeAttribute(product.getNome()+"-Quantidade");
         
-        return true;
+        @SuppressWarnings("unchecked")
+		List<CarrinhoComprasElemento> car = (ArrayList<CarrinhoComprasElemento>) session.getAttribute("carShop");
+        
+        return car.get(findProdId(car, product)).getProduto();
+        
+        
 	}
 	
-	private Produto getProd(String product){
+	private Integer getQuant(Produto product){
 		HttpServletRequest httpServletRequest = getThreadLocalRequest();
         HttpSession session = httpServletRequest.getSession();
-        return (Produto) session.getAttribute(product);
+        
+        @SuppressWarnings("unchecked")
+		List<CarrinhoComprasElemento> car = (ArrayList<CarrinhoComprasElemento>) session.getAttribute("carShop");
+        
+        return car.get(findProdId(car, product)).getQuantidade();
 	}
 	
-	private Integer getQuant(String product){
-		HttpServletRequest httpServletRequest = getThreadLocalRequest();
-        HttpSession session = httpServletRequest.getSession();
-        return (Integer) session.getAttribute(product+"-Quantidade");
+	private Integer findProdId(List<CarrinhoComprasElemento> car, Produto prod){
+		
+		for(Integer i=0; i < car.size(); i++){
+			if(car.get(i).getProduto().getNome().equals(prod.getNome()))
+				return i;
+		}
+		
+		return -1;
 	}
 	
 	
 }
+
