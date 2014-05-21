@@ -213,7 +213,7 @@ pip-log.txt
 .mr.developer.cfg
 
 
-HelloWorldGWT/war/WEB-INF/deploy/
-HelloWorldGWT/war/helloworldgwt/helloworldgwt.devmode.js
-HelloWorldGWT/gwt-unitCache/
+HelloWorldGWT/war/WEB-INF/deploy/*.*
+HelloWorldGWT/war/helloworldgwt/*.*
+HelloWorldGWT/gwt-unitCache/*.*
 HelloWorldGWT/war/WEB-INF/deploy/helloworldgwt/rpcPolicyManifest/manifest.txt
