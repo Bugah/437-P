@@ -9,6 +9,7 @@ import br.unicamp.mc437.client.datatypes.Administrador;
 import br.unicamp.mc437.client.datatypes.CarrinhoComprasElemento;
 import br.unicamp.mc437.client.datatypes.Produto;
 import br.unicamp.mc437.client.datatypes.SubCategoria;
+import br.unicamp.mc437.server.FinalizarCompraImpl;
 import br.unicamp.mc437.shared.FieldVerifier;
 
 import com.google.gwt.core.client.EntryPoint;
@@ -86,6 +87,9 @@ public class HelloWorldGWT implements EntryPoint {
 	 */
 	private final LoginServiceAsync loginService = GWT
 			.create(LoginService.class);
+	
+	private final FinalizarCompraServiceAsync finalizarCompraService = GWT
+			.create(FinalizarCompraService.class);
 
 	private List<Produto> slotProd = null;
 
@@ -130,6 +134,17 @@ public class HelloWorldGWT implements EntryPoint {
 					.removeParameter("id_categoria").buildString();
 			Anchor link2 = new Anchor("Add Produtos (Colocar IF ADM)", urlBase);
 			RootPanel.get("lk_addProduto").add(link2);
+		}
+		
+		// mudar if pra só exibir qdo cliente estiver logado
+		if (true) {
+
+			urlBase = com.google.gwt.user.client.Window.Location
+					.createUrlBuilder().setParameter("page", "finalizarCompras")
+					.removeParameter("categoria_nome")
+					.removeParameter("id_categoria").buildString();
+			Anchor link2 = new Anchor("Finalizar Compras (colocar if cliente)", urlBase);
+			RootPanel.get("lk_finalizarCompras").add(link2);
 		}
 
 		// fim navegacao
@@ -832,7 +847,7 @@ public class HelloWorldGWT implements EntryPoint {
 		// .getStyle().setDisplay(Display.NONE);
 		// colocar mias um IF se está logado como ADM
 		// neste IF é definido se as opcoes de Criacao de Produtos Aparecerão
-		if (getPageAtual != null)
+		if (getPageAtual != null){
 			if (getPageAtual.compareTo("addProduto") == 0) {
 
 				com.google.gwt.user.client.DOM
@@ -872,6 +887,123 @@ public class HelloWorldGWT implements EntryPoint {
 						});
 
 			}
+			
+			if (getPageAtual.compareTo("finalizarCompras") == 0) {
+
+				com.google.gwt.user.client.DOM
+						.getElementById("exibiFinalizarCompras").getStyle()
+						.setDisplay(Display.BLOCK);
+				
+				finalizarCompraService.simularCompra(new AsyncCallback<Void>() {
+					public void onFailure(Throwable caught) {
+					}
+
+					@Override
+					public void onSuccess(Void result) {
+						
+						
+						/**/
+						
+						
+						finalizarCompraService.getAtualCarrinho(new AsyncCallback<ArrayList<HashMap<String,String>>>() {
+							
+							@Override
+							public void onSuccess(ArrayList<HashMap<String, String>> result) {
+							
+								final ScrollPanel r = new ScrollPanel();
+								final HTML h = new HTML();
+								double totalWithoutFrete=0;
+								String html = "<table><tr><td>Nome</td><td>Pre&ccedil;o unitario</td><td>Quantidade</td><td>Pre&ccedil;o total</td></tr>";
+							for(int i=0;i<result.size();i++){
+								html += "<tr><td>"+result.get(i).get("name")+"</td><td>"+result.get(i).get("unitPrice")+"</td><td>"+result.get(i).get("quantity")+"</td><td>"+result.get(i).get("totalPrice")+"</td></tr>";
+								totalWithoutFrete += Double.parseDouble(result.get(i).get("totalPrice"));
+							}
+								html +="<tr><td></td><td></td><td>Total sem frete</td><td>"+Double.toString(totalWithoutFrete)+"</td></table>";
+								h.setHTML(html);
+								r.add(h);
+							RootPanel.get("FCrecupCarrinho").add(r);
+
+							
+							
+							finalizarCompraService.clienteId1(1, new AsyncCallback<HashMap<String,String>>() {
+								
+								@Override
+								public void onSuccess(HashMap<String, String> result) {
+									final TextBox sentName = new TextBox();
+									RootPanel.get("FCsentName").add(sentName);
+									sentName.setText(result.get("name"));
+									
+									final TextBox adress = new TextBox();
+									RootPanel.get("FCadress").add(adress);
+									adress.setText(result.get("adress"));
+									
+									final TextBox city = new TextBox();
+									RootPanel.get("FCcity").add(city);
+									city.setText(result.get("city"));
+									
+									final TextBox state = new TextBox();
+									RootPanel.get("FCstate").add(state);
+									state.setText(result.get("state"));
+									
+									final TextBox cep = new TextBox();
+									RootPanel.get("FCcep").add(cep);
+									cep.setText(result.get("cep"));
+								}
+								
+								@Override
+								public void onFailure(Throwable caught) {
+									// TODO Auto-generated method stub
+									
+								}
+							});
+							
+							
+							
+							
+							
+							
+							}
+							
+							@Override
+							public void onFailure(Throwable caught) {
+								// TODO Auto-generated method stub
+							}
+						});
+						
+						
+						/**/
+					}
+				});
+			
+				subCatService
+						.getSubCategorias(new AsyncCallback<ArrayList<HashMap<String, String>>>() {
+							public void onFailure(Throwable caught) {
+								dialogBox
+										.setText("Remote Procedure Call - Failure");
+								serverResponseLabel
+										.addStyleName("serverResponseLabelError");
+								serverResponseLabel.setHTML(SERVER_ERROR);
+								dialogBox.center();
+								closeButton.setFocus(true);
+							}
+
+							@Override
+							public void onSuccess(
+									ArrayList<HashMap<String, String>> result) {
+								for (int i = 0; i < result.size(); i++) {
+									HashMap<String, String> hashMap = result
+											.get(i);
+									subCats.addItem(hashMap.get("name") + " ("
+											+ hashMap.get("catName") + ")",
+											hashMap.get("id"));
+								}
+								RootPanel.get("subCats").add(subCats);
+							}
+						});
+
+			}
+		
+	}
 
 		class HandlerCadastrarProduto implements ClickHandler, KeyUpHandler {
 			/**

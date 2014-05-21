@@ -45,6 +45,15 @@
     <url-pattern>/helloworldgwt/subCategoria</url-pattern>
   </servlet-mapping>
   
+              <servlet>
+    <servlet-name>finalizarCompraServlet</servlet-name>
+    <servlet-class>br.unicamp.mc437.server.FinalizarCompraImpl</servlet-class>
+  </servlet>
+    <servlet-mapping>
+    <servlet-name>finalizarCompraServlet</servlet-name>
+    <url-pattern>/helloworldgwt/finalizarCompra</url-pattern>
+  </servlet-mapping>
+  
   <!-- Default page to serve -->
   <welcome-file-list>
     <welcome-file>HelloWorldGWT.html</welcome-file>

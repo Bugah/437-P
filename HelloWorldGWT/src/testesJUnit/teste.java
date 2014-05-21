@@ -1,17 +1,15 @@
 package testesJUnit;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import org.junit.Test;
-import static org.junit.Assert.*;
 
-import br.unicamp.mc437.client.datatypes.Administrador;
-import br.unicamp.mc437.client.datatypes.Produto;
-import br.unicamp.mc437.client.datatypes.SubCategoria;
-import br.unicamp.mc437.server.InserirProdutoImpl;
+import br.unicamp.mc437.server.FinalizarCompraImpl;
+
 
 public class teste {
-	@Test
+	/*@Test
 	public void test1() {
 		Produto p= new Produto();
 		Administrador admin = new Administrador();
@@ -40,5 +38,24 @@ public class teste {
 		//esse caso de teste está correto?
 		//esse caso de teste exercita bem a lógica do sistema?
 		//DICA: o testador deve validar a lógica do negócio (requisitos)
+	}*/
+	
+	@Test
+	public void testFinalizarCompras(){
+		ArrayList<HashMap<String,Object>> machin;
+		FinalizarCompraImpl fci = new FinalizarCompraImpl();
+		fci.simularCompra();
+		
+	machin = fci.getAtualCarrinho();
+	
+	for(int i=0;i<machin.size();i++){
+		System.out.println(machin.get(i).get("idProd"));
+		
+	}
+	
+		
+		
+		
+		
 	}
 }
