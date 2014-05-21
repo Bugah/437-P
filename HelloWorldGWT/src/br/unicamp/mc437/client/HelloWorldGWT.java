@@ -9,7 +9,6 @@ import br.unicamp.mc437.client.datatypes.Administrador;
 import br.unicamp.mc437.client.datatypes.CarrinhoComprasElemento;
 import br.unicamp.mc437.client.datatypes.Produto;
 import br.unicamp.mc437.client.datatypes.SubCategoria;
-import br.unicamp.mc437.server.FinalizarCompraImpl;
 import br.unicamp.mc437.shared.FieldVerifier;
 
 import com.google.gwt.core.client.EntryPoint;
@@ -20,33 +19,24 @@ import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.KeyCodes;
 import com.google.gwt.event.dom.client.KeyUpEvent;
 import com.google.gwt.event.dom.client.KeyUpHandler;
+import com.google.gwt.event.logical.shared.ValueChangeEvent;
+import com.google.gwt.event.logical.shared.ValueChangeHandler;
+import com.google.gwt.i18n.client.NumberFormat;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
+import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.DialogBox;
 import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.HTML;
+import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.ListBox;
+import com.google.gwt.user.client.ui.RadioButton;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.ScrollPanel;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
-import com.google.gwt.user.client.ui.Hyperlink;
-import com.google.gwt.user.client.ui.Anchor;
-
-import java.math.BigDecimal;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.PreparedStatement;
-import java.text.*;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
-
-import java_cup.parser;
 
 /**
  * Entry point classes define <code>onModuleLoad()</code>.
@@ -99,6 +89,22 @@ public class HelloWorldGWT implements EntryPoint {
 
 	private Integer quant = 0;
 
+	private double totalPrice;
+	
+	public void simulFrete(int length, double totalWF, HTMLPanel h, RadioButton radio){
+		double lengthD = (double) length;
+		double priceFrete = lengthD/15;
+		
+		NumberFormat format = NumberFormat.getFormat("0.00");
+		
+		if(radio.getValue()){
+			priceFrete = priceFrete * 2;
+		}
+		h.getElementById("FCfrete").setInnerHTML(format.format(priceFrete));
+		h.getElementById("FCtotalPrice").setInnerHTML(format.format(priceFrete+totalWF));	
+		totalPrice = priceFrete+totalWF;
+	}
+	
 	public void onModuleLoad() {
 		/* Area Carrinho de Compras */
 		setQuantCarShop();
@@ -910,25 +916,44 @@ public class HelloWorldGWT implements EntryPoint {
 							@Override
 							public void onSuccess(ArrayList<HashMap<String, String>> result) {
 							
-								final ScrollPanel r = new ScrollPanel();
-								final HTML h = new HTML();
+							//	final ScrollPanel r = new ScrollPanel();
+								final HTMLPanel h;// = new HTML();
 								double totalWithoutFrete=0;
+							final double totalWF;
 								String html = "<table><tr><td>Nome</td><td>Pre&ccedil;o unitario</td><td>Quantidade</td><td>Pre&ccedil;o total</td></tr>";
 							for(int i=0;i<result.size();i++){
 								html += "<tr><td>"+result.get(i).get("name")+"</td><td>"+result.get(i).get("unitPrice")+"</td><td>"+result.get(i).get("quantity")+"</td><td>"+result.get(i).get("totalPrice")+"</td></tr>";
 								totalWithoutFrete += Double.parseDouble(result.get(i).get("totalPrice"));
 							}
-								html +="<tr><td></td><td></td><td>Total sem frete</td><td>"+Double.toString(totalWithoutFrete)+"</td></table>";
-								h.setHTML(html);
-								r.add(h);
-							RootPanel.get("FCrecupCarrinho").add(r);
-
+								totalWF=totalWithoutFrete;
+								html +="<tr><td></td><td></td><td>Total sem frete: </td><td>"+Double.toString(totalWithoutFrete)+"</td></tr>";
+								html+="<tr><td></td><td>Escolha da frente</td><td id=\"FCrapido\"></td><td id=\"FCeco\"></td>";
+								html +="<tr><td></td><td></td><td>Frete: </td><td id=\"FCfrete\"></td></tr>";
+								html +="<tr><td></td><td></td><td>Total com Frete: </td><td id=\"FCtotalPrice\"></td></tr>";
+									html	+= "</table>";
+									h = new HTMLPanel(html);
+								
+								//h.setHTML(html);
+								//r.add(h);
 							
+
+							 final RadioButton radio0 = new RadioButton("group0", "Rapido");
+							  final RadioButton radio1 = new RadioButton("group0", "Economico");
+							
+								 final RadioButton cartao = new RadioButton("group1", "Cartao");
+								  final RadioButton boleto = new RadioButton("group1", "Boleto");
+							  
+							  radio0.setEnabled(true);
+							  h.add(radio0, "FCrapido");
+							  h.add(radio1, "FCeco");
+							  radio0.setValue(true);
+							  RootPanel.get("FCrecupCarrinho").add(h);  
 							
 							finalizarCompraService.clienteId1(1, new AsyncCallback<HashMap<String,String>>() {
 								
 								@Override
 								public void onSuccess(HashMap<String, String> result) {
+									
 									final TextBox sentName = new TextBox();
 									RootPanel.get("FCsentName").add(sentName);
 									sentName.setText(result.get("name"));
@@ -936,6 +961,8 @@ public class HelloWorldGWT implements EntryPoint {
 									final TextBox adress = new TextBox();
 									RootPanel.get("FCadress").add(adress);
 									adress.setText(result.get("adress"));
+									
+									
 									
 									final TextBox city = new TextBox();
 									RootPanel.get("FCcity").add(city);
@@ -948,6 +975,135 @@ public class HelloWorldGWT implements EntryPoint {
 									final TextBox cep = new TextBox();
 									RootPanel.get("FCcep").add(cep);
 									cep.setText(result.get("cep"));
+									
+									simulFrete(city.getText().length()+cep.getText().length()+adress.getText().length(), totalWF, h,radio0);
+
+									
+									city.addValueChangeHandler(new ValueChangeHandler<String>() {	
+										@Override
+										public void onValueChange(ValueChangeEvent<String> event) {	
+											simulFrete(city.getText().length()+cep.getText().length()+adress.getText().length(), totalWF, h,radio0);
+										}
+									});
+									
+									cep.addValueChangeHandler(new ValueChangeHandler<String>() {	
+										@Override
+										public void onValueChange(ValueChangeEvent<String> event) {
+											simulFrete(city.getText().length()+cep.getText().length()+adress.getText().length(), totalWF, h,radio0);
+
+										}
+									});
+									
+									adress.addValueChangeHandler(new ValueChangeHandler<String>() {	
+										@Override
+										public void onValueChange(ValueChangeEvent<String> event) {
+											simulFrete(city.getText().length()+cep.getText().length()+adress.getText().length(), totalWF, h,radio0);
+}
+									});
+									state.addValueChangeHandler(new ValueChangeHandler<String>() {	
+										@Override
+										public void onValueChange(ValueChangeEvent<String> event) {
+											simulFrete(city.getText().length()+cep.getText().length()+adress.getText().length(), totalWF, h,radio0);
+}
+									});
+									
+									radio0.addClickHandler(new ClickHandler() {
+										
+										@Override
+										public void onClick(ClickEvent event) {
+											simulFrete(city.getText().length()+cep.getText().length()+adress.getText().length(), totalWF, h,radio0);
+											
+										}
+									});
+									
+									radio1.addClickHandler(new ClickHandler() {
+										
+										@Override
+										public void onClick(ClickEvent event) {
+											simulFrete(city.getText().length()+cep.getText().length()+adress.getText().length(), totalWF, h,radio0);
+											
+										}
+									});
+									
+									//sdgdfg;
+									
+									com.google.gwt.user.client.DOM
+									.getElementById("FCcartao").getStyle()
+									.setDisplay(Display.NONE);
+									
+									RootPanel.get("FCccartao").add(cartao);
+									RootPanel.get("FCcboleto").add(boleto);
+									
+									
+									
+									final ListBox parcel = new ListBox(false);
+									//dégueu
+									
+									parcel.addItem("1x", "1");
+									parcel.addItem("2x", "2");
+									parcel.addItem("3x", "3");
+								 final RadioButton visa = new RadioButton("group3", "Visa");
+								 final RadioButton masterCard = new RadioButton("group3", "MasterCard");
+								 visa.setValue(true);
+								 TextBox nameCard = new TextBox();
+								 TextBox numCard = new TextBox();
+								 TextBox segCard = new TextBox();
+								 ListBox monthCard = new ListBox(false);
+								 ListBox yearCard = new ListBox(false);
+								 
+								 monthCard.addItem("1");
+								 monthCard.addItem("2");
+								 monthCard.addItem("3");
+								 monthCard.addItem("4");
+								 monthCard.addItem("5");
+								 monthCard.addItem("6");
+								 monthCard.addItem("7");
+								 monthCard.addItem("8");
+								 monthCard.addItem("9");
+								 monthCard.addItem("10");
+								 monthCard.addItem("11");
+								 monthCard.addItem("12");
+								 
+								 yearCard.addItem("2014");
+								 yearCard.addItem("2015");
+								 yearCard.addItem("2016");
+								 yearCard.addItem("2017");
+								 yearCard.addItem("2018");
+								 yearCard.addItem("2019");
+								 yearCard.addItem("2020");
+								 yearCard.addItem("2021");
+								 
+								 
+								 RootPanel.get("FCkindCartao").add(visa);
+								 RootPanel.get("FCkindCartao").add(masterCard); 
+								 RootPanel.get("FCparcelamento").add(parcel);
+								
+								 RootPanel.get("FCcartaoNome").add(nameCard);
+								 RootPanel.get("FCcartaoNumero").add(numCard);
+								 RootPanel.get("FCcartaoSeguranca").add(segCard);
+								 RootPanel.get("FCcartaoData").add(monthCard);
+								 RootPanel.get("FCcartaoData").add(yearCard);
+									cartao.addClickHandler(new ClickHandler() {
+										
+										@Override
+										public void onClick(ClickEvent event) {
+											com.google.gwt.user.client.DOM
+											.getElementById("FCcartao").getStyle()
+											.setDisplay(Display.BLOCK);
+											
+										}
+									});
+									
+									boleto.addClickHandler(new ClickHandler() {
+										
+										@Override
+										public void onClick(ClickEvent event) {
+											com.google.gwt.user.client.DOM
+											.getElementById("FCcartao").getStyle()
+											.setDisplay(Display.NONE);
+											
+										}
+									});
 								}
 								
 								@Override
