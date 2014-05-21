@@ -1,0 +1,2 @@
+serviceClass: br.unicamp.mc437.client.FinalizarCompraService
+path: 1E6F57A1C3ED0E311688544C10FF27DC.gwt.rpc
