@@ -11,6 +11,9 @@ public class CorreioServer {
 	// Devemos mudar aqui se quisermos redimensionar a embalagem 
 	BigDecimal x = BigDecimal.valueOf(20);
 	
+	public CorreioServer(){
+	}
+	
 	public void setCepOrigem(String c){
 		this.cepOrigem = c;	
 	}

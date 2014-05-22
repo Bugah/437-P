@@ -91,6 +91,8 @@ public class FinalizarCompraImpl  extends RemoteServiceServlet implements Finali
 						double precoTot = (rs.getDouble("PRECO")*listProducts.get(i).get("quantity"));
 						hashMap.put("totalPrice",  Double.toString(precoTot)  );
 						
+					
+						
 						resultado.add(hashMap);
 				} catch (ClassNotFoundException e) {
 					// TODO Auto-generated catch block
@@ -136,6 +138,14 @@ public class FinalizarCompraImpl  extends RemoteServiceServlet implements Finali
 						hashMap.put("city", rs.getString("cidade"));
 						hashMap.put("state", rs.getString("estado"));
 						hashMap.put("cep", rs.getString("cep"));
+						
+						// Calculo de frete para um cep 
+						CorreioServer frete = new CorreioServer();
+						frete.setCepDestino("05625100");
+						frete.setCepOrigem("13083755");
+						// Mudar conforme servico desejado //
+						frete.setCodServico("40010");
+						hashMap.put("frete", Double.toString(frete.valorFrete()));
 						
 						
 				} catch (ClassNotFoundException e) {

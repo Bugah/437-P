@@ -994,45 +994,47 @@ public class HelloWorldGWT implements EntryPoint {
 									
 									final TextBox cep = new TextBox();
 									RootPanel.get("FCcep").add(cep);
-									cep.setText(result.get("cep"));
+									cep.setText(result.get("frete"));
 									
-									simulFrete(city.getText().length()+cep.getText().length()+adress.getText().length(), totalWF, h,radio0);
-
+									final double frete = Double.parseDouble(result.get("frete"));
 									
 									city.addValueChangeHandler(new ValueChangeHandler<String>() {	
 										@Override
 										public void onValueChange(ValueChangeEvent<String> event) {	
-											simulFrete(city.getText().length()+cep.getText().length()+adress.getText().length(), totalWF, h,radio0);
+											//simulFrete(city.getText().length()+cep.getText().length()+adress.getText().length(), totalWF, h,radio0);
+											totalPrice = frete;
 										}
 									});
 									
 									cep.addValueChangeHandler(new ValueChangeHandler<String>() {	
 										@Override
 										public void onValueChange(ValueChangeEvent<String> event) {
-											simulFrete(city.getText().length()+cep.getText().length()+adress.getText().length(), totalWF, h,radio0);
-
+											//simulFrete(city.getText().length()+cep.getText().length()+adress.getText().length(), totalWF, h,radio0);
+											totalPrice = frete;
 										}
 									});
 									
 									adress.addValueChangeHandler(new ValueChangeHandler<String>() {	
 										@Override
 										public void onValueChange(ValueChangeEvent<String> event) {
-											simulFrete(city.getText().length()+cep.getText().length()+adress.getText().length(), totalWF, h,radio0);
-}
+											//simulFrete(city.getText().length()+cep.getText().length()+adress.getText().length(), totalWF, h,radio0);
+											totalPrice = frete;
+										}
 									});
 									state.addValueChangeHandler(new ValueChangeHandler<String>() {	
 										@Override
 										public void onValueChange(ValueChangeEvent<String> event) {
-											simulFrete(city.getText().length()+cep.getText().length()+adress.getText().length(), totalWF, h,radio0);
-}
+											//simulFrete(city.getText().length()+cep.getText().length()+adress.getText().length(), totalWF, h,radio0);
+											totalPrice = frete;
+										}
 									});
 									
 									radio0.addClickHandler(new ClickHandler() {
 										
 										@Override
 										public void onClick(ClickEvent event) {
-											simulFrete(city.getText().length()+cep.getText().length()+adress.getText().length(), totalWF, h,radio0);
-											
+											//simulFrete(city.getText().length()+cep.getText().length()+adress.getText().length(), totalWF, h,radio0);
+											totalPrice = frete;
 										}
 									});
 									
@@ -1040,8 +1042,8 @@ public class HelloWorldGWT implements EntryPoint {
 										
 										@Override
 										public void onClick(ClickEvent event) {
-											simulFrete(city.getText().length()+cep.getText().length()+adress.getText().length(), totalWF, h,radio0);
-											
+											//simulFrete(city.getText().length()+cep.getText().length()+adress.getText().length(), totalWF, h,radio0);
+											totalPrice = frete;
 										}
 									});
 									
