@@ -10,6 +10,8 @@ import java.util.HashMap;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import org.tempuri.CorreioServer;
+
 import br.unicamp.mc437.client.FinalizarCompraService;
 import br.unicamp.mc437.client.datatypes.Produto;
 
@@ -62,7 +64,7 @@ public class FinalizarCompraImpl  extends RemoteServiceServlet implements Finali
 
 	@Override
 	public ArrayList<HashMap<String, String>> getAtualCarrinho() {
-
+		
 		ArrayList<HashMap<String, String>> resultado = new ArrayList<HashMap<String, String>>();
 		HttpServletRequest httpServletRequest = getThreadLocalRequest();
         HttpSession session = httpServletRequest.getSession();

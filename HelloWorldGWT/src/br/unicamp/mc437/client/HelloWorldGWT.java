@@ -5,6 +5,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.tempuri.CalcPrecoPrazoWSSoapProxy;
+
 import br.unicamp.mc437.client.datatypes.Administrador;
 import br.unicamp.mc437.client.datatypes.CarrinhoComprasElemento;
 import br.unicamp.mc437.client.datatypes.Produto;
@@ -99,7 +101,23 @@ public class HelloWorldGWT implements EntryPoint {
 		double lengthD = (double) length;
 		double priceFrete = lengthD/15;
 		
+		/*
+		// ATENCAO, SETAR AS VARIAVEIS ANTES DE CHAMAR A FUNCAO
+		CorreioImpl correio = new CorreioImpl();
 		
+		correio.setCepOrigem("13083755");
+		correio.setCepDestino("06525100");
+		// SETAR CODIGO DE SERVICO //
+		
+		/*  40010 SEDEX Varejo 
+			40045 SEDEX a Cobrar Varejo 
+			40215 SEDEX 10 Varejo 
+			40290 SEDEX Hoje Varejo 
+			41106 PAC Varejo 	         */
+		/*
+		double correctPrice = correio.valorFrete();
+		
+		*/
 		
 		if(radio.getValue()){
 			priceFrete = priceFrete * 2;

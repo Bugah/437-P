@@ -8,6 +8,8 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import org.tempuri.CorreioServer;
+
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 
 import br.unicamp.mc437.client.CarrinhoCompras;
