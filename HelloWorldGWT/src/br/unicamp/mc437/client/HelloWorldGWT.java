@@ -994,9 +994,13 @@ public class HelloWorldGWT implements EntryPoint {
 									
 									final TextBox cep = new TextBox();
 									RootPanel.get("FCcep").add(cep);
-									cep.setText(result.get("frete"));
+									cep.setText(result.get("cep"));
 									
 									final double frete = Double.parseDouble(result.get("frete"));
+									
+									h.getElementById("FCfrete").setInnerHTML(format.format(frete).replaceAll("\\.", "\\,"));
+									h.getElementById("FCtotalPrice").setInnerHTML(format.format(frete+totalWF).replaceAll("\\.", "\\,"));	
+									totalPrice = frete+totalWF;
 									
 									city.addValueChangeHandler(new ValueChangeHandler<String>() {	
 										@Override
