@@ -142,6 +142,7 @@ public class HelloWorldGWT implements EntryPoint {
 				.removeParameter("page").removeParameter("categoria_nome")
 				.removeParameter("id_categoria").buildString();
 		Anchor link0 = new Anchor("Home", urlBase);
+		
 		RootPanel.get("lk_home").add(link0);
 
 		// urlBase =
@@ -151,17 +152,31 @@ public class HelloWorldGWT implements EntryPoint {
 		// .removeParameter("id_categoria").buildString();
 		// Anchor link1 = new Anchor("Carrinho", urlBase);
 		// RootPanel.get("lk_carrinho").add(link1);
+		loginService.getAdminOn(new AsyncCallback<Administrador>() {
+			
+			@Override
+			public void onSuccess(Administrador result) {
+				if (result!=null) {
+					System.out.println(result.getId());
 
+					String urlBase = com.google.gwt.user.client.Window.Location
+							.createUrlBuilder().setParameter("page", "addProduto")
+							.removeParameter("categoria_nome")
+							.removeParameter("id_categoria").buildString();
+					Anchor link2 = new Anchor("Add Produtos", urlBase);
+					RootPanel.get("lk_addProduto").add(link2);
+				} 
+				
+			}
+			
+			@Override
+			public void onFailure(Throwable caught) {
+				// TODO Auto-generated method stub
+				
+			}
+		});
 		// mudar if pra só exibir qdo ADM estiver logado
-		if (true) {
-
-			urlBase = com.google.gwt.user.client.Window.Location
-					.createUrlBuilder().setParameter("page", "addProduto")
-					.removeParameter("categoria_nome")
-					.removeParameter("id_categoria").buildString();
-			Anchor link2 = new Anchor("Add Produtos (Colocar IF ADM)", urlBase);
-			RootPanel.get("lk_addProduto").add(link2);
-		}
+	
 		
 		// mudar if pra só exibir qdo cliente estiver logado
 		if (true) {
@@ -958,7 +973,7 @@ public class HelloWorldGWT implements EntryPoint {
 							}
 								totalWF=totalWithoutFrete;
 								html +="<tr><td></td><td></td><td>Total sem frete: </td><td>"+Double.toString(totalWithoutFrete)+"</td></tr>";
-								html+="<tr><td></td><td>Escolha da frente</td><td id=\"FCrapido\"></td><td id=\"FCeco\"></td>";
+								html+="<tr><td></td><td>Escolha da Frete</td><td id=\"FCrapido\"></td><td id=\"FCeco\"></td>";
 								html +="<tr><td></td><td></td><td>Frete: </td><td id=\"FCfrete\"></td></tr>";
 								html +="<tr><td></td><td></td><td>Total com Frete: </td><td id=\"FCtotalPrice\"></td></tr>";
 									html	+= "</table>";
@@ -1011,6 +1026,7 @@ public class HelloWorldGWT implements EntryPoint {
 									h.getElementById("FCfrete").setInnerHTML(format.format(frete).replaceAll("\\.", "\\,"));
 									h.getElementById("FCtotalPrice").setInnerHTML(format.format(frete+totalWF).replaceAll("\\.", "\\,"));
 									
+									totalPrice = frete+totalWF;
 									city.addValueChangeHandler(new ValueChangeHandler<String>() {	
 										@Override
 										public void onValueChange(ValueChangeEvent<String> event) {	
@@ -1527,6 +1543,7 @@ public class HelloWorldGWT implements EntryPoint {
 		loginSenha.setText("");
 
 		final Button loginButton = new Button("Entrar");
+		
 		loginButton.addStyleName("loginButton");
 		RootPanel.get("loginButton").add(loginButton);
 

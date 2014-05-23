@@ -46,8 +46,7 @@ public class LoginServiceImpl  extends RemoteServiceServlet implements LoginServ
 		}
 		else{
 			
-			loggedclient=null;
-			return false;
+			return loginAdministrador(username,senha);
 		}
 	}
 	
