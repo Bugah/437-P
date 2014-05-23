@@ -53,7 +53,15 @@
     <servlet-name>finalizarCompraServlet</servlet-name>
     <url-pattern>/helloworldgwt/finalizarCompra</url-pattern>
   </servlet-mapping>
-  
+    <servlet>
+        
+    <servlet-name>loginServlet</servlet-name>
+    <servlet-class>br.unicamp.mc437.server.LoginServiceImpl</servlet-class>
+  </servlet>
+    <servlet-mapping>
+    <servlet-name>loginServlet</servlet-name>
+    <url-pattern>/helloworldgwt/usuario</url-pattern>
+  </servlet-mapping>
   <!-- Default page to serve -->
   <welcome-file-list>
     <welcome-file>HelloWorldGWT.html</welcome-file>

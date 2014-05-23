@@ -97,6 +97,7 @@ public class HelloWorldGWT implements EntryPoint {
 	private double totalPrice;
 	NumberFormat format = NumberFormat.getFormat("R$ 0.00");
 	
+	
 	public void simulFrete(int length, double totalWF, HTMLPanel h, RadioButton radio){
 		double lengthD = (double) length;
 		double priceFrete = lengthD/15;
@@ -168,7 +169,7 @@ public class HelloWorldGWT implements EntryPoint {
 					.createUrlBuilder().setParameter("page", "finalizarCompras")
 					.removeParameter("categoria_nome")
 					.removeParameter("id_categoria").buildString();
-			Anchor link2 = new Anchor("Finalizar Compras (colocar if cliente)", urlBase);
+			Anchor link2 = new Anchor("Finalizar Compras", urlBase);
 			RootPanel.get("lk_finalizarCompras").add(link2);
 		}
 
@@ -911,9 +912,18 @@ public class HelloWorldGWT implements EntryPoint {
 						});
 
 			}
+		
 			
 			if (getPageAtual.compareTo("finalizarCompras") == 0) {
 
+				loginService.getIdConnectedClient(new AsyncCallback<Integer>() {
+					
+					@Override
+					public void onSuccess(Integer result) {
+						if(result!=0){
+						final int idClient = result;						
+		
+				
 				com.google.gwt.user.client.DOM
 						.getElementById("exibiFinalizarCompras").getStyle()
 						.setDisplay(Display.BLOCK);
@@ -968,8 +978,7 @@ public class HelloWorldGWT implements EntryPoint {
 							  h.add(radio1, "FCeco");
 							  radio0.setValue(true);
 							  RootPanel.get("FCrecupCarrinho").add(h);  
-							
-							finalizarCompraService.clienteId1(1, new AsyncCallback<HashMap<String,String>>() {
+							finalizarCompraService.clienteId1(idClient, new AsyncCallback<HashMap<String,String>>() {
 								
 								@Override
 								public void onSuccess(HashMap<String, String> result) {
@@ -999,37 +1008,36 @@ public class HelloWorldGWT implements EntryPoint {
 									final double frete = Double.parseDouble(result.get("frete"));
 									
 									h.getElementById("FCfrete").setInnerHTML(format.format(frete).replaceAll("\\.", "\\,"));
-									h.getElementById("FCtotalPrice").setInnerHTML(format.format(frete+totalWF).replaceAll("\\.", "\\,"));	
-									totalPrice = frete+totalWF;
+									h.getElementById("FCtotalPrice").setInnerHTML(format.format(frete+totalWF).replaceAll("\\.", "\\,"));
 									
 									city.addValueChangeHandler(new ValueChangeHandler<String>() {	
 										@Override
 										public void onValueChange(ValueChangeEvent<String> event) {	
-											//simulFrete(city.getText().length()+cep.getText().length()+adress.getText().length(), totalWF, h,radio0);
-											totalPrice = frete;
+											h.getElementById("FCfrete").setInnerHTML(format.format(frete).replaceAll("\\.", "\\,"));
+											h.getElementById("FCtotalPrice").setInnerHTML(format.format(frete+totalWF).replaceAll("\\.", "\\,"));
 										}
 									});
 									
 									cep.addValueChangeHandler(new ValueChangeHandler<String>() {	
 										@Override
 										public void onValueChange(ValueChangeEvent<String> event) {
-											//simulFrete(city.getText().length()+cep.getText().length()+adress.getText().length(), totalWF, h,radio0);
-											totalPrice = frete;
+											h.getElementById("FCfrete").setInnerHTML(format.format(frete).replaceAll("\\.", "\\,"));
+											h.getElementById("FCtotalPrice").setInnerHTML(format.format(frete+totalWF).replaceAll("\\.", "\\,"));
 										}
 									});
 									
 									adress.addValueChangeHandler(new ValueChangeHandler<String>() {	
 										@Override
 										public void onValueChange(ValueChangeEvent<String> event) {
-											//simulFrete(city.getText().length()+cep.getText().length()+adress.getText().length(), totalWF, h,radio0);
-											totalPrice = frete;
+											h.getElementById("FCfrete").setInnerHTML(format.format(frete).replaceAll("\\.", "\\,"));
+											h.getElementById("FCtotalPrice").setInnerHTML(format.format(frete+totalWF).replaceAll("\\.", "\\,"));
 										}
 									});
 									state.addValueChangeHandler(new ValueChangeHandler<String>() {	
 										@Override
 										public void onValueChange(ValueChangeEvent<String> event) {
-											//simulFrete(city.getText().length()+cep.getText().length()+adress.getText().length(), totalWF, h,radio0);
-											totalPrice = frete;
+											h.getElementById("FCfrete").setInnerHTML(format.format(frete).replaceAll("\\.", "\\,"));
+											h.getElementById("FCtotalPrice").setInnerHTML(format.format(frete+totalWF).replaceAll("\\.", "\\,"));
 										}
 									});
 									
@@ -1037,8 +1045,8 @@ public class HelloWorldGWT implements EntryPoint {
 										
 										@Override
 										public void onClick(ClickEvent event) {
-											//simulFrete(city.getText().length()+cep.getText().length()+adress.getText().length(), totalWF, h,radio0);
-											totalPrice = frete;
+											h.getElementById("FCfrete").setInnerHTML(format.format(frete).replaceAll("\\.", "\\,"));
+											h.getElementById("FCtotalPrice").setInnerHTML(format.format(frete+totalWF).replaceAll("\\.", "\\,"));
 										}
 									});
 									
@@ -1046,8 +1054,8 @@ public class HelloWorldGWT implements EntryPoint {
 										
 										@Override
 										public void onClick(ClickEvent event) {
-											//simulFrete(city.getText().length()+cep.getText().length()+adress.getText().length(), totalWF, h,radio0);
-											totalPrice = frete;
+											h.getElementById("FCfrete").setInnerHTML(format.format(frete).replaceAll("\\.", "\\,"));
+											h.getElementById("FCtotalPrice").setInnerHTML(format.format(frete+totalWF).replaceAll("\\.", "\\,"));
 										}
 									});
 									
@@ -1411,8 +1419,21 @@ public class HelloWorldGWT implements EntryPoint {
 								RootPanel.get("subCats").add(subCats);
 							}
 						});
+				
+				}
+						
+					}
+					
+					@Override
+					public void onFailure(Throwable caught) {
+						// TODO Auto-generated method stub
+						
+					}
+				});
 
 			}
+			
+			//AQUI
 		
 	}
 

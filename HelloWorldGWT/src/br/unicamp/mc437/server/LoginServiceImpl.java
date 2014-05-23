@@ -187,6 +187,15 @@ public class LoginServiceImpl  extends RemoteServiceServlet implements LoginServ
 		else
 			return null;
 	}
+	
+	@Override
+	public int getIdConnectedClient(){
+		int resultado=0;
+		if(loggedclient!=null){
+		resultado = loggedclient.getId();}
+		return resultado;
+		
+	}
 
 
 }

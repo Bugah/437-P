@@ -18,4 +18,6 @@ public interface LoginServiceAsync {
 	void getUserOn(AsyncCallback<Cliente> callback);
 	void getAdminOn(AsyncCallback<Administrador> callback);
 
+	void getIdConnectedClient(AsyncCallback<Integer> callback);
+
 }

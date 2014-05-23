@@ -19,4 +19,6 @@ public interface LoginService extends RemoteService{
 	Cliente getUserOn();
 	Administrador getAdminOn();
 
+	int getIdConnectedClient();
+
 }
