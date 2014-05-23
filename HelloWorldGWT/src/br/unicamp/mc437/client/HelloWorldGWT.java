@@ -37,6 +37,7 @@ import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.ListBox;
+import com.google.gwt.user.client.ui.PasswordTextBox;
 import com.google.gwt.user.client.ui.RadioButton;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.ScrollPanel;
@@ -1521,7 +1522,7 @@ public class HelloWorldGWT implements EntryPoint {
 		final TextBox loginUsername = new TextBox();
 		RootPanel.get("loginUsername").add(loginUsername);
 		loginUsername.setText("");
-		final TextBox loginSenha = new TextBox();
+		final PasswordTextBox loginSenha = new PasswordTextBox();
 		RootPanel.get("loginSenha").add(loginSenha);
 		loginSenha.setText("");
 
@@ -1568,11 +1569,17 @@ public class HelloWorldGWT implements EntryPoint {
 							}
 
 							public void onSuccess(Boolean ok) {
-								dialogBox.setText("Remote Procedure Call");
+								dialogBox.setText("Login:");
 								serverResponseLabel
 										.removeStyleName("serverResponseLabelError");
+								if(ok){
 								serverResponseLabel
-										.setHTML("Você está logado no sistema!");
+										.setHTML("Voce esta logado no sistema!");
+								}
+								else {
+									serverResponseLabel
+									.setHTML("Senha ou Usuario invalidos!");
+								}
 								dialogBox.center();
 								closeButton.setFocus(true);
 							}
@@ -1601,7 +1608,11 @@ public class HelloWorldGWT implements EntryPoint {
 					
 					@Override
 					public void onSuccess(List<CarrinhoComprasElemento> result) {
-						mountShopCarStatus(result.size());
+						int size = 0;
+						for(CarrinhoComprasElemento i : result){
+							size = size + i.getQuantidade();
+						}
+						mountShopCarStatus(size);
 						
 					}
 					

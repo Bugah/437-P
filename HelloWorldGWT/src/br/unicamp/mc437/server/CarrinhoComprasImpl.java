@@ -55,8 +55,11 @@ public class CarrinhoComprasImpl extends RemoteServiceServlet implements Carrinh
 	     }
 	     
 	     session.setAttribute("carShop", car);
-	     
-	     return  car.size();
+	     int size = 0;
+			for(CarrinhoComprasElemento counter : car){
+				size = size + counter.getQuantidade();
+			}
+	     return  size;
 	}
 	
 	@Override
