@@ -2,6 +2,7 @@ package br.unicamp.mc437.client;
 
 import com.google.gwt.user.client.rpc.RemoteService;
 import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
+
 import br.unicamp.mc437.client.datatypes.Produto;
 
 /**
@@ -11,5 +12,5 @@ import br.unicamp.mc437.client.datatypes.Produto;
 public interface InserirProdutoService extends RemoteService {
 //	String greetServer(String name) throws IllegalArgumentException;
 	
-	String inserirProdutoServer(Produto p) throws IllegalArgumentException;
+	Boolean inserirProdutoServer(Produto p) throws IllegalArgumentException;
 }
