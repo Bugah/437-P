@@ -6,9 +6,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Iterator;
 
-import br.unicamp.mc437.client.GreetingService;
 import br.unicamp.mc437.client.InserirProdutoService;
 import br.unicamp.mc437.client.datatypes.Produto;
 import br.unicamp.mc437.client.datatypes.SubCategoria;
@@ -24,14 +22,18 @@ public class InserirProdutoImpl extends RemoteServiceServlet implements
 	
 
 	
-	public String inserirProdutoServer(Produto p) throws IllegalArgumentException {
+	/**
+	 * função para inserir um produto no banco de dados
+	 * return true se foi inserido com sucesso
+	 * return false cc
+	 */
+	public Boolean inserirProdutoServer(Produto p) throws IllegalArgumentException {
 		
 
 		//Creating a database and deleting it.
 		Connection connection = null;
 		ResultSet rs = null;
-		String html = null;
-
+	
 		// making a connection
 		try {
 			Class.forName("org.hsqldb.jdbcDriver");
@@ -39,6 +41,10 @@ public class InserirProdutoImpl extends RemoteServiceServlet implements
 		//	PreparedStatement ps = connection.prepareStatement("insert into user (id, nome)" 
 			//		+ "values ( ?, ?);");
 			
+			if(p.getNome().length()==0 || p.getPreco()<0 || p.getEstoque()<0|| p.getPrecoPromocional()<0 || p.getSubCat().size()==0){
+				return false;
+				
+			}else {
 			PreparedStatement ps = connection.prepareStatement("INSERT INTO PRODUTOS VALUES(?,?,?,?,?,?,?,?,?)");
 			ps.setNull(1, 0);
 			ps.setString(2, p.getNome());
@@ -68,24 +74,26 @@ public class InserirProdutoImpl extends RemoteServiceServlet implements
 				ps.setInt(3,idProd);
 				ps.execute();
 			}
+			
+			}
 		} catch (SQLException e2) {
 			e2.printStackTrace();
+			return false;
 		} catch (ClassNotFoundException e2) {
 			e2.printStackTrace();
+			return false;
 
+		} catch (NullPointerException e3){
+			return false;
 		}
 	
-		String serverInfo = getServletContext().getServerInfo();
-		String userAgent = getThreadLocalRequest().getHeader("User-Agent");
 
 		// Escape data from the client to avoid cross-site script vulnerabilities.
-		
-		userAgent = escapeHtml(userAgent);
 		
 //		return "Produto encontrado: " + name_stored + ".<br><br>I am running " + serverInfo
 //				+ ".<br><br>It looks like you are using:<br>" + userAgent;
 		
-		return html;
+		return true;
 		
 	}
 	
