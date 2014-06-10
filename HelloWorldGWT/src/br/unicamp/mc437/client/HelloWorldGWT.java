@@ -5,8 +5,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.tempuri.CalcPrecoPrazoWSSoapProxy;
-
 import br.unicamp.mc437.client.datatypes.Administrador;
 import br.unicamp.mc437.client.datatypes.CarrinhoComprasElemento;
 import br.unicamp.mc437.client.datatypes.Produto;
@@ -175,10 +173,10 @@ public class HelloWorldGWT implements EntryPoint {
 				
 			}
 		});
-		// mudar if pra s� exibir qdo ADM estiver logado
+		// mudar if pra só exibir qdo ADM estiver logado
 	
 		
-		// mudar if pra s� exibir qdo cliente estiver logado
+		// mudar if pra só exibir qdo cliente estiver logado
 		if (true) {
 
 			urlBase = com.google.gwt.user.client.Window.Location
@@ -369,7 +367,7 @@ public class HelloWorldGWT implements EntryPoint {
 
 		final ListBox searchOn = new ListBox();
 		searchOn.addItem("Produto");
-		searchOn.addItem("Descrição");
+		searchOn.addItem("DescriÃ§Ã£o");
 		final Label errorLabel = new Label();
 
 		final Map<Integer, String> imgs_url = new HashMap<Integer, String>();
@@ -530,7 +528,7 @@ public class HelloWorldGWT implements EntryPoint {
 
 			}
 
-		// listagem � direita de categorias
+		// listagem à direita de categorias
 		final ScrollPanel s = new ScrollPanel();
 		final HTML ht = new HTML();
 		RootPanel.get("listaCategorias").add(s);
@@ -709,13 +707,13 @@ public class HelloWorldGWT implements EntryPoint {
 									switch (seeRangePrecos()) {
 									case 0: {
 										// html =
-										// html+"<tr><td><img src =\""+imgs_url.get(i.getId())+"\" width=\"64\" height=\"64\"></td><td>"+i.getNome()+", preço: "+Double.toString(i.getPreco())+"</td></tr>";
+										// html+"<tr><td><img src =\""+imgs_url.get(i.getId())+"\" width=\"64\" height=\"64\"></td><td>"+i.getNome()+", preÃ§o: "+Double.toString(i.getPreco())+"</td></tr>";
 										// html = html
 										// + "<tr><td><img src =\""
 										// + i.getUrlImagemUnica()
 										// +
 										// "\" width=\"64\" height=\"64\"></td><td>"
-										// / + i.getNome() + ", preço: "
+										// / + i.getNome() + ", preÃ§o: "
 										// + Double.toString(i.getPreco())
 										// + "</td></tr>";
 
@@ -738,7 +736,7 @@ public class HelloWorldGWT implements EntryPoint {
 									case 1: {
 										if (i.getPreco() < 10)
 											// html =
-											// html+"<tr><td><img src =\""+imgs_url.get(i.getId())+"\" width=\"64\" height=\"64\"></td><td>"+i.getNome()+", preço: "+Double.toString(i.getPreco())+"</td></tr>";
+											// html+"<tr><td><img src =\""+imgs_url.get(i.getId())+"\" width=\"64\" height=\"64\"></td><td>"+i.getNome()+", preÃ§o: "+Double.toString(i.getPreco())+"</td></tr>";
 
 											// formatado =
 											// nf.format(i.getPreco());
@@ -762,7 +760,7 @@ public class HelloWorldGWT implements EntryPoint {
 										if (i.getPreco() >= 10
 												&& i.getPreco() < 20)
 											// html =
-											// html+"<tr><td><img src =\""+imgs_url.get(i.getId())+"\" width=\"64\" height=\"64\"></td><td>"+i.getNome()+", preço: "+Double.toString(i.getPreco())+"</td></tr>";
+											// html+"<tr><td><img src =\""+imgs_url.get(i.getId())+"\" width=\"64\" height=\"64\"></td><td>"+i.getNome()+", preÃ§o: "+Double.toString(i.getPreco())+"</td></tr>";
 
 											// formatado =
 											// nf.format(i.getPreco());
@@ -786,7 +784,7 @@ public class HelloWorldGWT implements EntryPoint {
 										if (i.getPreco() >= 20
 												&& i.getPreco() < 40)
 											// html =
-											// html+"<tr><td><img src =\""+imgs_url.get(i.getId())+"\" width=\"64\" height=\"64\"></td><td>"+i.getNome()+", preço: "+Double.toString(i.getPreco())+"</td></tr>";
+											// html+"<tr><td><img src =\""+imgs_url.get(i.getId())+"\" width=\"64\" height=\"64\"></td><td>"+i.getNome()+", preÃ§o: "+Double.toString(i.getPreco())+"</td></tr>";
 											// formatado =
 											// nf.format(i.getPreco());
 
@@ -809,7 +807,7 @@ public class HelloWorldGWT implements EntryPoint {
 										if (i.getPreco() >= 40
 												&& i.getPreco() < 60)
 											// html =
-											// html+"<tr><td><img src =\""+imgs_url.get(i.getId())+"\" width=\"64\" height=\"64\"></td><td>"+i.getNome()+", preço: "+Double.toString(i.getPreco())+"</td></tr>";
+											// html+"<tr><td><img src =\""+imgs_url.get(i.getId())+"\" width=\"64\" height=\"64\"></td><td>"+i.getNome()+", preÃ§o: "+Double.toString(i.getPreco())+"</td></tr>";
 
 											// formatado =
 											// nf.format(i.getPreco());
@@ -832,7 +830,7 @@ public class HelloWorldGWT implements EntryPoint {
 									case 5: {
 										if (i.getPreco() >= 60)
 											// html =
-											// html+"<tr><td><img src =\""+imgs_url.get(i.getId())+"\" width=\"64\" height=\"64\"></td><td>"+i.getNome()+", preço: "+Double.toString(i.getPreco())+"</td></tr>";
+											// html+"<tr><td><img src =\""+imgs_url.get(i.getId())+"\" width=\"64\" height=\"64\"></td><td>"+i.getNome()+", preÃ§o: "+Double.toString(i.getPreco())+"</td></tr>";
 											// formatado =
 											// nf.format(i.getPreco());
 
@@ -883,11 +881,11 @@ public class HelloWorldGWT implements EntryPoint {
 
 		getPageAtual = com.google.gwt.user.client.Window.Location
 				.getParameter("page");
-		// Na linha abaixo a div � ocultada
+		// Na linha abaixo a div é ocultada
 		// com.google.gwt.user.client.DOM.getElementById("exibiAddProduto")
 		// .getStyle().setDisplay(Display.NONE);
-		// colocar mias um IF se est� logado como ADM
-		// neste IF � definido se as opcoes de Criacao de Produtos Aparecer�o
+		// colocar mias um IF se está logado como ADM
+		// neste IF é definido se as opcoes de Criacao de Produtos Aparecerão
 		if (getPageAtual != null){
 			if (getPageAtual.compareTo("addProduto") == 0) {
 
@@ -1092,7 +1090,7 @@ public class HelloWorldGWT implements EntryPoint {
 									
 									
 									final ListBox parcel = new ListBox(false);
-									//d�gueu
+									//dégueu
 									
 									parcel.addItem("1x", "1");
 									parcel.addItem("2x", "2");
@@ -1183,7 +1181,7 @@ public class HelloWorldGWT implements EntryPoint {
 													segCard.getText().length() == 0
 													)){
 												
-												Window.alert("O formulario n�o foi bem preenchido");
+												Window.alert("O formulario não foi bem preenchido");
 											} else {
 											if(cartao.getValue()){
 											if(Window.confirm("Pagamento de "+format.format(totalPrice).replaceAll("\\.", "\\,")+" com parcelamento "
@@ -1506,7 +1504,7 @@ public class HelloWorldGWT implements EntryPoint {
 
 				// INSERIR INTERFACE DE BUSCA AQUI //
 				inserirProdutoService.inserirProdutoServer(p,
-						new AsyncCallback<String>() {
+						new AsyncCallback<Boolean>() {
 							public void onFailure(Throwable caught) {
 								// Show the RPC error message to the user
 								dialogBox
@@ -1518,11 +1516,11 @@ public class HelloWorldGWT implements EntryPoint {
 								closeButton.setFocus(true);
 							}
 
-							public void onSuccess(String result) {
+							public void onSuccess(Boolean result) {
 								dialogBox.setText("Remote Procedure Call");
 								serverResponseLabel
 										.removeStyleName("serverResponseLabelError");
-								serverResponseLabel.setHTML(result);
+								serverResponseLabel.setHTML(result.toString());
 								dialogBox.center();
 								closeButton.setFocus(true);
 							}
@@ -1772,7 +1770,7 @@ public class HelloWorldGWT implements EntryPoint {
 			table.setText(
 					count,
 					2,
-					prod.getNome() + ", pre�o: "
+					prod.getNome() + ", preço: "
 							+ Double.toString(prod.getPreco()));
 			table.setWidget(count, 3, btn);
 
