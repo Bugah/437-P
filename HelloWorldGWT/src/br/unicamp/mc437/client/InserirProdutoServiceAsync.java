@@ -11,5 +11,5 @@ public interface InserirProdutoServiceAsync {
 //	void greetServer(String input, AsyncCallback<String> callback)
 //			throws IllegalArgumentException;
 	
-	void inserirProdutoServer(Produto p, AsyncCallback<String> callback);
+	void inserirProdutoServer(Produto p, AsyncCallback<Boolean> callback);
 }
