@@ -40,7 +40,7 @@ public class teste {
 		//DICA: o testador deve validar a lógica do negócio (requisitos)
 	}*/
 	
-	@Test
+	/*@Test
 	public void testFinalizarCompras(){
 		ArrayList<HashMap<String,Object>> machin;
 		FinalizarCompraImpl fci = new FinalizarCompraImpl();
@@ -57,5 +57,5 @@ public class teste {
 		
 		
 		
-	}
+	}*/
 }
