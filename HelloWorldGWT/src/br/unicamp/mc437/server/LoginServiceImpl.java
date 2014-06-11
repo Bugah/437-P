@@ -11,6 +11,7 @@ import javax.servlet.http.HttpSession;
 import br.unicamp.mc437.client.LoginService;
 import br.unicamp.mc437.client.datatypes.Cliente;
 import br.unicamp.mc437.client.datatypes.Administrador;
+import br.unicamp.mc437.sessionfake.SessionFake;
 
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 import com.sun.xml.internal.bind.v2.TODO;
@@ -36,8 +37,9 @@ public class LoginServiceImpl  extends RemoteServiceServlet implements LoginServ
 		Cliente client = checkPasswordClient(username, senha);
 		
 		if(client != null){
-			HttpServletRequest httpServletRequest = getThreadLocalRequest();
-		    HttpSession session = httpServletRequest.getSession(true);
+			//HttpServletRequest httpServletRequest = getThreadLocalRequest();
+		    //HttpSession session = httpServletRequest.getSession(true);
+			SessionFake session = new SessionFake();
 		    session.setAttribute("user", client);
 		    
 		    loggedadmin=null;
@@ -56,8 +58,9 @@ public class LoginServiceImpl  extends RemoteServiceServlet implements LoginServ
 		Administrador admin = checkPasswordAdmin(username, senha);
 		
 		if(admin != null){
-			HttpServletRequest httpServletRequest = getThreadLocalRequest();
-		    HttpSession session = httpServletRequest.getSession(true);
+			//HttpServletRequest httpServletRequest = getThreadLocalRequest();
+		    //HttpSession session = httpServletRequest.getSession(true);
+		    SessionFake session = new SessionFake();
 		    session.setAttribute("user", admin);
 		    session.setAttribute("adm", true);
 		    
@@ -78,8 +81,9 @@ public class LoginServiceImpl  extends RemoteServiceServlet implements LoginServ
 	@Override
 	public boolean logoff() {
 		
-		HttpServletRequest httpServletRequest = getThreadLocalRequest();
-	    HttpSession session = httpServletRequest.getSession(true);
+		//HttpServletRequest httpServletRequest = getThreadLocalRequest();
+	    //HttpSession session = httpServletRequest.getSession(true);
+	    SessionFake session = new SessionFake();
 	    session.removeAttribute("user");
 		
 	    loggedadmin=null;

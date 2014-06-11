@@ -131,25 +131,25 @@ public class testeLogin {
 		cli.setCidade("brasilopolis");
 		cli.setEstado("mg");
 		cli.setTelefone("7897897");
-		cli.setUsername("231");
+		cli.setUsername("stephane");
 		
 		assertTrue(cli.getId() == cli2.getId());
-		assertTrue(cli.getNome() == cli2.getNome());
-		assertTrue(cli.getEmail() == cli2.getEmail());
-		assertTrue(cli.getSenha() == cli2.getSenha());
-		assertTrue(cli.getCpf() == cli2.getCpf());
-		assertTrue(cli.getEndereco() == cli2.getEndereco());
-		assertTrue(cli.getCidade() == cli2.getCidade());
-		assertTrue(cli.getEstado() == cli2.getEstado());
-		assertTrue(cli.getTelefone() == cli2.getTelefone());
-		assertTrue(cli.getUsername() == cli2.getUsername());
+		assertTrue(cli.getNome().equals(cli2.getNome()));
+		assertTrue(cli.getEmail().equals(cli2.getEmail()));
+		assertTrue(cli.getSenha().equals(cli2.getSenha()));
+		assertTrue(cli.getCpf().equals(cli2.getCpf()));
+		assertTrue(cli.getEndereco().equals(cli2.getEndereco()));
+		assertTrue(cli.getCidade().equals(cli2.getCidade()));
+		assertTrue(cli.getEstado().equals(cli2.getEstado()));
+		assertTrue(cli.getTelefone().equals(cli2.getTelefone()));
+		assertTrue(cli.getUsername().equals(cli2.getUsername()));
 	}
 	
 	@Test
 	public void testAdminLogado(){
 		
-		String nome = "stephane";
-		String senha = "stephane";
+		String nome = "BRYAN";
+		String senha = "BRYAN";
 		Administrador adm, adm2;
 		adm = new Administrador();
 		
@@ -163,9 +163,9 @@ public class testeLogin {
 		adm.setSenhaAdm("BRYAN");
 		
 		assertTrue(adm.getId() == adm2.getId());
-		assertTrue(adm.getNomeAdm() == adm2.getNomeAdm());
-		assertTrue(adm.getEmailAdm() == adm2.getEmailAdm());
-		assertTrue(adm.getSenhaAdm() == adm2.getSenhaAdm());
+		assertTrue(adm.getNomeAdm().equals(adm2.getNomeAdm()));
+		assertTrue(adm.getEmailAdm().equals(adm2.getEmailAdm()));
+		assertTrue(adm.getSenhaAdm().equals(adm2.getSenhaAdm()));
 	}
 	
 }
