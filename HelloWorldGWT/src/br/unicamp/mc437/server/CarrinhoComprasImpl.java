@@ -234,8 +234,16 @@ public class CarrinhoComprasImpl extends RemoteServiceServlet implements Carrinh
 		return null;
 	}
 
-	public void esvaziarCarrinhoTest(SessionFake session) {
-		// TODO Auto-generated method stub
+	public boolean esvaziarCarrinhoTest(SessionFake session) {
+		if(session.getAttribute("carShop") == null){
+        	return false;
+        }
+		
+		session.removeAttribute("carShop");
+		
+        initCarShopTest(session);
+        
+		return true;
 		
 	}
 
