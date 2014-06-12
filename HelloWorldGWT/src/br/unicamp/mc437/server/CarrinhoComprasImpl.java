@@ -43,6 +43,21 @@ public class CarrinhoComprasImpl extends RemoteServiceServlet implements Carrinh
 	     @SuppressWarnings("unchecked")
 	     List<CarrinhoComprasElemento> car =  (ArrayList<CarrinhoComprasElemento>)session.getAttribute("carShop");
 	     
+	     /*
+		 * Bug localizado e corrigido, produto null
+		 */
+		if(produto == null){
+			session.setAttribute("carShop", car);
+			int size = 0;
+			
+			for(CarrinhoComprasElemento counter: car){
+				size = size + counter.getQuantidade();
+			}
+			
+			return size;
+		}
+		
+	     
 	     Integer i = findProdId(car, produto);
 	     
 	     if(i == -1){
@@ -133,20 +148,28 @@ public class CarrinhoComprasImpl extends RemoteServiceServlet implements Carrinh
 		
 		return -1;
 	}
-
+	/*
+	 * Metodos para realizar os teste com session.
+	 */
 	public int removerProdutoTest(Produto p2, SessionFake session) {
 		// TODO Auto-generated method stub
 		return 0;
 	}
 
 	public void initCarShopTest(SessionFake session) {
-		// TODO Auto-generated method stub
+		List<CarrinhoComprasElemento> list = new ArrayList<CarrinhoComprasElemento>();
+		
+		Object obj = session.getAttribute("carShop");
+		
+		if(obj == null){
+			session.setAttribute("carShop", list);
+		}
 		
 	}
 
 	public ArrayList<CarrinhoComprasElemento> obterCarrinhoTest(
 			SessionFake session) {
-		// TODO Auto-generated method stub
+		
 		return null;
 	}
 
@@ -155,9 +178,43 @@ public class CarrinhoComprasImpl extends RemoteServiceServlet implements Carrinh
 		
 	}
 
-	public int adicionarProdutoTest(Produto p, SessionFake session) {
-		// TODO Auto-generated method stub
-		return 0;
+	public int adicionarProdutoTest(Produto produto, SessionFake session) {
+		List<CarrinhoComprasElemento> car = (ArrayList<CarrinhoComprasElemento>) session.getAttribute("carShop");
+		
+		/*
+		 * Bug localizado e corrigido, produto null
+		 */
+		if(produto == null){
+			session.setAttribute("carShop", car);
+			int size = 0;
+			
+			for(CarrinhoComprasElemento counter: car){
+				size = size + counter.getQuantidade();
+			}
+			
+			return size;
+		}
+		
+		Integer i = findProdId(car, produto);
+		
+		if(i == -1){
+			CarrinhoComprasElemento elem = new CarrinhoComprasElemento();
+			elem.setProduto(produto);
+			elem.setQuantidade(1);
+			car.add(elem);
+		}
+		else{
+			car.get(i).setQuantidade(car.get(i).getQuantidade() + 1);
+		}
+		
+		session.setAttribute("carShop", car);
+		int size = 0;
+		
+		for(CarrinhoComprasElemento counter: car){
+			size = size + counter.getQuantidade();
+		}
+		
+		return size;
 	}
 	
 	
