@@ -15,6 +15,7 @@ import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 import br.unicamp.mc437.client.CarrinhoCompras;
 import br.unicamp.mc437.client.datatypes.CarrinhoComprasElemento;
 import br.unicamp.mc437.client.datatypes.Produto;
+import br.unicamp.mc437.sessionfake.SessionFake;
 
 @SuppressWarnings("serial")
 public class CarrinhoComprasImpl extends RemoteServiceServlet implements CarrinhoCompras {
@@ -131,6 +132,32 @@ public class CarrinhoComprasImpl extends RemoteServiceServlet implements Carrinh
 		}
 		
 		return -1;
+	}
+
+	public int removerProdutoTest(Produto p2, SessionFake session) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	public void initCarShopTest(SessionFake session) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public ArrayList<CarrinhoComprasElemento> obterCarrinhoTest(
+			SessionFake session) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public void esvaziarCarrinhoTest(SessionFake session) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public int adicionarProdutoTest(Produto p, SessionFake session) {
+		// TODO Auto-generated method stub
+		return 0;
 	}
 	
 	
