@@ -86,11 +86,39 @@ public class CarrinhoComprasImpl extends RemoteServiceServlet implements Carrinh
         @SuppressWarnings("unchecked")
 		List<CarrinhoComprasElemento> car = (ArrayList<CarrinhoComprasElemento>) session.getAttribute("carShop");
         
-        car.remove(car.get(findProdId(car, produto)));
+        /*
+		 * Bug localizado e corrigido, produto null
+		 */
+		if(produto == null){
+			session.setAttribute("carShop", car);
+			int size = 0;
+			
+			for(CarrinhoComprasElemento counter: car){
+				size = size + counter.getQuantidade();
+			}
+			
+			return size;
+		}
+		
+		Integer indx = findProdId(car, produto);
+		
+		/*
+		 * Bug compra negativa
+		 */
+		if (indx != -1){
+			car.remove(car.get(indx));
+			session.setAttribute("carShop", car);
+		}
         
         session.setAttribute("carShop", car);
         
-        return car.size();
+        int size = 0;
+		
+		for(CarrinhoComprasElemento counter: car){
+			size = size + counter.getQuantidade();
+		}
+		
+		return size;
 	}
 	
 	@Override
@@ -151,9 +179,42 @@ public class CarrinhoComprasImpl extends RemoteServiceServlet implements Carrinh
 	/*
 	 * Metodos para realizar os teste com session.
 	 */
-	public int removerProdutoTest(Produto p2, SessionFake session) {
-		// TODO Auto-generated method stub
-		return 0;
+	public int removerProdutoTest(Produto produto, SessionFake session) {
+		@SuppressWarnings("unchecked")
+		List<CarrinhoComprasElemento> car = (ArrayList<CarrinhoComprasElemento>) session.getAttribute("carShop");
+		
+		/*
+		 * Bug localizado e corrigido, produto null
+		 */
+		if(produto == null){
+			session.setAttribute("carShop", car);
+			int size = 0;
+			
+			for(CarrinhoComprasElemento counter: car){
+				size = size + counter.getQuantidade();
+			}
+			
+			return size;
+		}
+		
+		Integer indx = findProdId(car, produto);
+		
+		/*
+		 * Bug compra negativa
+		 */
+		if (indx != -1){
+			car.remove(car.get(indx));
+			session.setAttribute("carShop", car);
+		}
+
+		session.setAttribute("carShop", car);
+		int size = 0;
+		
+		for(CarrinhoComprasElemento counter: car){
+			size = size + counter.getQuantidade();
+		}
+		
+		return size;
 	}
 
 	public void initCarShopTest(SessionFake session) {
@@ -179,6 +240,7 @@ public class CarrinhoComprasImpl extends RemoteServiceServlet implements Carrinh
 	}
 
 	public int adicionarProdutoTest(Produto produto, SessionFake session) {
+		@SuppressWarnings("unchecked")
 		List<CarrinhoComprasElemento> car = (ArrayList<CarrinhoComprasElemento>) session.getAttribute("carShop");
 		
 		/*
