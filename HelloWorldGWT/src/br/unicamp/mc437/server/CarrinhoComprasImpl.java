@@ -228,10 +228,12 @@ public class CarrinhoComprasImpl extends RemoteServiceServlet implements Carrinh
 		
 	}
 
-	public ArrayList<CarrinhoComprasElemento> obterCarrinhoTest(
+	public List<CarrinhoComprasElemento> obterCarrinhoTest(
 			SessionFake session) {
-		
-		return null;
+		@SuppressWarnings("unchecked")
+        List<CarrinhoComprasElemento> carrinho =  (ArrayList<CarrinhoComprasElemento>) session.getAttribute("carShop");
+        
+		return carrinho;
 	}
 
 	public boolean esvaziarCarrinhoTest(SessionFake session) {
