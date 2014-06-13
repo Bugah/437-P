@@ -51,4 +51,20 @@ public class FieldVerifier {
 		}
 		return false;
 	}
+	public static boolean isValidNameCard(String name){
+		int i;
+		for( i = 0; i < name.length(); i++){
+			if(!(Character.isLetter(name.charAt(i))) && name.charAt(i) != ' ') return false ;
+			
+		}
+		return true;
+	}
+	public static boolean isNumber(String name){
+		int i;
+		for( i = 0; i < name.length(); i++){
+			if(!Character.isDigit(name.charAt(i))) return false ;
+			
+		}
+		return true;
+	}
 }

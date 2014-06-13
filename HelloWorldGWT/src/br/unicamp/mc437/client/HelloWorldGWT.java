@@ -937,6 +937,7 @@ public class HelloWorldGWT implements EntryPoint {
 						if(result!=0){
 						final int idClient = result;						
 		
+						
 				
 				com.google.gwt.user.client.DOM
 						.getElementById("exibiFinalizarCompras").getStyle()
@@ -960,6 +961,10 @@ public class HelloWorldGWT implements EntryPoint {
 							@Override
 							public void onSuccess(List<CarrinhoComprasElemento> result) {
 							
+							if( result.size() == 0 ) {
+								Window.alert("Seu carrinho esta vazio!");
+								return ;
+							}
 							//	final ScrollPanel r = new ScrollPanel();
 								final HTMLPanel h;// = new HTML();
 								double totalWithoutFrete=0;
@@ -970,6 +975,10 @@ public class HelloWorldGWT implements EntryPoint {
 								totalWithoutFrete += result.get(i).getProduto().getPreco()*((double) result.get(i).getQuantidade());
 							}
 								totalWF=totalWithoutFrete;
+								if( totalWF <= 0) {
+									Window.alert("Encontramos um erro no preÁo, favor contatar o responsavel pela pagina!");
+									return;
+								}
 								html +="<tr><td></td><td></td><td>Total sem frete: </td><td>"+Double.toString(totalWithoutFrete)+"</td></tr>";
 								html+="<tr><td></td><td>Escolha da Frete</td><td id=\"FCrapido\"></td><td id=\"FCeco\"></td>";
 								html +="<tr><td></td><td></td><td>Frete: </td><td id=\"FCfrete\"></td></tr>";
@@ -991,7 +1000,8 @@ public class HelloWorldGWT implements EntryPoint {
 							  h.add(radio0, "FCrapido");
 							  h.add(radio1, "FCeco");
 							  radio0.setValue(true);
-							  RootPanel.get("FCrecupCarrinho").add(h);  
+							  RootPanel.get("FCrecupCarrinho").add(h); 
+							  
 							finalizarCompraService.clienteId1(idClient, new AsyncCallback<HashMap<String,String>>() {
 								
 								@Override
@@ -1172,16 +1182,20 @@ public class HelloWorldGWT implements EntryPoint {
 										@Override
 										public void onClick(ClickEvent event) {
 											// TODO Auto-generated method stub
+											
 											if(cartao.getValue() &&( city.getText().length()== 0 || 
 													cep.getText().length() == 0 || 
 													adress.getText().length()==0 ||
 													state.getText().length()==0 ||
 													nameCard.getText().length() ==0 ||
 													numCard.getText().length() == 0 ||
-													segCard.getText().length() == 0
+													segCard.getText().length() == 0 ||
+													!FieldVerifier.isValidNameCard(nameCard.getText()) ||
+													!FieldVerifier.isNumber(numCard.getText()) ||
+													!FieldVerifier.isNumber(segCard.getText())
 													)){
 												
-												Window.alert("O formulario n√£o foi bem preenchido");
+												Window.alert("O formulario n„o foi bem preenchido");
 											} else {
 											if(cartao.getValue()){
 											if(Window.confirm("Pagamento de "+format.format(totalPrice).replaceAll("\\.", "\\,")+" com parcelamento "
@@ -1272,7 +1286,7 @@ public class HelloWorldGWT implements EntryPoint {
 													
 													
 													if(Integer.parseInt(segCard.getText())%5==0){
-														com.google.gwt.user.client.DOM
+															com.google.gwt.user.client.DOM
 														.getElementById("FCpayMsg").getStyle()
 														.setColor("#FF0000");
 														RootPanel.get("FCpayMsg").clear();
