@@ -1284,7 +1284,7 @@ public class HelloWorldGWT implements EntryPoint {
 												public void run() {
 													Button buttonOk = new Button("ok");
 													
-													
+													if(Window.confirm("Finalizar pagamento?")){
 													if(Integer.parseInt(segCard.getText())%5==0){
 															com.google.gwt.user.client.DOM
 														.getElementById("FCpayMsg").getStyle()
@@ -1347,7 +1347,31 @@ public class HelloWorldGWT implements EntryPoint {
 															}
 														});
 													
-													}	
+													}
+													} else {
+														
+														com.google.gwt.user.client.DOM
+														.getElementById("FCpayMsg").getStyle()
+														.setColor("#94CB42");
+														RootPanel.get("FCpayMsg").clear();
+														RootPanel.get("FCpayMsg").add(new HTMLPanel("O pagamento foi cancelado.")); 												
+														RootPanel.get("FCpayMsg").add(buttonOk);
+														buttonOk.addClickHandler(new ClickHandler() {
+															
+															@Override
+															public void onClick(ClickEvent event) {
+																// TODO Auto-generated method stub
+																com.google.gwt.user.client.DOM
+																.getElementById("FCpayMsg").getStyle()
+																.setDisplay(Display.NONE);
+																com.google.gwt.user.client.DOM
+																.getElementById("FCpayTreatement").getStyle()
+																.setDisplay(Display.NONE);
+																
+		
+															}
+														});
+													}
 													
 													
 													
